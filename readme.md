@@ -8,6 +8,11 @@
 - Little utility to convert xml to json (and add a .common prop to each image)
 - Some other stuff I probably forgot
 
+### Installation
+```
+npm i --save booru
+```
+
 ### Usage
 ```js
 const booru = require('booru')
@@ -35,7 +40,7 @@ booru.search(site, [tag1, tag2], limit)
 
 **tags** => An array of tags to search with (optional, default `[]`)
 
-**limit** => An int, the max amount of images to fetch (optional, default `1`) 
+**limit** => An int, the max amount of images to fetch (optional, default `1`)
 
 
 #### What the ".common prop" do?
