@@ -1,0 +1,77 @@
+{
+  "e621.net": {
+    "aliases": ["e6","e621"],
+    "nsfw": true,
+		"api": "/post/index.json?"
+  },
+  "hypnohub.net": {
+    "aliases": ["hh","hypo","hypohub"],
+    "nsfw": true,
+		"api": "/post/index.json?"
+  },
+  "danbooru.donmai.us": {
+    "aliases": ["db","dan","danbooru"],
+    "nsfw": true,
+		"api": "/posts.json?"
+  },
+  "konachan.com": {
+    "aliases": ["kc","konac","kcom"],
+    "nsfw": true,
+		"api": "/post.json?"
+  },
+  "konachan.net": {
+    "aliases": ["kn","konan","knet"],
+    "nsfw": false,
+		"api": "/post.json?"
+  },
+  "yande.re": {
+    "aliases": ["yd","yand","yandere"],
+    "nsfw": true,
+		"api": "/post.json?"
+  },
+  "gelbooru.com": {
+    "aliases": ["gb","gel","gelbooru"],
+    "nsfw": true,
+		"api": "/index.php?page=dapi&s=post&q=index&"
+  },
+  "rule34.xxx": {
+    "aliases": ["r34","rule34"],
+    "nsfw": true,
+		"api": "/index.php?page=dapi&s=post&q=index&"
+  },
+  "safebooru.org": {
+    "aliases": ["sb","safe","safebooru"],
+    "nsfw": false,
+		"api": "/index.php?page=dapi&s=post&q=index&"
+  },
+  "tbib.org": {
+    "aliases": ["tb", "tbib","big"],
+    "nsfw": false,
+		"api": "/index.php?page=dapi&s=post&q=index&"
+  },
+  "xbooru.com": {
+    "aliases": ["xb","xbooru"],
+    "nsfw": true,
+		"api": "/index.php?page=dapi&s=post&q=index&"
+  },
+  "youhate.us": {
+    "aliases": ["yh","you","youhate"],
+    "nsfw": true,
+		"api": "/index.php?page=dapi&s=post&q=index&"
+  },
+  "dollbooru.org": {
+    "aliases": ["do","doll","dollbooru"],
+    "nsfw": false,
+		"api": "/api/danbooru/find_posts/index.xml?"
+  },
+  "rule34.paheal.net": {
+    "aliases": ["pa","paheal"],
+    "nsfw": true,
+		"api": "/api/danbooru/find_posts/index.xml?"
+  },
+  "lolibooru.moe": {
+    "aliases": ["lb", "lol", "loli", "lolibooru"],
+    "nsfw": true,
+    "api": "/post/index.json?"
+  }
+}

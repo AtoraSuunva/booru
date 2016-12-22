@@ -1,0 +1,41 @@
+{
+  "name": "booru",
+  "version": "0.1.1",
+  "description": "Search a bunch of different boorus using package magic!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/AtlasTheBot/booru.git"
+  },
+  "keywords": [
+    "booru",
+    "e621",
+    "hypnohub",
+    "danbooru",
+    "konachan",
+    "yandere",
+    "gelbooru",
+    "rule34",
+    "safebooru",
+    "tbib",
+    "xbooru",
+    "youhateus",
+    "dollbooru",
+    "paheal",
+    "lolibooru"
+  ],
+  "author": "AtlasTheBot",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/AtlasTheBot/booru/issues"
+  },
+  "homepage": "https://github.com/AtlasTheBot/booru#readme",
+  "dependencies": {
+    "request": "^2.79.0",
+    "request-promise-native": "^1.0.3",
+    "xml2js": "^0.4.17"
+  }
+}
