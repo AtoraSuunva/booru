@@ -2,76 +2,91 @@
   "e621.net": {
     "aliases": ["e6","e621"],
     "nsfw": true,
-		"api": "/post/index.json?"
+		"api": "/post/index.json?",
+    "postView": "/post/show/"
   },
   "hypnohub.net": {
     "aliases": ["hh","hypo","hypohub"],
     "nsfw": true,
-		"api": "/post/index.json?"
+		"api": "/post/index.json?",
+    "postView": "/post/show/"
   },
   "danbooru.donmai.us": {
     "aliases": ["db","dan","danbooru"],
     "nsfw": true,
-		"api": "/posts.json?"
+		"api": "/posts.json?",
+    "postView": "/posts/"
   },
   "konachan.com": {
     "aliases": ["kc","konac","kcom"],
     "nsfw": true,
-		"api": "/post.json?"
+		"api": "/post.json?",
+    "postView": "/post/show/"
   },
   "konachan.net": {
     "aliases": ["kn","konan","knet"],
     "nsfw": false,
-		"api": "/post.json?"
+		"api": "/post.json?",
+    "postView": "/post/show/"
   },
   "yande.re": {
     "aliases": ["yd","yand","yandere"],
     "nsfw": true,
-		"api": "/post.json?"
+		"api": "/post.json?",
+    "postView": "/post/show/"
   },
   "gelbooru.com": {
     "aliases": ["gb","gel","gelbooru"],
     "nsfw": true,
-		"api": "/index.php?page=dapi&s=post&q=index&"
+		"api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id="
   },
   "rule34.xxx": {
     "aliases": ["r34","rule34"],
     "nsfw": true,
-		"api": "/index.php?page=dapi&s=post&q=index&"
+		"api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id="
   },
   "safebooru.org": {
     "aliases": ["sb","safe","safebooru"],
     "nsfw": false,
-		"api": "/index.php?page=dapi&s=post&q=index&"
+		"api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id="
   },
   "tbib.org": {
     "aliases": ["tb", "tbib","big"],
     "nsfw": false,
-		"api": "/index.php?page=dapi&s=post&q=index&"
+		"api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id="
   },
   "xbooru.com": {
     "aliases": ["xb","xbooru"],
     "nsfw": true,
-		"api": "/index.php?page=dapi&s=post&q=index&"
+		"api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id="
   },
   "youhate.us": {
     "aliases": ["yh","you","youhate"],
     "nsfw": true,
-		"api": "/index.php?page=dapi&s=post&q=index&"
+		"api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id="
   },
   "dollbooru.org": {
     "aliases": ["do","doll","dollbooru"],
     "nsfw": false,
-		"api": "/api/danbooru/find_posts/index.xml?"
+		"api": "/api/danbooru/find_posts/index.xml?",
+    "postView": "/post/view/"
   },
   "rule34.paheal.net": {
     "aliases": ["pa","paheal"],
     "nsfw": true,
-		"api": "/api/danbooru/find_posts/index.xml?"
+		"api": "/api/danbooru/find_posts/index.xml?",
+    "postView": "/post/view/"
   },
   "lolibooru.moe": {
     "aliases": ["lb", "lol", "loli", "lolibooru"],
     "nsfw": true,
-    "api": "/post/index.json?"
+    "api": "/post/index.json?",
+    "postView": "/post/show/"
   }
 }
