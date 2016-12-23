@@ -61,5 +61,4 @@ common: {
 Why not?
 
 #### License
-You can use the code wherever I guess. Just don't claim that it's yours.
-¯\\\__(ツ)__/¯
+[It's GPLv3](http://choosealicense.com/licenses/gpl-3.0/)
