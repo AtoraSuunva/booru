@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Search a bunch of different boorus using package magic!",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "lolibooru"
   ],
   "author": "AtlasTheBot",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0+",
   "bugs": {
     "url": "https://github.com/AtlasTheBot/booru/issues"
   },
