@@ -7,7 +7,7 @@
 
 const booru = require('./index.js')
 
-booru.search(process.argv[2], process.argv.slice(3))
+booru.search(process.argv[2], process.argv.slice(3), {limit: 1, random: true})
 .then(booru.commonfy)
 .then(images => {
   //Log the direct link to each image

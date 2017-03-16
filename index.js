@@ -17,39 +17,78 @@ booruError.prototype.constructor = booruError;
 
 //here we gooooo
 
-//Searches a site for images with tags and returns the results
-//site  => String, the site to search
-//tags  => Array , tags to search for
-//limit => Int   , Number of results to return
-//returns a promise
-function search(site, tags = [], limit = 1) {
+/**
+ * An image from a booru, has a few props and stuff
+ * Properties vary per booru
+ * @typedef  {Object} Image
+ */
+
+ /**
+  * An image from a booru with a few common props
+  * @typedef  {Object}   ImageCommon
+  * @property {Object}   common          - Contains several useful and common props for each booru
+  * @property {String}   common.file_url - The direct link to the image
+  * @property {String}   common.id       - The id of the post
+  * @property {String[]} common.tags     - The tags of the image in an array
+  * @property {Number}   common.score    - The score of the image
+  * @property {String}   common.source   - Source of the image, if supplied
+  * @property {String}   common.rating   - Rating of the image
+  *
+  * @example
+  *  common: {
+  *    file_url: 'https://aaaa.com/image.jpg',
+  *    id: '124125',
+  *    tags: ['cat', 'cute'],
+  *    score: 5,
+  *    source: 'https://giraffedu.ck/aaaa.png',
+  *    rating: 's'
+  *  }
+  */
+
+/**
+ * Search options to use with booru.search()
+ * @typedef  {Object}  SearchOptions
+ * @property {Number}  [limit=1] The number of images to return
+ * @property {Boolean} [random=false] If it should randomly grab results
+ */
+
+/**
+ * Searches a site for images with tags and returns the results
+ * @param  {String}        site      The site to search
+ * @param  {String[]}      [tags=[]] Tags to search with
+ * @param  {SearchOptions}
+ * @return {Promise}           A promise with the images as an array of objects
+ *
+ * @example
+ * booru.search('e926', ['glaceon', 'cute'])
+ * //returns a promise with the latest cute glace pic from e926
+ */
+function search(site, tags = [], {limit = 1, random = false} = {}) {
   return new Promise((resolve, reject) => {
     site = resolveSite(site)
-    if (site === false) reject(new booruError('Site not supported'))
+    limit = parseInt(limit)
 
-    switch (sites[site].api) {
-      case '/post/index.json?':
-      case '/posts.json?':
-      case '/post.json?':
-      case '/index.php?page=dapi&s=post&q=index&':
-      case '/api/danbooru/find_posts/index.xml?':
-        resolve(searchPosts(site, tags, limit)) //Quick (double)check to see if it's supported
-      break;
+    if (site === false) return reject(new booruError('Site not supported'))
+    if (!(tags instanceof Array)) return reject(new booruError('`tags` should be an array'))
+    if (typeof limit !== 'number' && !Number.isNaN(limit)) return reject(new booruError('`limit` should be an int'))
 
-      default:
-        reject(new booruError('Something went horribly wrong somehow. Congrats you broke it!'))
-    }
 
-    reject(new booruError('This should never happen'))
+    resolve( searchPosts(site, tags, {limit, random}) )
   })
 }
 
-//Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
-//site => String, the site to resolve
-//return false if site is not supported, the site otherwise
-function resolveSite(sitessss) { // I should name this better
+/**
+ * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
+ * @param  {String}           siteToResolve The site to resolveSite
+ * @return {(String|Boolean)}               False if site is not supported, the site otherwise
+ */
+function resolveSite(siteToResolve) {
+  if (typeof siteToResolve !== 'string')
+    return false
+
+  siteToResolve = siteToResolve.toLowerCase()
   for (let site in sites) {
-    if (site === sitessss || sites[site].aliases.includes(sitessss)) {
+    if (site === siteToResolve || sites[site].aliases.includes(siteToResolve)) {
       return site
     }
   }
@@ -57,26 +96,53 @@ function resolveSite(sitessss) { // I should name this better
   return false
 }
 
-//Actual searching code
-//site  => String, full site url "e621.net"
-//tags  => Array , an array of tags to add
-//limit => Int   , Number of posts to fetch
-//returns a promise with the response from teh site's api
-function searchPosts (site, tags, limit) {
-  let options = {
-    uri: `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=${limit}`, //nice me
-    headers: {'User-Agent': 'Booru, a node package for booru searching (by AtlasTheBot)'},
-    json: true // Automatically parses the JSON string
-  }
-  return rp(options).catch(err => {throw new booruError(err.error.message || err.error)})
+/**
+ * Actual searching code
+ * @private
+ * @param  {String}  site   The full site url, name + tld
+ * @param  {Array}   tags   The array of tags to search for
+ * @param  {Number}  limit  Number of posts to fetch
+ * @param  {searchOptions}
+ * @return {Promise}        Response with the site's api
+ */
+function searchPosts(site, tags, {limit = 1, random = false} = {}) {
+  return new Promise((resolve, reject) => {
+    let options = {
+      uri: `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=${limit}`, //nice me
+      headers: {'User-Agent': 'Booru, a node package for booru searching (by AtlasTheBot)'},
+      json: true // Automatically parses the JSON string
+    }
+
+    if (!random)
+      resolve(rp(options).catch(err => {throw new booruError(err.error.message || err.error)}))
+    //if not we use some random search magic
+
+    if (sites[site].random) {
+      options.uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
+      resolve(rp(options).catch(err => {throw new booruError(err.error.message || err.error)}))
+    } else {
+      options.uri = `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=100`
+      resolve(
+        rp(options)
+        .then(jsonfy)
+        .then(images => new Promise(
+          res => res(shuffle(images).slice(0, limit))
+        )) //i regret nothing
+      )
+
+      .catch(err => {throw new booruError(err.error.message || err.error)})
+    }
+
+  })
 }
 
-//Takes an array of images and converts to json is needed, and add an extra property called "common" with a few common properties
-//Allow you to simply use "images[2].common.tags" and get the tags instead of having to check if it uses .tags then realizing it doesn't
-//then having to use "tag_string" instead and aaaa i hate xml aaaa
-
-//images => Array, an array of images to commonfy
-//returns the same array of images, but with each having a .common prop with some values
+/**
+ * Takes an array of images and converts to json is needed, and add an extra property called "common" with a few common properties
+ * Allow you to simply use "images[2].common.tags" and get the tags instead of having to check if it uses .tags then realizing it doesn't
+ * then having to use "tag_string" instead and aaaa i hate xml aaaa
+ * @param  {Image[]}       images Array of {@link Image} objects
+ * @return {ImageCommon[]}        Array of {@link ImageCommon} objects
+ */
 function commonfy(images) {
   return new Promise((resolve, reject) => {
     if (images[0] === undefined) reject(new booruError('You didn\'t give any images'))
@@ -87,8 +153,12 @@ function commonfy(images) {
 }
 
 //fuck xml
-//images => String, xml response
-//returns JSON
+/**
+ * Fuck xml
+ * @private
+ * @param  {Image[]} images The images to convert to jsonfy
+ * @return {Image[]}        The images in JSON format
+ */
 function jsonfy(images) {
   return new Promise((resolve, reject) => {
     if (typeof images !== 'object') { //fuck xml
@@ -107,22 +177,11 @@ function jsonfy(images) {
 }
 //fuck xml
 
-//actually create the common property
-//this will add
-
-/*
-common: {
-  file_url: 'https://aaaa.com/image.jpg',  //The direct link to the image, ready to post
-  id: '124125',                            //The image ID, as a string
-  tags: ['cat', 'cute'],                   //The tags, split into an Array
-  score: 5,                                //The score as a Number
-  source: 'https://giraffedu.ck/aaaa.png', //source of the image, if supplied
-  rating: 's'                              //rating of the image
-}
-*/
-
-//images => Array, the images to add common props to
-//site   => The site from which the images came from
+/**
+ * Create the .common property for each {@link Image} passed
+ * @param  {Image[]}       images The images to add common props to
+ * @return {ImageCommon[]}        The images with common props added
+ */
 function createCommon(images) {
   return new Promise((resolve, reject) => {
     if (images === []) resolve([])
@@ -145,7 +204,31 @@ function createCommon(images) {
   })
 }
 
+/**
+ * Yay fisher-bates
+ * Taken from http://stackoverflow.com/a/2450976
+ * @param  {Array} array Array of something
+ * @return {Array}       Shuffled array of something
+ */
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
+
 module.exports.search = search //The actual search function
 module.exports.commonfy = commonfy //do the thing
 module.exports.sites  = sites  //Sites in case you want to see what it supports
 module.exports.resolveSite = resolveSite //might as well /shrug
+
+//shoutout to simpleflips
