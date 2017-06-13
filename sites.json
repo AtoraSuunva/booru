@@ -110,5 +110,13 @@
     "api": "/post/index.json?",
     "postView": "/post/show/",
     "random": true
+  },
+  "derpibooru.org": {
+    "aliases": ["dp", "derp", "derpi", "derpibooru"],
+    "nsfw": true,
+    "api": "/search.json?",
+    "tagQuery": "q",
+    "postView": "/images/",
+    "random": "sf=random%"
   }
 }
