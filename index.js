@@ -192,16 +192,19 @@ function createCommon(images) {
 
       images[i].common.file_url    = images[i].file_url || images[i].image
       images[i].common.id          = images[i].id.toString()
-      images[i].common.tags        = (images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')
+      images[i].common.tags        = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).replace(/,/g, '').replace(/ /g, '_')
       images[i].common.tags        = images[i].common.tags.filter(v => v !== '')
       images[i].common.score       = parseInt(images[i].score)
       images[i].common.source      = images[i].source
-      images[i].common.rating      = images[i].rating
+      images[i].common.rating      = images[i].rating || /(safe|suggestive|questionable|explicit)/i.exec(images[i].tags)[0]
 
+      if (images[i].common.rating === 'suggestive') images[i].common.rating = 'q' //i just give up at this point
+      images[i].common.rating = images[i].common.rating.charAt(0)
+      
       if (images[i].common.file_url.startsWith('/data')          ) images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
       if (images[i].common.file_url.startsWith('/cached')        ) images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
       if (images[i].common.file_url.startsWith('/_images')       ) images[i].common.file_url = 'https://dollbooru.org' + images[i].file_url
-      if (images[i].common.file_url.startsWith('//derpicdn.net')) images[i].common.file_url = 'https:' + images[i].image
+      if (images[i].common.file_url.startsWith('//derpicdn.net') ) images[i].common.file_url = 'https:' + images[i].image
       if (!images[i].common.file_url.startsWith('http')          ) images[i].common.file_url = 'https:' + images[i].file_url
     }
 
