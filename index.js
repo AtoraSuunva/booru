@@ -192,7 +192,7 @@ function createCommon(images) {
 
       images[i].common.file_url    = images[i].file_url || images[i].image
       images[i].common.id          = images[i].id.toString()
-      images[i].common.tags        = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).replace(/,/g, '').replace(/ /g, '_')
+      images[i].common.tags        = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
       images[i].common.tags        = images[i].common.tags.filter(v => v !== '')
       images[i].common.score       = parseInt(images[i].score)
       images[i].common.source      = images[i].source
