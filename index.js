@@ -1,19 +1,19 @@
 //there is no god
 
 //declare the dependencies
-const rp = require('request-promise-native') //native since I want less dependencies to make this as lightweight as i can
+const rp = require('request-promise-native') //native because reasons
 const xml2js = require('xml2js') //for XML apis (Gelbooru pls)
 const parser = new xml2js.Parser()
 const sites = require('./sites.json')
 
 //Custom error type so you know when you mess up or when I mess up
 function booruError(message) {
-  this.name = 'booruError';
-  this.message = message || 'Atlas forgot to specify the error message, go yell at him';
-  this.stack = (new Error()).stack;
+  this.name = 'booruError'
+  this.message = message || 'Atlas forgot to specify the error message, go yell at him'
+  this.stack = (new Error()).stack
 }
-booruError.prototype = Object.create(Error.prototype);
-booruError.prototype.constructor = booruError;
+booruError.prototype = Object.create(Error.prototype)
+booruError.prototype.constructor = booruError
 
 //here we gooooo
 
@@ -40,7 +40,7 @@ booruError.prototype.constructor = booruError;
   *    id: '124125',
   *    tags: ['cat', 'cute'],
   *    score: 5,
-  *    source: 'https://giraffedu.ck/aaaa.png',
+  *    source: 'https://giraffeduck.com/aaaa.png',
   *    rating: 's'
   *  }
   */
@@ -68,10 +68,12 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
     site = resolveSite(site)
     limit = parseInt(limit)
 
-    if (site === false) return reject(new booruError('Site not supported'))
-    if (!(tags instanceof Array)) return reject(new booruError('`tags` should be an array'))
-    if (typeof limit !== 'number' && !Number.isNaN(limit)) return reject(new booruError('`limit` should be an int'))
-
+    if (site === false)
+      reject(new booruError('Site not supported'))
+    if (!(tags instanceof Array))
+      reject(new booruError('`tags` should be an array'))
+    if (typeof limit !== 'number' || Number.isNaN(limit))
+      reject(new booruError('`limit` should be an int'))
 
     resolve( searchPosts(site, tags, {limit, random}) )
   })
@@ -107,32 +109,36 @@ function resolveSite(siteToResolve) {
  */
 function searchPosts(site, tags, {limit = 1, random = false} = {}) {
   return new Promise((resolve, reject) => {
+    if (tags[0] === undefined && resolveSite(site) === 'derpibooru.org') tags = ['*']
+    if (resolveSite(site) === 'derpibooru.org') tags = tags.map(v => v.replace(/_/g, '%20'))
+    
     let options = {
-      uri: `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=${limit}`, //nice me
+      uri: `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}`, //nice me
       headers: {'User-Agent': 'Booru, a node package for booru searching (by AtlasTheBot)'},
-      json: true // Automatically parses the JSON string
+      json: true
     }
 
     if (!random)
-      resolve(rp(options).catch(err => {throw new booruError(err.error.message || err.error)}))
+      resolve(rp(options).catch(err => reject(new booruError(err.error.message || err.error))))
     //if not we use some random search magic
 
     if (sites[site].random) {
-      options.uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
-      resolve(rp(options).catch(err => {throw new booruError(err.error.message || err.error)}))
+      if (typeof sites[site].random === 'string')
+        options.uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}&${sites[site].random}${(sites[site].random.endsWith('%')) ? new Array(7).fill(0).map(v => randInt(0, 16)).join('') : ''}`
+        //Sorry, but derpibooru has an odd and confusing api that's not similar to the others at all
+      else
+        options.uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
+		
+      rp(options)
+        .then(images => { console.log(((images.search) ? images.search : images).slice(0, limit)); resolve(((images.search) ? images.search : images).slice(0, limit)) }) //DERPIBOORU WHY DO YOU FORCE ME TO DO THIS
+        .catch(err => reject(new booruError(err.message || err.error)))
     } else {
       options.uri = `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=100`
-      resolve(
-        rp(options)
-        .then(jsonfy)
-        .then(images => new Promise(
-          res => res(shuffle(images).slice(0, limit))
-        )) //i regret nothing
-      )
 
-      .catch(err => {throw new booruError(err.error.message || err.error)})
+      rp(options).then(jsonfy)
+        .then(images => resolve(shuffle(images).slice(0, limit))) //i regret nothing
+        .catch(err => resolve(new booruError(err.message || err.error)))
     }
-
   })
 }
 
@@ -148,7 +154,7 @@ function commonfy(images) {
     if (images[0] === undefined) reject(new booruError('You didn\'t give any images'))
 
     jsonfy(images).then(createCommon).then(resolve)
-    .catch(e => {reject(new booruError('what are you doing stop. Only send images into this function: ' + e))})
+      .catch(e => reject(new booruError('what are you doing stop. Only send images into this function: ' + e)))
   })
 }
 
@@ -163,16 +169,13 @@ function jsonfy(images) {
   return new Promise((resolve, reject) => {
     if (typeof images !== 'object') { //fuck xml
       parser.parseString(images, (err, res) => {
-        if (err) throw err
-        if (res.posts.post === undefined) {
-          resolve([])
-        } else {
-          resolve(res.posts.post.map(val => {return val.$})) //fuck xml
-        }
+        if (err) reject(err)
+
+        if (res.posts.post !== undefined)
+          resolve(res.posts.post.map(val => val.$)) //fuck xml
+        else resolve([])
       })
-    } else {
-      resolve(images)
-    }
+    } else resolve(images)
   })
 }
 //fuck xml
@@ -184,22 +187,24 @@ function jsonfy(images) {
  */
 function createCommon(images) {
   return new Promise((resolve, reject) => {
-    if (images === []) resolve([])
-    for (let image in images) {
-      images[image].common = {}
+    for (let i = 0; i < images.length; i++) {
+      images[i].common = {}
 
-      images[image].common.file_url    = images[image].file_url
-      images[image].common.id          = images[image].id.toString()
-      images[image].common.tags        = (images[image].tags !== undefined) ? images[image].tags.split(' ') : images[image].tag_string.split(' ')
-      images[image].common.tags        = images[image].common.tags.filter(v => {return v !== ''})
-      images[image].common.score       = parseInt(images[image].score)
-      images[image].common.source      = images[image].source
-      images[image].common.rating      = images[image].rating
+      images[i].common.file_url    = images[i].file_url || images[i].image
+      images[i].common.id          = images[i].id.toString()
+      images[i].common.tags        = (images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')
+      images[i].common.tags        = images[i].common.tags.filter(v => v !== '')
+      images[i].common.score       = parseInt(images[i].score)
+      images[i].common.source      = images[i].source
+      images[i].common.rating      = images[i].rating
 
-      if (images[image].common.file_url.startsWith('/data')) images[image].common.file_url    = 'https://danbooru.donmai.us' + images[image].file_url
-      if (images[image].common.file_url.startsWith('/_images')) images[image].common.file_url    = 'https://dollbooru.org' + images[image].file_url
-      if (!images[image].common.file_url.startsWith('http')) images[image].common.file_url    = 'https:' + images[image].file_url
+      if (images[i].common.file_url.startsWith('/data')          ) images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
+      if (images[i].common.file_url.startsWith('/cached')        ) images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
+      if (images[i].common.file_url.startsWith('/_images')       ) images[i].common.file_url = 'https://dollbooru.org' + images[i].file_url
+      if (images[i].common.file_url.startsWith('//derpicdn.net')) images[i].common.file_url = 'https:' + images[i].image
+      if (!images[i].common.file_url.startsWith('http')          ) images[i].common.file_url = 'https:' + images[i].file_url
     }
+
     resolve(images)
   })
 }
@@ -207,6 +212,7 @@ function createCommon(images) {
 /**
  * Yay fisher-bates
  * Taken from http://stackoverflow.com/a/2450976
+ * @private
  * @param  {Array} array Array of something
  * @return {Array}       Shuffled array of something
  */
@@ -226,9 +232,16 @@ function shuffle(array) {
   return array;
 }
 
-module.exports.search = search //The actual search function
-module.exports.commonfy = commonfy //do the thing
-module.exports.sites  = sites  //Sites in case you want to see what it supports
+//Thanks mdn and damnit derpibooru
+function randInt(min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+module.exports.search      = search //The actual search function
+module.exports.commonfy    = commonfy //do the thing
+module.exports.sites       = sites  //Sites in case you want to see what it supports
 module.exports.resolveSite = resolveSite //might as well /shrug
 
 //shoutout to simpleflips
