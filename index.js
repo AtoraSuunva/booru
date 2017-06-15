@@ -130,7 +130,7 @@ function searchPosts(site, tags, {limit = 1, random = false} = {}) {
         options.uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
 		
       rp(options)
-        .then(images => { console.log(((images.search) ? images.search : images).slice(0, limit)); resolve(((images.search) ? images.search : images).slice(0, limit)) }) //DERPIBOORU WHY DO YOU FORCE ME TO DO THIS
+        .then(images => resolve(((images.search) ? images.search : images).slice(0, limit)) ) //DERPIBOORU WHY DO YOU FORCE ME TO DO THIS
         .catch(err => reject(new booruError(err.message || err.error)))
     } else {
       options.uri = `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=100`

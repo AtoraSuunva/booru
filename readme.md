@@ -3,7 +3,7 @@
 
 ## Features
 
-- Able to search 15 different boorus (check [sites.json](./sites.json))
+- Able to search 17 different boorus (check [sites.json](./sites.json))
 - Also alias support so you can be lazy (`sb` for `safebooru.org`)
 - Promises because they're magical
 - Little utility to convert xml to json (and add a .common prop to each image)
@@ -65,14 +65,21 @@ Calling `booru.commonfy` not only transforms all the xml into json, it adds a .c
 
 ```js
 common: {
-  file_url: 'https://aaaa.com/image.jpg',  //The direct link to the image, ready to post
-  id: '124125',                            //The image ID, as a string
-  tags: ['cat', 'cute'],                   //The tags, split into an Array
-  score: 5,                                //The score as a Number
-  source: 'https://giraffedu.ck/aaaa.png', //source of the image, if supplied
-  rating: 's'                              //rating of the image
+  file_url: 'https://aaaa.com/image.jpg',   //The direct link to the image, ready to post
+  id: '124125',                             //The image ID, as a string
+  tags: ['cat', 'cute'],                    //The tags, split into an Array
+  score: 5,                                 //The score as a Number
+  source: 'https://giraffeduck.com/aaa.png',//source of the image, if supplied
+  rating: 's'                               //rating of the image
 }
 ```
+
+`s`: 'Safe'
+`q`: 'Questionable'
+`e`: 'Explicit'
+`u`: 'Unrated'
+
+Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive` will be shown as `q` in `image.common`
 
 #### Why?
 Why not?
