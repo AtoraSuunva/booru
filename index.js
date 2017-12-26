@@ -65,7 +65,6 @@ BooruError.prototype.constructor = BooruError
  * //returns a promise with the latest cute glace pic from e926
  */
 function search (site, tags = [], {limit = 1, random = false} = {}) {
-  console.log(require('util').inspect(tags, { depth: 0 }))
   return new Promise((resolve, reject) => {
     site = resolveSite(site)
     limit = parseInt(limit)
