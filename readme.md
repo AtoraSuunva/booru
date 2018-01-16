@@ -1,5 +1,5 @@
 # booru
-### A mode package for searching various boorus (with promises!)
+### A node package for searching various boorus (with promises!)
 
 ## Features
 
