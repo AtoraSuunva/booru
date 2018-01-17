@@ -202,6 +202,9 @@ function createCommon(images) {
       if (images[i].common.rating === 'suggestive') images[i].common.rating = 'q' //i just give up at this point
       images[i].common.rating = images[i].common.rating.charAt(0)
 
+      if (images[i].common.file_url === undefined && images[i].pixiv_id)
+        images[i].common.file_url = images[i].source
+
       if (images[i].common.file_url.startsWith('/data'))
         images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
 
