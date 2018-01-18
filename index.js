@@ -182,28 +182,36 @@ function jsonfy(images) {
 //fuck xml
 
 /**
- * Create the .common property for each {@link Image} passed
+ * Create the .common property for each {@link Image} passed and removes images without a link to the image
  * @param  {Image[]}       images The images to add common props to
  * @return {ImageCommon[]}        The images with common props added
  */
 function createCommon(images) {
   return new Promise((resolve, reject) => {
+    const finalImages = []
     for (let i = 0; i < images.length; i++) {
       images[i].common = {}
 
-      images[i].common.file_url    = images[i].file_url || images[i].image
-      images[i].common.id          = images[i].id.toString()
-      images[i].common.tags        = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
-      images[i].common.tags        = images[i].common.tags.filter(v => v !== '')
-      images[i].common.score       = parseInt(images[i].score)
-      images[i].common.source      = images[i].source
-      images[i].common.rating      = images[i].rating || /(safe|suggestive|questionable|explicit)/i.exec(images[i].tags)[0]
+      images[i].common.file_url = images[i].file_url || images[i].image
+      images[i].common.id       = images[i].id.toString()
+      images[i].common.tags     = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
+      images[i].common.tags     = images[i].common.tags.filter(v => v !== '')
+      images[i].common.score    = parseInt(images[i].score)
+      images[i].common.source   = images[i].source
+      images[i].common.rating   = images[i].rating || /(safe|suggestive|questionable|explicit)/i.exec(images[i].tags)[0]
 
       if (images[i].common.rating === 'suggestive') images[i].common.rating = 'q' //i just give up at this point
-      images[i].common.rating = images[i].common.rating.charAt(0)
+        images[i].common.rating = images[i].common.rating.charAt(0)
 
-      if (images[i].common.file_url === undefined && images[i].pixiv_id)
+      if (images[i].common.file_url === undefined)
         images[i].common.file_url = images[i].source
+
+      // if the image's file_url is *still* undefined or the source is empty or it's deleted: don't use
+      // thanks danbooru *grumble grumble*
+      if (images[i].common.file_url === undefined
+          || images[i].common.file_url.trim() === ''
+          || images[i].is_deleted)
+        continue
 
       if (images[i].common.file_url.startsWith('/data'))
         images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
@@ -223,9 +231,11 @@ function createCommon(images) {
       if (images[i].common.file_url.match(/https?:\/\/lolibooru.moe/))
         images[i].common.file_url =
           images[i].sample_url.replace(/(.*booru \d+ ).*(\..*)/, '$1sample$2')
+
+      finalImages.push(images[i])
     }
 
-    resolve(images)
+    resolve(finalImages)
   })
 }
 
