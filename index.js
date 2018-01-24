@@ -9,7 +9,7 @@ const sites = require('./sites.json')
 
 // Custom error type so you know when you mess up or when I mess up
 function BooruError (message) {
-  this.name = 'BooruError'
+  this.name = 'booruError'
   this.message = message || 'Atlas forgot to specify the error message, go yell at him'
   this.stack = (new Error()).stack
 }
@@ -69,9 +69,9 @@ function search (site, tags = [], {limit = 1, random = false} = {}) {
     site = resolveSite(site)
     limit = parseInt(limit)
 
-    if (site === false) { reject(new BooruError('Site not supported')) }
-    if (!(tags instanceof Array)) { reject(new BooruError('`tags` should be an array')) }
-    if (typeof limit !== 'number' || Number.isNaN(limit)) { reject(new BooruError('`limit` should be an int')) }
+    if (site === false) return reject(new BooruError('Site not supported'))
+    if (!(tags instanceof Array)) return reject(new BooruError('`tags` should be an array'))
+    if (typeof limit !== 'number' || Number.isNaN(limit)) return reject(new BooruError('`limit` should be an int'))
 
     resolve(searchPosts(site, tags, {limit, random}))
   })
@@ -106,8 +106,8 @@ function resolveSite (siteToResolve) {
  */
 function searchPosts (site, tags, {limit = 1, random = false} = {}) {
   return new Promise((resolve, reject) => {
-    if (tags[0] === undefined && resolveSite(site) === 'derpibooru.org') tags = ['*']
-    if (resolveSite(site) === 'derpibooru.org') tags = tags.map(v => v.replace(/_/g, '%20'))
+    if (tags[0] === undefined && site === 'derpibooru.org') tags[0] = '*'
+    if (site === 'derpibooru.org') tags = tags.map(v => v.replace(/_/g, '%20'))
 
     let uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}`
     let options = {
@@ -126,7 +126,8 @@ function searchPosts (site, tags, {limit = 1, random = false} = {}) {
 
     if (sites[site].random) {
       if (typeof sites[site].random === 'string') {
-        uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}&${sites[site].random}${(sites[site].random.endsWith('%')) ? new Array(7).fill(0).map(v => randInt(0, 16)).join('') : ''}`
+        uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}` +
+          `&${sites[site].random}${(sites[site].random.endsWith('%')) ? new Array(7).fill(0).map(v => randInt(0, 16)).join('') : ''}`
         // Sorry, but derpibooru has an odd and confusing api that's not similar to the others at all
       } else {
         uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
@@ -157,10 +158,10 @@ function searchPosts (site, tags, {limit = 1, random = false} = {}) {
  */
 function commonfy (images) {
   return new Promise((resolve, reject) => {
-    if (images[0] === undefined) reject(new BooruError('You didn\'t give any images'))
+    if (images[0] === undefined) return reject(new BooruError('You didn\'t give any images'))
 
     jsonfy(images).then(createCommon).then(resolve)
-      .catch(e => reject(new BooruError('what are you doing stop. Only send images into this function: ' + e)))
+      .catch(e => reject(new BooruError('This image should only receive images: ' + e)))
   })
 }
 
@@ -175,7 +176,7 @@ function jsonfy (images) {
   return new Promise((resolve, reject) => {
     if (typeof images !== 'object') { // fuck xml
       parser.parseString(images, (err, res) => {
-        if (err) reject(err)
+        if (err) return reject(err)
 
         if (res.posts.post !== undefined) {
           resolve(res.posts.post.map(val => val.$)) // fuck xml
@@ -209,11 +210,30 @@ function createCommon (images) {
       if (images[i].common.rating === 'suggestive') images[i].common.rating = 'q' // i just give up at this point
       images[i].common.rating = images[i].common.rating.charAt(0)
 
-      if (images[i].common.file_url.startsWith('/data')) images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
-      if (images[i].common.file_url.startsWith('/cached')) images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
-      if (images[i].common.file_url.startsWith('/_images')) images[i].common.file_url = 'https://dollbooru.org' + images[i].file_url
-      if (images[i].common.file_url.startsWith('//derpicdn.net')) images[i].common.file_url = 'https:' + images[i].image
-      if (!images[i].common.file_url.startsWith('http')) images[i].common.file_url = 'https:' + images[i].file_url
+      if (images[i].common.file_url.startsWith('/data')) {
+        images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
+      }
+
+      if (images[i].common.file_url.startsWith('/cached')) {
+        images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
+      }
+
+      if (images[i].common.file_url.startsWith('/_images')) {
+        images[i].common.file_url = 'https://dollbooru.org' + images[i].file_url
+      }
+
+      if (images[i].common.file_url.startsWith('//derpicdn.net')) {
+        images[i].common.file_url = 'https:' + images[i].image
+      }
+
+      if (!images[i].common.file_url.startsWith('http')) {
+        images[i].common.file_url = 'https:' + images[i].file_url
+      }
+
+      if (images[i].common.file_url.match(/https?:\/\/lolibooru.moe/)) {
+        images[i].common.file_url =
+          images[i].sample_url.replace(/(.*booru \d+ ).*(\..*)/, '$1sample$2')
+      }
     }
 
     resolve(images)
@@ -252,6 +272,7 @@ function randInt (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+module.exports = search // allow for shorthand `booru('site'...)` use
 module.exports.search = search // The actual search function
 module.exports.commonfy = commonfy // do the thing
 module.exports.sites = sites  // Sites in case you want to see what it supports
