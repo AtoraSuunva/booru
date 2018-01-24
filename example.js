@@ -1,26 +1,26 @@
-//cli example
+// cli example
 
-//Run with
-//node example.js [site] [tag1] [tag2] [tagn]
+// Run with
+// node example.js [site] [tag1] [tag2] [tagn]
 
-//You can use any site in sites.json (or their aliases)
+// You can use any site in sites.json (or their aliases)
 
 const booru = require('./index.js')
 
-booru.search(process.argv[2], process.argv.slice(3), {limit: 1, random: true})
+booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
 .then(booru.commonfy)
 .then(images => {
-  //Log the direct link to each image
+  // Log the direct link to each image
   for (let image of images) {
     console.log(image.common.file_url)
   }
 })
 .catch(err => {
-  if (err.name === 'booruError') {
-    //It's a custom error thrown by the package
+  if (err.name === 'BooruError') {
+    // It's a custom error thrown by the package
     console.log(err.message)
   } else {
-    //This means I messed up. Whoops.
+    // This means I messed up. Whoops.
     console.log(err)
   }
 })
