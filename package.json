@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "description": "Search a bunch of different boorus using package magic!",
   "main": "index.js",
   "scripts": {
