@@ -1,21 +1,18 @@
-//there is no god
-
-//declare the dependencies
-const rp = require('request-promise-native') //native because reasons
-const xml2js = require('xml2js') //for XML apis (Gelbooru pls)
+// Declare the dependencies
+const snekfetch = require('snekfetch')
+// For XML only apis
+const xml2js = require('xml2js')
 const parser = new xml2js.Parser()
 const sites = require('./sites.json')
 
-//Custom error type so you know when you mess up or when I mess up
+// Custom error type for when the boorus error or for user-side error, not my code
 function BooruError(message) {
-  this.name = 'booruError'
+  this.name = 'BooruError'
   this.message = message || 'Error messsage unspecified.'
   this.stack = (new Error()).stack
 }
 BooruError.prototype = Object.create(Error.prototype)
 BooruError.prototype.constructor = BooruError
-
-//here we gooooo
 
 /**
  * An image from a booru, has a few props and stuff
@@ -70,12 +67,14 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
 
     if (site === false)
       return reject(new BooruError('Site not supported'))
+
     if (!(tags instanceof Array))
       return reject(new BooruError('`tags` should be an array'))
+
     if (typeof limit !== 'number' || Number.isNaN(limit))
       return reject(new BooruError('`limit` should be an int'))
 
-    resolve( searchPosts(site, tags, {limit, random}) )
+    resolve(searchPosts(site, tags, {limit, random}))
   })
 }
 
@@ -85,10 +84,10 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
  * @return {(String|Boolean)}               False if site is not supported, the site otherwise
  */
 function resolveSite(siteToResolve) {
-  if (typeof siteToResolve !== 'string')
-    return false
+  if (typeof siteToResolve !== 'string') { return false }
 
   siteToResolve = siteToResolve.toLowerCase()
+
   for (let site in sites) {
     if (site === siteToResolve || sites[site].aliases.includes(siteToResolve)) {
       return site
@@ -109,35 +108,59 @@ function resolveSite(siteToResolve) {
  */
 function searchPosts(site, tags, {limit = 1, random = false} = {}) {
   return new Promise((resolve, reject) => {
-    if (tags[0] === undefined && site === 'derpibooru.org') tags[0] = '*'
-    if (site === 'derpibooru.org') tags = tags.map(v => v.replace(/_/g, '%20'))
+    // derpibooru requires '*' to show all images
+    if (tags[0] === undefined && site === 'derpibooru.org')
+      tags[0] = '*'
 
+    // derpibooru requires spaces instead of _
+    if (site === 'derpibooru.org')
+      tags = tags.map(v => v.replace(/_/g, '%20'))
+
+    let uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}`
     let options = {
-      uri: `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}`, //nice me
-      headers: {'User-Agent': 'Booru, a node package for booru searching (by AtlasTheBot)'},
-      json: true
+      headers: {'User-Agent': 'Booru, a node package for booru searching (by AtlasTheBot)'}
     }
 
-    if (!random)
-      resolve(rp(options).catch(err => reject(new BooruError(err.error.message || err.error))))
-    //if not we use some random search magic
+    if (!random) {
+      resolve(
+        snekfetch
+          .get(uri, options)
+          .then(result => result.body)
+          .catch(err => reject(new BooruError(err.error.message || err.error)))
+      )
+    }
 
+    // If we request random images...
+    // First check if the site supports order:random (or some other way to randomize it)
     if (sites[site].random) {
-      if (typeof sites[site].random === 'string')
-        options.uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}`
-                    + `&${sites[site].random}${(sites[site].random.endsWith('%')) ? new Array(7).fill(0).map(v => randInt(0, 16)).join('') : ''}`
-        //Sorry, but derpibooru has an odd and confusing api that's not similar to the others at all
-      else
-        options.uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
+      // If it's a string it's (likely) randomized using a user-provided random hex
+      if (typeof sites[site].random === 'string') {
+        uri = `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}=${tags.join('+')}&limit=${limit}`
+            + `&${sites[site].random}${(sites[site].random.endsWith('%')) ? Array(7).fill(0).map(v => randInt(0, 16)).join('') : ''}`
+        // http://example.com/posts/?tags=some_example&limit=100&sf=random%AB43FF
+        // Sorry, but derpibooru has an odd and confusing api that's not similar to the others at all
+      } else {
+        // We can just add `order:random` and get random results!
+        uri = `http://${site}${sites[site].api}tags=order:random+${tags.join('+')}&limit=${limit}`
+      }
 
-      rp(options)
-        .then(images => resolve(((images.search) ? images.search : images).slice(0, limit)) ) //DERPIBOORU WHY DO YOU FORCE ME TO DO THIS
+      snekfetch
+        .get(uri, options)
+        // Once again, derpi is weird and has it's results in body.search and not just in body
+        .then(result => resolve(((result.body.search) ? result.body.search : result.body).slice(0, limit)))
         .catch(err => reject(new BooruError(err.message || err.error)))
     } else {
-      options.uri = `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=100`
+      // The site doesn't support random sorting in any way, so we need to do it ourselves
+      // This is done by just getting the 100 latest and randomly sorting those
+      // Which isn't really an amazing way, but works well enough and doesn't require keeping track
+      // of how many pages or whatever
+      uri = `http://${site}${sites[site].api}tags=${tags.join('+')}&limit=100`
 
-      rp(options).then(jsonfy)
-        .then(images => resolve(shuffle(images).slice(0, limit))) //i regret nothing
+      // This does automatically jsonfy results, but that's because I can't really sort them otherwise
+      snekfetch
+        .get(uri, options)
+        .then(result => jsonfy(result.text))
+        .then(images => resolve(shuffle(images).slice(0, limit)))
         .catch(err => resolve(new BooruError(err.message || err.error)))
     }
   })
@@ -155,31 +178,33 @@ function commonfy(images) {
     if (images[0] === undefined) return reject(new BooruError('You didn\'t give any images'))
 
     jsonfy(images).then(createCommon).then(resolve)
-      .catch(e => reject(new BooruError('This image should only receive images: ' + e)))
+      .catch(e => reject(new BooruError('This function should only receive images: ' + e)))
   })
 }
 
-//fuck xml
 /**
- * Fuck xml
+ * Parse images xml to json, which can be used with js
  * @private
  * @param  {Image[]} images The images to convert to jsonfy
  * @return {Image[]}        The images in JSON format
  */
 function jsonfy(images) {
   return new Promise((resolve, reject) => {
-    if (typeof images !== 'object') { //fuck xml
+    // If it's an object, assume it's already jsonfied
+    if (typeof images !== 'object') {
       parser.parseString(images, (err, res) => {
-        if (err) return reject(err)
+        if (err)
+          return reject(err)
 
-        if (res.posts.post !== undefined)
-          resolve(res.posts.post.map(val => val.$)) //fuck xml
-        else resolve([])
+        if (res.posts.post !== undefined) {
+          resolve(res.posts.post.map(val => val.$))
+        } else {
+          resolve([])
+        }
       })
     } else resolve(images)
   })
 }
-//fuck xml
 
 /**
  * Create the .common property for each {@link Image} passed and removes images without a link to the image
@@ -193,44 +218,51 @@ function createCommon(images) {
       images[i].common = {}
 
       images[i].common.file_url = images[i].file_url || images[i].image
-      images[i].common.id       = images[i].id.toString()
-      images[i].common.tags     = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
-      images[i].common.tags     = images[i].common.tags.filter(v => v !== '')
-      images[i].common.score    = parseInt(images[i].score)
-      images[i].common.source   = images[i].source
-      images[i].common.rating   = images[i].rating || /(safe|suggestive|questionable|explicit)/i.exec(images[i].tags)[0]
+      images[i].common.id = images[i].id.toString()
+      images[i].common.tags = ((images[i].tags !== undefined) ? images[i].tags.split(' ') : images[i].tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
+      images[i].common.tags = images[i].common.tags.filter(v => v !== '')
+      images[i].common.score = parseInt(images[i].score)
+      images[i].common.source = images[i].source
+      images[i].common.rating = images[i].rating || /(safe|suggestive|questionable|explicit)/i.exec(images[i].tags)[0]
 
-      if (images[i].common.rating === 'suggestive') images[i].common.rating = 'q' //i just give up at this point
-        images[i].common.rating = images[i].common.rating.charAt(0)
+      if (images[i].common.rating === 'suggestive') images[i].common.rating = 'q' // i just give up at this point
+      images[i].common.rating = images[i].common.rating.charAt(0)
 
-      if (images[i].common.file_url === undefined)
+      if (images[i].common.file_url === undefined) {
         images[i].common.file_url = images[i].source
+      }
 
       // if the image's file_url is *still* undefined or the source is empty or it's deleted: don't use
       // thanks danbooru *grumble grumble*
-      if (images[i].common.file_url === undefined
-          || images[i].common.file_url.trim() === ''
-          || images[i].is_deleted)
-        continue
+      if (images[i].common.file_url === undefined ||
+          images[i].common.file_url.trim() === '' ||
+          images[i].is_deleted) { continue }
 
-      if (images[i].common.file_url.startsWith('/data'))
+      if (images[i].common.file_url.startsWith('/data')) {
         images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
+      }
 
-      if (images[i].common.file_url.startsWith('/cached'))
+      if (images[i].common.file_url.startsWith('/cached')) {
         images[i].common.file_url = 'https://danbooru.donmai.us' + images[i].file_url
+      }
 
-      if (images[i].common.file_url.startsWith('/_images'))
+      if (images[i].common.file_url.startsWith('/_images')) {
         images[i].common.file_url = 'https://dollbooru.org' + images[i].file_url
+      }
 
-      if (images[i].common.file_url.startsWith('//derpicdn.net'))
+      if (images[i].common.file_url.startsWith('//derpicdn.net')) {
         images[i].common.file_url = 'https:' + images[i].image
+      }
 
-      if (!images[i].common.file_url.startsWith('http'))
+      if (!images[i].common.file_url.startsWith('http')) {
         images[i].common.file_url = 'https:' + images[i].file_url
+      }
 
-      if (images[i].common.file_url.match(/https?:\/\/lolibooru.moe/))
+      // lolibooru likes to shove all the tags into its urls, despite the fact you don't need the tags
+      if (images[i].common.file_url.match(/https?:\/\/lolibooru.moe/)) {
         images[i].common.file_url =
           images[i].sample_url.replace(/(.*booru \d+ ).*(\..*)/, '$1sample$2')
+      }
 
       finalImages.push(images[i])
     }
@@ -247,22 +279,24 @@ function createCommon(images) {
  * @return {Array}       Shuffled array of something
  */
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length
+  let temporaryValue
+  let randomIndex
 
   // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+  while (currentIndex !== 0) {
     // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
     // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
   }
-  return array;
+  return array
 }
 
-//Thanks mdn and damnit derpibooru
+// Thanks mdn and damnit derpibooru
 function randInt(min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
@@ -270,9 +304,9 @@ function randInt(min, max) {
 }
 
 module.exports = search // allow for shorthand `booru('site'...)` use
-module.exports.search      = search //The actual search function
-module.exports.commonfy    = commonfy //do the thing
-module.exports.sites       = sites  //Sites in case you want to see what it supports
-module.exports.resolveSite = resolveSite //might as well /shrug
+module.exports.search = search // The actual search function
+module.exports.commonfy = commonfy // do the thing
+module.exports.sites = sites  // Sites in case you want to see what it supports
+module.exports.resolveSite = resolveSite // might as well /shrug
 
-//shoutout to simpleflips
+// coding is fun :)
