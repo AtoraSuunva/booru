@@ -1,6 +1,14 @@
 # booru
 ### A node package for searching various boorus (with promises!)
 
+**What is this fork about?**  
+This fork was made to make booru use Snekfetch instead of Request and use Standard for linting. and maybe some other stuff.
+
+**Why Snekfetch?**  
+Mainly because this fork was intended for Lightbringer, a Discord self-bot written with discord.js, which uses Snekfetch for all kind of HTTP requests. So instead of unnecessarily adding more dependency (which is Request), I forked booru to make it use Snekfetch instead.
+
+On a side note, all modifications were made in `snek-standard` branch, which is the default branch in this fork, if you have not noticed.
+
 ## Features
 
 - Able to search 17 different boorus (check [sites.json](./sites.json))
