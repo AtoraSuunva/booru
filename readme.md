@@ -1,13 +1,6 @@
 # booru
-### A node package for searching various boorus (with promises!)
 
-**What is this fork about?**  
-This fork was made to make booru use Snekfetch instead of Request and use Standard for linting. and maybe some other stuff.
-
-**Why Snekfetch?**  
-Mainly because this fork was intended for Lightbringer, a Discord self-bot written with discord.js, which uses Snekfetch for all kind of HTTP requests. So instead of unnecessarily adding more dependency (which is Request), I forked booru to make it use Snekfetch instead.
-
-On a side note, all modifications were made in `snek-standard` branch, which is the default branch in this fork, if you have not noticed.
+>*A node package for searching various boorus (with promises!)*
 
 ## Features
 
@@ -22,13 +15,21 @@ On a side note, all modifications were made in `snek-standard` branch, which is 
 ---
 
 ## Installation
-```
+
+```bash
 npm i --save booru
+```
+
+Or if you use yarn
+
+```bash
+yarn add booru
 ```
 
 ---
 
 ## Usage
+
 ```js
 const booru = require('booru')
 
@@ -41,7 +42,7 @@ booru.search(site, [tag1, tag2], {limit: 1, random: false})
   }
 })
 .catch(err => {
-  if (err.name === 'booruError') {
+  if (err.name === 'BooruError') {
     //It's a custom error thrown by the package
     console.log(err.message)
   } else {
@@ -50,25 +51,40 @@ booru.search(site, [tag1, tag2], {limit: 1, random: false})
   }
 })
 ```
+
 ---
-## Some docs
-#### booru.search(site, tags, options)
+
+## Docs
+
+### booru.search(site, tags, options)
+
 | Parameter | Type          | Optional | Default | Description |
 |-----------|:-------------:|:--------:|:-------:|-------------|
 | site      | string        |          | *none*  | The site to search, supports aliases
 | tags      | string[]      |    X     | []      | The tags to search with
 | options   | SearchOptions |    X     | {}      | For amount of images to fetch and if to return a random result or not (Check below table)
 
-#### SearchOptions ({limit: 1, random: false})
+
+### SearchOptions ({limit: 1, random: false})
+
 | Parameter | Type          | Optional | Default | Description |
 |-----------|:-------------:|:--------:|:-------:|-------------|
 | limit     | number        |    X     | 1       | The max amount of images to return
 | random    | boolean       |    X     | false   | If the images returned should be random everytime
 
 ---
+
+## Contributors
+
+[BobbyWibowo](https://github.com/BobbyWibowo/booru)
+> Change from request-promise-native to snek-fetch
+
+---
+
 ## FAQ
-who am i kidding nobody asks me questions
-#### What the ".common prop" do?
+
+### What the ".common prop" do?
+
 Calling `booru.commonfy` not only transforms all the xml into json, it adds a .common prop to each image
 
 ```js
@@ -89,11 +105,20 @@ common: {
 
 Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive` will be shown as `q` in `image.common`
 
-#### Why?
+### Can I contribute?
+
+Sure! Just fork this repo, push your changes, and then make a PR.
+
+I'll accept PR based on what they do and code style (Not super strict about it, but it's best if it roughly follows the rest of the code)
+
+### Why?
+
 Why not?
 
-#### This is terrible code
-me too thanks
+### This is terrible code
 
-#### License?
+:)
+
+### License?
+
 [It's GPLv3](http://choosealicense.com/licenses/gpl-3.0/)
