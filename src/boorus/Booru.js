@@ -6,6 +6,7 @@
 
 const {BooruError, sites} = require('../Constants.js')
 const BooruImage = require('../Image.js')
+const {resolveSite} = require('../Utils.js')
 
 /*
 - new Booru // Interface
@@ -23,14 +24,16 @@ const BooruImage = require('../Image.js')
 module.exports = class Booru {
   /**
    * Create a new booru from a site
-   * @param {String} domain The full domain name
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
-  constructor(domain, site, credentials = null) {
-    this.domain = domain
+  constructor(site, credentials = null) {
+    this.domain = resolveSite(site.aliases[0])
     this.site = site
 
+    if (this.domain === null) {
+      throw new Error(`Invalid site passed: ${site}`)
+    }
   }
 
   /**
@@ -46,7 +49,7 @@ module.exports = class Booru {
       tags = [tags]
     }
 
-    return null
+    return Promise.resolve(null)
   }
 
   /**

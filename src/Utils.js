@@ -13,7 +13,7 @@
 */
 
 const {
-  sites
+  sites, BooruError
 } = require('./Constants.js')
 
 // For XML only apis
@@ -22,12 +22,12 @@ const parser = new xml2js.Parser()
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
- * @param  {String}           siteToResolve The site to resolveSite
- * @return {(String|Boolean)}               False if site is not supported, the site otherwise
+ * @param  {String} siteToResolve The site to resolveSite
+ * @return {String?} Null if site is not supported, the site otherwise
  */
 module.exports.resolveSite = function resolveSite(siteToResolve) {
   if (typeof siteToResolve !== 'string') {
-    return false
+    return null
   }
 
   siteToResolve = siteToResolve.toLowerCase()
@@ -38,7 +38,7 @@ module.exports.resolveSite = function resolveSite(siteToResolve) {
     }
   }
 
-  return false
+  return null
 }
 
 /**
@@ -100,4 +100,22 @@ module.exports.randInt = function randInt(min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+/**
+ * Performs some basic search validation
+ * @param {*} site The site to resolve
+ * @param {*} limit The limit for the amount of images to fetch
+ */
+module.exports.validateSearchParams = (site, limit) => {
+  site = module.exports.resolveSite(site)
+  limit = parseInt(limit)
+
+  if (site === null)
+    throw new BooruError('Site not supported')
+
+  if (typeof limit !== 'number' || Number.isNaN(limit))
+    throw new BooruError('`limit` should be an int')
+
+  return {site, limit}
 }
