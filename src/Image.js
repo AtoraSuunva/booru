@@ -19,7 +19,8 @@
 /**
  * An image from a booru with a few common props
  * @property {Object} data All the data given by the booru
- * @property {String} site The site it came from
+ * @property {Booru} Booru The {@link Booru} it came from
+ * @property {ImageCommon} _common The (cached) common properties of the image. Use .common instead.
  * @property {ImageCommon} common Contains several useful and common props for each booru
  *
  * @example
@@ -33,9 +34,10 @@
  *  }
  */
 class BooruImage {
-  constructor(site, data) {
-    this.site = site
+  constructor(data, booru) {
     this.data = data
+    this.booru = booru
+    this._common = null
   }
 
   /**
@@ -46,63 +48,71 @@ class BooruImage {
    * @return {ImageCommon} The common items of the image
    */
   get common() {
-    if (this.data.common) {
-      return this.data.common
+    if (this._common) {
+      return this._common
     }
 
-    this.data.common = {}
+    this._common = {}
 
-    this.data.common.file_url = this.data.file_url || this.data.image
-    this.data.common.id = this.data.id.toString()
-    this.data.common.tags = ((this.data.tags !== undefined) ? this.data.tags.split(' ') : this.data.tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
-    this.data.common.tags = this.data.common.tags.filter(v => v !== '')
-    this.data.common.score = parseInt(this.data.score)
-    this.data.common.source = this.data.source
-    this.data.common.rating = this.data.rating || /(safe|suggestive|questionable|explicit)/i.exec(this.data.tags)[0]
+    this._common.file_url = this.data.file_url || this.data.image
+    this._common.id = this.data.id.toString()
+    this._common.tags = ((this.data.tags !== undefined) ? this.data.tags.split(' ') : this.data.tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
+    this._common.tags = this._common.tags.filter(v => v !== '')
+    this._common.score = parseInt(this.data.score)
+    this._common.source = this.data.source
+    this._common.rating = this.data.rating || /(safe|suggestive|questionable|explicit)/i.exec(this.data.tags)[0]
 
     // i just give up at this point
-    if (this.data.common.rating === 'suggestive') this.data.common.rating = 'q'
-    this.data.common.rating = this.data.common.rating.charAt(0)
+    if (this._common.rating === 'suggestive') this._common.rating = 'q'
+    this._common.rating = this._common.rating.charAt(0)
 
-    if (this.data.common.file_url === undefined) {
-      this.data.common.file_url = this.data.source
+    if (this._common.file_url === undefined) {
+      this._common.file_url = this.data.source
     }
 
     // if the image's file_url is *still* undefined or the source is empty or it's deleted: don't use
     // thanks danbooru *grumble grumble*
-    if (this.data.common.file_url === undefined ||
-      this.data.common.file_url.trim() === '' ||
+    if (this._common.file_url === undefined ||
+      this._common.file_url.trim() === '' ||
       this.data.is_deleted) {
       return this.common
     }
 
-    if (this.data.common.file_url.startsWith('/data')) {
-      this.data.common.file_url = 'https://danbooru.donmai.us' + this.data.file_url
+    if (this._common.file_url.startsWith('/data')) {
+      this._common.file_url = 'https://danbooru.donmai.us' + this.data.file_url
     }
 
-    if (this.data.common.file_url.startsWith('/cached')) {
-      this.data.common.file_url = 'https://danbooru.donmai.us' + this.data.file_url
+    if (this._common.file_url.startsWith('/cached')) {
+      this._common.file_url = 'https://danbooru.donmai.us' + this.data.file_url
     }
 
-    if (this.data.common.file_url.startsWith('/_images')) {
-      this.data.common.file_url = 'https://dollbooru.org' + this.data.file_url
+    if (this._common.file_url.startsWith('/_images')) {
+      this._common.file_url = 'https://dollbooru.org' + this.data.file_url
     }
 
-    if (this.data.common.file_url.startsWith('//derpicdn.net')) {
-      this.data.common.file_url = 'https:' + this.data.image
+    if (this._common.file_url.startsWith('//derpicdn.net')) {
+      this._common.file_url = 'https:' + this.data.image
     }
 
-    if (!this.data.common.file_url.startsWith('http')) {
-      this.data.common.file_url = 'https:' + this.data.file_url
+    if (!this._common.file_url.startsWith('http')) {
+      this._common.file_url = 'https:' + this.data.file_url
     }
 
     // lolibooru likes to shove all the tags into its urls, despite the fact you don't need the tags
-    if (this.data.common.file_url.match(/https?:\/\/lolibooru.moe/)) {
-      this.data.common.file_url =
+    if (this._common.file_url.match(/https?:\/\/lolibooru.moe/)) {
+      this._common.file_url =
         this.data.sample_url.replace(/(.*booru \d+ ).*(\..*)/, '$1sample$2')
     }
 
-    return this.data.common
+    return this._common
+  }
+
+  /**
+   * Get the post view (url to the post) of this image
+   * @return {String} The url to this image
+   */
+  get postView() {
+    return this.booru.postView(this.data.id)
   }
 }
 module.exports = BooruImage

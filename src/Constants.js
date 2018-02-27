@@ -60,10 +60,18 @@ module.exports.userAgent = `Booru v${package.version}, a node package for booru 
 /**
  * Create a full uri to search with
  *
- * @param {String} site The site to search
+ * @param {*} domain The domain to search
+ * @param {Site} site The site to search
  * @param {String[]} [tags=[]] The tags to search for
  * @param {Number} [limit=100] The limit for images to return
  */
-module.exports.searchURI = (site, tags = [], limit = 100) =>
-  `http://${site}${sites[site].api}${(sites[site].tagQuery) ? sites[site].tagQuery : 'tags'}`
+module.exports.searchURI = (domain, site, tags = [], limit = 100) =>
+  `http://${domain}${site.api.search}${(site.tagQuery) ? site.tagQuery : 'tags'}`
   + `=${tags.join('+')}&limit=${limit}`
+
+/**
+ * The default options to use for requests
+ */
+module.exports.defaultOptions = {
+  headers: { 'User-Agent': module.exports.userAgent }
+}

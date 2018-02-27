@@ -1,5 +1,6 @@
 {
   "e621.net": {
+    "type": "json",
     "aliases": ["e6", "e621"],
     "nsfw": true,
     "api": {
@@ -9,6 +10,7 @@
     "random": true
   },
   "e926.net": {
+    "type": "json",
     "aliases": ["e9", "e926"],
     "nsfw": false,
     "api": {
@@ -18,6 +20,7 @@
     "random": true
   },
   "hypnohub.net": {
+    "type": "json",
     "aliases": ["hh", "hypo", "hypohub"],
     "nsfw": true,
     "api": {
@@ -27,6 +30,7 @@
     "random": true
   },
   "danbooru.donmai.us": {
+    "type": "json",
     "aliases": ["db", "dan", "danbooru"],
     "nsfw": true,
     "api": {
@@ -36,6 +40,7 @@
     "random": true
   },
   "konachan.com": {
+    "type": "json",
     "aliases": ["kc", "konac", "kcom"],
     "nsfw": true,
     "api": {
@@ -45,6 +50,7 @@
     "random": true
   },
   "konachan.net": {
+    "type": "json",
     "aliases": ["kn", "konan", "knet"],
     "nsfw": false,
     "api": {
@@ -54,6 +60,7 @@
     "random": true
   },
   "yande.re": {
+    "type": "json",
     "aliases": ["yd", "yand", "yandere"],
     "nsfw": true,
     "api": {
@@ -63,6 +70,7 @@
     "random": true
   },
   "gelbooru.com": {
+    "type": "xml",
     "aliases": ["gb", "gel", "gelbooru"],
     "nsfw": true,
     "api": {
@@ -72,6 +80,7 @@
     "random": false
   },
   "rule34.xxx": {
+    "type": "xml",
     "aliases": ["r34", "rule34"],
     "nsfw": true,
     "api": {
@@ -81,6 +90,7 @@
     "random": false
   },
   "safebooru.org": {
+    "type": "xml",
     "aliases": ["sb", "safe", "safebooru"],
     "nsfw": false,
     "api": {
@@ -90,6 +100,7 @@
     "random": false
   },
   "tbib.org": {
+    "type": "xml",
     "aliases": ["tb", "tbib", "big"],
     "nsfw": false,
     "api": {
@@ -99,6 +110,7 @@
     "random": false
   },
   "xbooru.com": {
+    "type": "xml",
     "aliases": ["xb", "xbooru"],
     "nsfw": true,
     "api": {
@@ -108,6 +120,7 @@
     "random": false
   },
   "youhate.us": {
+    "type": "xml",
     "aliases": ["yh", "you", "youhate"],
     "nsfw": true,
     "api": {
@@ -117,6 +130,7 @@
     "random": false
   },
   "dollbooru.org": {
+    "type": "xml",
     "aliases": ["do", "doll", "dollbooru"],
     "nsfw": false,
     "api": {
@@ -126,6 +140,7 @@
     "random": false
   },
   "rule34.paheal.net": {
+    "type": "xml",
     "aliases": ["pa", "paheal"],
     "nsfw": true,
     "api": {
@@ -135,6 +150,7 @@
     "random": false
   },
   "lolibooru.moe": {
+    "type": "json",
     "aliases": ["lb", "lol", "loli", "lolibooru"],
     "nsfw": true,
     "api": {
@@ -144,6 +160,7 @@
     "random": true
   },
   "derpibooru.org": {
+    "type": "derpi",
     "aliases": ["dp", "derp", "derpi", "derpibooru"],
     "nsfw": true,
     "api": {
