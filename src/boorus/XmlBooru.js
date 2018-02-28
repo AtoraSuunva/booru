@@ -7,7 +7,9 @@ const Snekfetch = require('snekfetch')
 
 /**
  * A class designed for Xml-returning boorus
- * @extends Booru
+ *
+ * @private
+ * @extends IBooru
  * @inheritDoc
  */
 class XmlBooru extends IBooru {

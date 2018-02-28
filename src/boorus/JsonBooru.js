@@ -7,6 +7,8 @@ const Snekfetch = require('snekfetch')
 
 /**
  * A class designed for Json-returning boorus
+ *
+ * @private
  * @extends IBooru
  * @inheritDoc
  */

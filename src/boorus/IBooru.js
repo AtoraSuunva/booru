@@ -15,6 +15,7 @@ const {resolveSite} = require('../Utils.js')
 /**
  * Represents an interface to a generic Booru
  *
+ * @private
  * @interface IBooru
  */
 class IBooru {

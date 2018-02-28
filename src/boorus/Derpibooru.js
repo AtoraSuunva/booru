@@ -7,6 +7,7 @@ const Snekfetch = require('snekfetch')
 
 /**
  * A class designed for Derpibooru
+ * @private
  * @extends IBooru
  * @inheritDoc
  */
