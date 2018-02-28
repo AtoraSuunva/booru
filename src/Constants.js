@@ -1,10 +1,4 @@
 //@ts-check
-
-/**
- * @module Constants Constants
- * @namespace Constants
- */
-
 /*
 - Constants
     => .sites
@@ -13,11 +7,11 @@
     => .searchURI(site, tags, limit)
 */
 const sites = require('./sites.json')
-const package = require('../package.json')
+const pkg = require('../package.json')
 
 /**
  * Represents the api of a site
- * Each property is a path on the site
+ * <p>Each property is a path on the site</p>
  * @typedef SiteApi
  * @property {String} search The path to search for posts
  * @property {String} postView The path to view a post by ID
@@ -33,7 +27,8 @@ const package = require('../package.json')
  */
 
  /**
-  * @type {Object.<String, Site>} A map of site url/{@link Site}
+  * A map of site url/{@link Site}
+  * @type {Object.<String, Site>}
   */
 module.exports.sites = sites
 
@@ -54,12 +49,14 @@ module.exports.BooruError = BooruError
 
 /**
  * The user-agent to use for searches
+ * @private
  */
-module.exports.userAgent = `Booru v${package.version}, a node package for booru searching (by AtlasTheBot)`
+module.exports.userAgent = `Booru v${pkg.version}, a node package for booru searching (by AtlasTheBot)`
 
 /**
  * Create a full uri to search with
  *
+ * @private
  * @param {*} domain The domain to search
  * @param {Site} site The site to search
  * @param {String[]} [tags=[]] The tags to search for
@@ -71,6 +68,7 @@ module.exports.searchURI = (domain, site, tags = [], limit = 100) =>
 
 /**
  * The default options to use for requests
+ * @private
  */
 module.exports.defaultOptions = {
   headers: { 'User-Agent': module.exports.userAgent }

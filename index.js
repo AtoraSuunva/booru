@@ -3,9 +3,11 @@
 const snekfetch = require('snekfetch')
 
 const Constants = require('./src/Constants.js')
-const {BooruError} = Constants
+const {
+  BooruError
+} = Constants
 const Utils = require('./src/Utils.js')
-const Booru = require('./src/boorus/Booru')
+const IBooru = require('./src/boorus/IBooru.js')
 
 const BooruTypes = {
   'json': require('./src/boorus/JsonBooru'),
@@ -15,11 +17,27 @@ const BooruTypes = {
 
 /**
  * Create a new booru to search with
- * @param {String} site The site (or alias of it) to create a booru from
+ * @extends {IBooru}
+ * @constructor
+ * @param {String} site The {@link Site} (or alias of it) to create a booru from
  * @param {*} credentials The credentials to use on this booru
- * @return {Booru} A booru to use
+ * @return {IBooru} A booru to use
+ *
+ * @example
+ * const Booru = require('booru')
+ * // Aliases are supported
+ * const e9 = new Booru('e9')
+ *
+ * // You can then search the site
+ * const imgs = await e9.search(['cat', 'cute'], {limit: 3})
+ *
+ * // And use the images
+ * imgs.forEach(i => console.log(i.common.file_url))
+ *
+ * // Or access other methods on the Booru
+ * e9.postView(imgs[0].common.id)
  */
-function _Booru(site, credentials = null) {
+function Booru(site, credentials = null) {
   const rSite = Utils.resolveSite(site)
 
   if (rSite === null) {
@@ -34,24 +52,23 @@ function _Booru(site, credentials = null) {
 const booruCache = {}
 
 /**
- * Search options to use with booru.search()
- * @typedef  {Object}  SearchOptions
- * @property {Number|String}  [limit=1] The number of images to return
- * @property {Boolean} [random=false] If it should randomly grab results
- */
-
-/**
  * Searches a site for images with tags and returns the results
- * @param  {String}        site      The site to search
- * @param  {String[]}      [tags=[]] Tags to search with
- * @param  {SearchOptions}
- * @return {Promise}           A promise with the images as an array of objects
+ * @param {String} site The site to search
+ * @param {String[]} [tags=[]] Tags to search with
+ * @param {Object} [searchOptions={}] The options for searching
+ * @param {Number|String} [searchOptions.limit=1] The limit of images to return
+ * @param {Boolean} [searchOptions.random=false] If it should grab randomly sorted results
+ * @return {Promise} A promise with the images as an array of objects
  *
  * @example
- * booru.search('e926', ['glaceon', 'cute'])
- * //returns a promise with the latest cute glace pic from e926
+ * const Booru = require('booru')
+ * // Returns a promise with the latest cute glace pic from e926
+ * Booru.search('e926', ['glaceon', 'cute'])
  */
-function search(site, tags = [], {limit = 1, random = false} = {}) {
+function search(site, tags = [], {
+  limit = 1,
+  random = false
+} = {}) {
   const rSite = Utils.resolveSite(site)
   limit = parseInt(limit)
 
@@ -75,14 +92,17 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
     booruCache[rSite] = new BooruTypes[booruSite.type](booruSite)
   }
 
-  return booruCache[rSite].search(tags, {limit, random})
+  return booruCache[rSite].search(tags, {
+    limit,
+    random
+  })
 }
 
 /**
  * Deprecated, now a noop
  * Just access <{@link BooruImage}>.common and it'll be auto-generated as you get it
  *
- * @deprecated
+ * @deprecated Just use <{@link BooruImage}>.common instead
  * @param  {*} images Array of {@link BooruImage} objects
  * @return {*} Array of {@link BooruLink} objects
  */
@@ -90,7 +110,7 @@ function commonfy(images) {
   return Promise.resolve(images)
 }
 
-module.exports = _Booru
+module.exports = Booru
 
 module.exports.search = search
 module.exports.commonfy = commonfy // do nothing
