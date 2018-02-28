@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>booru</h1><blockquote>
+<p><em>A node package for searching various boorus (with promises!)</em></p>
+</blockquote>
+<h2>Features</h2><ul>
+<li>Able to search 17 different boorus (check <a href="./sites.json">sites.json</a>)</li>
+<li>Also alias support so you can be lazy (<code>sb</code> for <code>safebooru.org</code>)</li>
+<li>Promises because they're magical</li>
+<li>Little utility to convert xml to json (and add a .common prop to each image)</li>
+<li>Choose the amount of images to get</li>
+<li>Random support for all sites, using <code>order:random</code> on sites that support it and using a bit of magic on sites that don't</li>
+<li>Some other stuff I probably forgot</li>
+</ul>
+<hr>
+<h2>Installation</h2><pre class="prettyprint source lang-bash"><code>npm i --save booru</code></pre><p>Or if you use yarn</p>
+<pre class="prettyprint source lang-bash"><code>yarn add booru</code></pre><hr>
+<h2>Usage</h2><pre class="prettyprint source lang-js"><code>const booru = require('booru')
+
+booru.search(site, [tag1, tag2], {limit: 1, random: false})
+.then(booru.commonfy)
+.then(images => {
+  //Log the direct link to each image
+  for (let image of images) {
+    console.log(image.common.file_url)
+  }
+})
+.catch(err => {
+  if (err.name === 'BooruError') {
+    //It's a custom error thrown by the package
+    console.log(err.message)
+  } else {
+    //This means I messed up. Whoops.
+    console.log(err)
+  }
+})</code></pre><hr>
+<h2>Docs</h2><h3>booru.search(site, tags, options)</h3><table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Optional</th>
+<th style="text-align:center">Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>site</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"><em>none</em></td>
+<td>The site to search, supports aliases</td>
+</tr>
+<tr>
+<td>tags</td>
+<td style="text-align:center">string[]</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">[]</td>
+<td>The tags to search with</td>
+</tr>
+<tr>
+<td>options</td>
+<td style="text-align:center">SearchOptions</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">{}</td>
+<td>For amount of images to fetch and if to return a random result or not (Check below table)</td>
+</tr>
+</tbody>
+</table>
+<h3>SearchOptions ({limit: 1, random: false})</h3><table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Optional</th>
+<th style="text-align:center">Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>limit</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">1</td>
+<td>The max amount of images to return</td>
+</tr>
+<tr>
+<td>random</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">false</td>
+<td>If the images returned should be random everytime</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Contributors</h2><p><a href="https://github.com/BobbyWibowo/booru">BobbyWibowo</a></p>
+<blockquote>
+<p>Change from request-promise-native to snek-fetch</p>
+</blockquote>
+<hr>
+<h2>FAQ</h2><h3>What the &quot;.common prop&quot; do?</h3><p>Calling <code>booru.commonfy</code> not only transforms all the xml into json, it adds a .common prop to each image</p>
+<pre class="prettyprint source lang-js"><code>common: {
+  file_url: 'https://aaaa.com/image.jpg',   //The direct link to the image, ready to post
+  id: '124125',                             //The image ID, as a string
+  tags: ['cat', 'cute'],                    //The tags, split into an Array
+  score: 5,                                 //The score as a Number
+  source: 'https://giraffeduck.com/aaa.png',//source of the image, if supplied
+  rating: 's'                               //rating of the image
+}</code></pre><p><code>s</code>: 'Safe'
+<code>q</code>: 'Questionable'
+<code>e</code>: 'Explicit'
+<code>u</code>: 'Unrated'</p>
+<p>Derpibooru has <code>Safe, Suggestive, Questionable, Explicit</code>, although <code>Suggestive</code> will be shown as <code>q</code> in <code>image.common</code></p>
+<h3>Can I contribute?</h3><p>Sure! Just fork this repo, push your changes, and then make a PR.</p>
+<p>I'll accept PR based on what they do and code style (Not super strict about it, but it's best if it roughly follows the rest of the code)</p>
+<h3>Why?</h3><p>Why not?</p>
+<h3>This is terrible code</h3><p>:)</p>
+<h3>License?</h3><p><a href="http://choosealicense.com/licenses/gpl-3.0/">It's GPLv3</a></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a></li><li><a href="BooruImage.html">BooruImage</a></li><li><a href="Derpibooru.html">Derpibooru</a></li><li><a href="JsonBooru.html">JsonBooru</a></li><li><a href="XmlBooru.html">XmlBooru</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBooru.html">IBooru</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BooruError">BooruError</a></li><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 27 2018 22:23:41 GMT-0500 (STD)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
