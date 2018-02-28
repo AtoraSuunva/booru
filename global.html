@@ -2,22 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Booru: Global</title>
+    <title>Global - Documentation</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="BooruImage.html">BooruImage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li></ul>
+</nav>
+
+<div id="main">
+    
     <h1 class="page-title">Global</h1>
+    
 
     
 
@@ -28,7 +39,9 @@
 
 <header>
     
-        <h2></h2>
+        <h2>
+        
+        </h2>
         
     
 </header>
@@ -37,9 +50,6 @@
     <div class="container-overview">
     
         
-
-        
-
 
 <dl class="details">
 
@@ -76,6 +86,10 @@
     
 </dl>
 
+
+
+
+        
 
         
     
@@ -87,88 +101,10 @@
 
     
 
-    
+     
 
     
 
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="sites"><span class="type-signature"></span>sites<span class="type-signature"> :Object.&lt;String, <a href="global.html#Site">Site</a>></span></h4>
-
-
-
-
-<div class="description">
-    A map of site url/<a href="global.html#Site">Site</a>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object.&lt;String, <a href="global.html#Site">Site</a>></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line33">line 33</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
     
 
     
@@ -179,87 +115,9 @@
 
     
 
-    
-    <h4 class="name" id="BooruError"><span class="type-signature"></span>BooruError<span class="signature">(message<span class="signature-attributes">nullable</span>)</span><span class="type-signature"></span></h4>
-    
+    <h4 class="name" id="commonfy"><span class="type-signature"></span>commonfy<span class="signature">(images)</span><span class="type-signature"> &rarr; {*}</span></h4>
 
     
-
-
-
-<div class="description">
-    Custom error type for when the boorus error or for user-side error, not my code (probably)
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The error message to use</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
 
 
 
@@ -267,34 +125,36 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line40">line 40</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line109">line 109</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Just use <<a href="BooruImage.html">BooruImage</a>>.common instead</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -308,35 +168,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="commonfy"><span class="type-signature"></span>commonfy<span class="signature">(images)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
-
-    
-
-
-
 <div class="description">
     Deprecated, now a noopJust access <<a href="BooruImage.html">BooruImage</a>>.common and it'll be auto-generated as you get it
 </div>
+
+
 
 
 
@@ -399,52 +235,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Just use <<a href="BooruImage.html">BooruImage</a>>.common instead</li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line109">line 109</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -462,7 +252,7 @@
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -477,19 +267,59 @@
     
 
 
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(site, tags<span class="signature-attributes">opt</span>, searchOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line68">line 68</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -501,6 +331,13 @@
 
 
 
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const Booru = require('booru')// Returns a promise with the latest cute glace pic from e926Booru.search('e926', ['glaceon', 'cute'])</code></pre>
 
 
 
@@ -596,7 +433,7 @@
             
                 <td class="default">
                 
-                    []
+                    <code>[]</code>
                 
                 </td>
             
@@ -635,7 +472,7 @@
             
                 <td class="default">
                 
-                    {}
+                    <code>{}</code>
                 
                 </td>
             
@@ -700,7 +537,7 @@
             
                 <td class="default">
                 
-                    1
+                    <code>1</code>
                 
                 </td>
             
@@ -739,7 +576,7 @@
             
                 <td class="default">
                 
-                    false
+                    <code>false</code>
                 
                 </td>
             
@@ -763,50 +600,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line68">line 68</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -824,7 +617,7 @@
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -837,14 +630,6 @@
 </dl>
 
     
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const Booru = require('booru')// Returns a promise with the latest cute glace pic from e926Booru.search('e926', ['glaceon', 'cute'])</code></pre>
-
 
 
         
@@ -860,13 +645,46 @@
 
 
 
-<div class="description">
-    The common properties of Images
-</div>
 
+<dl class="details">
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_Image.js.html">src/Image.js</a>, <a href="src_Image.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
 
+    
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
 
 
 
@@ -1037,45 +855,13 @@
 
 
 
-<dl class="details">
 
-    
 
-    
+<div class="description">
+    The common properties of Images
+</div>
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_Image.js.html">src/Image.js</a>, <a href="src_Image.js.html#line3">line 3</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1095,383 +881,6 @@
 
 
             
-                
-<h4 class="name" id="Site">Site</h4>
-
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>aliases</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The aliases for that site</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nsfw</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">If this site has nsfw images</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>random</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-|
-
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">If this site supports 'Order:random' or requires a custom way</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tagQuery</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">If the site requires a specific query for the tags (other than tags)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>api</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#SiteApi">SiteApi</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The <a href="global.html#SiteApi">SiteApi</a> of this site</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line20">line 20</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="SiteApi">SiteApi</h4>
-
-
-
-
-<div class="description">
-    Represents the api of a site
-<p>Each property is a path on the site</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>search</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The path to search for posts</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>postView</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The path to view a post by ID</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line12">line 12</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
     
 
     
@@ -1484,17 +893,13 @@
 
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a></li><li><a href="BooruImage.html">BooruImage</a></li><li><a href="Derpibooru.html">Derpibooru</a></li><li><a href="JsonBooru.html">JsonBooru</a></li><li><a href="XmlBooru.html">XmlBooru</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBooru.html">IBooru</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BooruError">BooruError</a></li><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
-</nav>
-
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 27 2018 22:23:41 GMT-0500 (STD)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 27 2018 23:45:34 GMT-0500 (STD) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
 </body>
 </html>
