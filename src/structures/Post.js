@@ -1,9 +1,9 @@
 //@ts-check
 
 /**
- * The common properties of Images
+ * The common properties of a booru Post
  *
- * @typedef ImageCommon
+ * @typedef PostCommon
  * @property {String} file_url The direct link to the image
  * @property {String} id The id of the post
  * @property {String[]} tags The tags of the image in an array
@@ -26,9 +26,9 @@
  * An image from a booru with a few common props
  * @property {Object} data All the data given by the booru
  * @property {Booru} Booru The {@link Booru} it came from
- * @property {ImageCommon} common Contains several useful and common props for each booru
+ * @property {PostCommon} common Contains several useful and common props for each booru
  */
-class BooruImage {
+class Post {
   /**
    * Create an image from a booru
    *
@@ -44,7 +44,7 @@ class BooruImage {
   /**
    * An extra property called "common" with a few common properties, normalized between all boorus
    *
-   * @type {ImageCommon}
+   * @type {PostCommon}
    * @example
    *
    * const e9 = new Booru('e9')
@@ -138,4 +138,4 @@ class BooruImage {
     return this.booru.postView(this.data.id)
   }
 }
-module.exports = BooruImage
+module.exports = Post

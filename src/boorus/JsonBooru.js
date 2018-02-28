@@ -2,7 +2,7 @@
 const IBooru = require('./IBooru.js')
 const Utils = require('../Utils.js')
 const Constants = require('../Constants.js')
-const BooruImage = require('../Image.js')
+const Post = require('../structures/Post.js')
 const Snekfetch = require('snekfetch')
 
 /**
@@ -53,7 +53,7 @@ class JsonBooru extends IBooru {
           if (fakeLimit) {
             r = Utils.shuffle(result.body)
           }
-          resolve((r || result.body).slice(0, limit).map(v => new BooruImage(v, this)))
+          resolve((r || result.body).slice(0, limit).map(v => new Post(v, this)))
         })
         .catch(e => reject(new Constants.BooruError(e.message || e.error)))
     })

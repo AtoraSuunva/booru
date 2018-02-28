@@ -2,7 +2,7 @@
 const IBooru = require('./IBooru.js')
 const Utils = require('../Utils.js')
 const Constants = require('../Constants.js')
-const BooruImage = require('../Image.js')
+const Post = require('../structures/Post.js')
 const Snekfetch = require('snekfetch')
 
 /**
@@ -47,7 +47,7 @@ class Derpibooru extends IBooru {
     return new Promise((resolve, reject) => {
       Snekfetch.get(uri, options)
         .then(result => {
-          resolve((result.body.search).slice(0, limit).map(v => new BooruImage(v, this)))
+          resolve((result.body.search).slice(0, limit).map(v => new Post(v, this)))
         })
         .catch(e => reject(new Constants.BooruError(e.message || e.error)))
     })
