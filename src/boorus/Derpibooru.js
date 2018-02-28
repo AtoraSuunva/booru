@@ -1,5 +1,5 @@
 //@ts-check
-const Booru = require('./Booru.js')
+const IBooru = require('./IBooru.js')
 const Utils = require('../Utils.js')
 const Constants = require('../Constants.js')
 const BooruImage = require('../Image.js')
@@ -7,10 +7,15 @@ const Snekfetch = require('snekfetch')
 
 /**
  * A class designed for Derpibooru
+ * @extends IBooru
  * @inheritDoc
  */
-
-module.exports = class Derpibooru extends Booru {
+class Derpibooru extends IBooru {
+  /**
+   * Create a new booru for Derpibooru from a site
+   * @param {Site} site The site to use
+   * @param {Object?} credentials Credentials for the API (Currently not used)
+   */
   constructor(site, credentials) {
     super(site, credentials)
   }
@@ -47,3 +52,4 @@ module.exports = class Derpibooru extends Booru {
     })
   }
 }
+module.exports = Derpibooru

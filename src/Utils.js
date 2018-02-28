@@ -1,9 +1,5 @@
 //@ts-check
 
-/**
- * @module Utils
- */
-
 /*
 - Utils
   => .resolveSite(site/alias)
@@ -22,6 +18,8 @@ const parser = new xml2js.Parser()
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
+ *
+ * @private
  * @param  {String} siteToResolve The site to resolveSite
  * @return {String?} Null if site is not supported, the site otherwise
  */
@@ -43,6 +41,7 @@ module.exports.resolveSite = function resolveSite(siteToResolve) {
 
 /**
  * Parses xml to json, which can be used with js
+ *
  * @private
  * @param  {String[]} xml The xml to convert to json
  * @return {Object[]}     An array of objects created from the xml
@@ -66,7 +65,8 @@ module.exports.jsonfy = function jsonfy(xml) {
 
 /**
  * Yay fisher-bates
- * Taken from http://stackoverflow.com/a/2450976
+ * <p>Taken from http://stackoverflow.com/a/2450976</p>
+ *
  * @private
  * @param  {Array} array Array of something
  * @return {Array}       Shuffled array of something
@@ -92,6 +92,7 @@ module.exports.shuffle = function shuffle(array) {
 // Thanks mdn and damnit derpibooru
 /**
  * Generate a random int between [min, max]
+ *
  * @private
  * @param {Number} min The minimum (inclusive)
  * @param {Number} max The maximum (inclusive)
@@ -104,6 +105,8 @@ module.exports.randInt = function randInt(min, max) {
 
 /**
  * Performs some basic search validation
+ *
+ * @private
  * @param {*} site The site to resolve
  * @param {*} limit The limit for the amount of images to fetch
  */

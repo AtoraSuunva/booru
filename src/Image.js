@@ -1,10 +1,6 @@
 //@ts-check
 
 /**
- * @module BooruImage
- */
-
-/**
  * The common properties of Images
  *
  * @typedef ImageCommon
@@ -14,26 +10,31 @@
  * @property {Number} score The score of the image
  * @property {String} source Source of the image, if supplied
  * @property {String} rating  Rating of the image
+ *
+ * @example
+ * common: {
+ *  file_url: 'https://aaaa.com/image.jpg',
+ *  id: '124125',
+ *  tags: ['cat', 'cute'],
+ *  score: 5,
+ *  source: 'https://giraffeduck.com/aaaa.png',
+ *  rating: 's'
+ * }
  */
 
 /**
  * An image from a booru with a few common props
  * @property {Object} data All the data given by the booru
  * @property {Booru} Booru The {@link Booru} it came from
- * @property {ImageCommon} _common The (cached) common properties of the image. Use .common instead.
  * @property {ImageCommon} common Contains several useful and common props for each booru
- *
- * @example
- *  common: {
- *    file_url: 'https://aaaa.com/image.jpg',
- *    id: '124125',
- *    tags: ['cat', 'cute'],
- *    score: 5,
- *    source: 'https://giraffeduck.com/aaaa.png',
- *    rating: 's'
- *  }
  */
 class BooruImage {
+  /**
+   * Create an image from a booru
+   *
+   * @param {Object} data The raw data from the Booru
+   * @param {IBooru} booru The booru that created the image
+   */
   constructor(data, booru) {
     this.data = data
     this.booru = booru
@@ -41,11 +42,25 @@ class BooruImage {
   }
 
   /**
-   * An extra property called "common" with a few common properties
-   * Allow you to simply use "<Image>.common.tags" and get the tags instead of having to check
-   * if it uses .tags then realizing it doesn't then having to use "tag_string" instead
+   * An extra property called "common" with a few common properties, normalized between all boorus
    *
-   * @return {ImageCommon} The common items of the image
+   * @type {ImageCommon}
+   * @example
+   *
+   * const e9 = new Booru('e9')
+   * const imgs = e9.search(['cat', 'dog'])
+   *
+   * // Log the url of the first image
+   * console.log(imgs[0].common.file_url)
+   *
+   *  common: {
+   *    file_url: 'https://aaaa.com/image.jpg',
+   *    id: '124125',
+   *    tags: ['cat', 'cute'],
+   *    score: 5,
+   *    source: 'https://giraffeduck.com/aaaa.png',
+   *    rating: 's'
+   *  }
    */
   get common() {
     if (this._common) {
@@ -109,7 +124,15 @@ class BooruImage {
 
   /**
    * Get the post view (url to the post) of this image
-   * @return {String} The url to this image
+   *
+   * @type {String}
+   * @example
+   *
+   * const e9 = new Booru('e9')
+   * const imgs = e9.search(['cat', 'dog'])
+   *
+   * // Log the post url of the first image
+   * console.log(imgs[0].postView)
    */
   get postView() {
     return this.booru.postView(this.data.id)

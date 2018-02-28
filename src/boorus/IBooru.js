@@ -1,9 +1,5 @@
 //@ts-check
 
-/**
- * @module Booru
- */
-
 const {BooruError, sites} = require('../Constants.js')
 const BooruImage = require('../Image.js')
 const {resolveSite} = require('../Utils.js')
@@ -19,11 +15,13 @@ const {resolveSite} = require('../Utils.js')
 /**
  * Represents an interface to a generic Booru
  *
- * @interface Booru
+ * @interface IBooru
  */
-module.exports = class Booru {
+class IBooru {
   /**
    * Create a new booru from a site
+   *
+   * @private
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
@@ -64,3 +62,5 @@ module.exports = class Booru {
     return this.domain + this.site.api.postView + id
   }
 }
+
+module.exports = IBooru
