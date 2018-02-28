@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="BooruImage.html">BooruImage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="Post.html">Post</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBooru.html">IBooru</a><ul class='methods'><li data-type='method'><a href="IBooru.html#postView">postView</a></li><li data-type='method'><a href="IBooru.html#search">search</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#BooruError">BooruError</a></li><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
 </nav>
 
 <div id="main">
@@ -106,18 +106,12 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id="sites"><span class="type-signature"></span>sites<span class="type-signature"> :Object.&lt;String, <a href="global.html#Site">Site</a>></span></h4>
 
-    
-
-    <h4 class="name" id="commonfy"><span class="type-signature"></span>commonfy<span class="signature">(images)</span><span class="type-signature"> &rarr; {*}</span></h4>
-
-    
 
 
 
@@ -127,7 +121,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line109">line 109</a>
+        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -145,8 +139,6 @@
 
     
 
-    
-        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Just use <<a href="BooruImage.html">BooruImage</a>>.common instead</li></ul></dd>
     
 
     
@@ -169,7 +161,237 @@
 
 
 <div class="description">
-    Deprecated, now a noopJust access <<a href="BooruImage.html">BooruImage</a>>.common and it'll be auto-generated as you get it
+    A map of site url/<a href="global.html#Site"><code>Site</code></a>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;String, <a href="global.html#Site">Site</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="BooruError"><span class="type-signature"></span>BooruError<span class="signature">(message<span class="signature-attributes">nullable</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Custom error type for when the boorus error or for user-side error, not my code (probably)
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The error message to use</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="commonfy"><span class="type-signature"></span>commonfy<span class="signature">(images)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line104">line 104</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Just use <<code>BooruImage</code>>.common instead</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Deprecated, now a noopJust access <<code>BooruImage</code>>.common and it'll be auto-generated as you get it
 </div>
 
 
@@ -223,7 +445,7 @@
 
             
 
-            <td class="description last">Array of <a href="BooruImage.html">BooruImage</a> objects</td>
+            <td class="description last">Array of <code>BooruImage</code> objects</td>
         </tr>
 
     
@@ -247,7 +469,7 @@
 
         
 <div class="param-desc">
-    Array of BooruLink objects
+    Array of <code>BooruLink</code> objects
 </div>
 
 
@@ -272,7 +494,7 @@
 
     
 
-    <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(site, tags<span class="signature-attributes">opt</span>, searchOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(site, tags<span class="signature-attributes">opt</span>, searchOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="Post.html">Post</a>>>}</span></h4>
 
     
 
@@ -284,7 +506,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line68">line 68</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -623,7 +845,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise</span>
+<span class="param-type">Promise.&lt;Array.&lt;<a href="Post.html">Post</a>>></span>
 
 
     </dd>
@@ -640,7 +862,7 @@
 
         
                 
-<h4 class="name" id="ImageCommon">ImageCommon</h4>
+<h4 class="name" id="PostCommon">PostCommon</h4>
 
 
 
@@ -651,7 +873,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_Image.js.html">src/Image.js</a>, <a href="src_Image.js.html#line3">line 3</a>
+        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -858,7 +1080,7 @@
 
 
 <div class="description">
-    The common properties of Images
+    The common properties of a booru Post
 </div>
 
 
@@ -881,6 +1103,385 @@
 
 
             
+                
+<h4 class="name" id="Site">Site</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>aliases</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The aliases for that site</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nsfw</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If this site has nsfw images</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>random</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If this site supports 'Order:random' or requires a custom way</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tagQuery</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If the site requires a specific query for the tags (other than tags)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>api</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#SiteApi">SiteApi</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The <a href="global.html#SiteApi"><code>SiteApi</code></a> of this site</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="SiteApi">SiteApi</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_Constants.js.html">src/Constants.js</a>, <a href="src_Constants.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>search</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The path to search for posts</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>postView</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The path to view a post by ID</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description">
+    Represents the api of a site
+<p>Each property is a path on the site</p>
+</div>
+
+
+
+
+
+
+
+
+            
     
 
     
@@ -896,7 +1497,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 27 2018 23:45:34 GMT-0500 (STD) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Feb 28 2018 12:42:55 GMT-0500 (STD) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

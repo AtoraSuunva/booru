@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Booru - Documentation</title>
+    <title>IBooru - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,7 +27,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Booru</h1>
+    <h1 class="page-title">IBooru</h1>
     
 
     
@@ -40,7 +40,7 @@
 <header>
     
         <h2>
-        Booru
+        IBooru
         </h2>
         
     
@@ -51,21 +51,12 @@
     
         
 
-    
-
-    <h4 class="name" id="Booru"><span class="type-signature"></span>new Booru<span class="signature">(site, credentials)</span><span class="type-signature"> &rarr; {<a href="IBooru.html">IBooru</a>}</span></h4>
-
-    
-
-
-
-
 <dl class="details">
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line38">line 38</a>
+        <a href="src_boorus_IBooru.js.html">src/boorus/IBooru.js</a>, <a href="src_boorus_IBooru.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -103,159 +94,13 @@
 
 
 
-
-<div class="description">
-    Create a new booru to search with
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const Booru = require('booru')// Aliases are supportedconst e9 = new Booru('e9')// You can then search the siteconst imgs = await e9.search(['cat', 'cute'], {limit: 3})// And use the imagesimgs.forEach(i => console.log(i.common.file_url))// Or access other methods on the Boorue9.postView(imgs[0].common.id)</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
         
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
+            <div class="description">Represents an interface to a generic Booru</div>
         
 
         
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>site</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">The <a href="global.html#Site"><code>Site</code></a> (or alias of it) to create a booru from</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>credentials</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    <code>null</code>
-                
-                </td>
-            
-
-            <td class="description last">The credentials to use on this booru</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A booru to use
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="IBooru.html">IBooru</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="IBooru.html">IBooru</a></li>
-    </ul>
-
 
     
 
@@ -297,11 +142,6 @@
 
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="IBooru.html#postView">IBooru#postView</a>
-    </li></ul></dd>
     
 
     
@@ -435,11 +275,6 @@
 
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="IBooru.html#search">IBooru#search</a>
-    </li></ul></dd>
     
 
     
