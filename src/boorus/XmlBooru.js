@@ -2,7 +2,7 @@
 const IBooru = require('./IBooru.js')
 const Utils = require('../Utils.js')
 const Constants = require('../Constants.js')
-const BooruImage = require('../Image.js')
+const Post = require('../structures/Post.js')
 const Snekfetch = require('snekfetch')
 
 /**
@@ -52,7 +52,7 @@ class XmlBooru extends IBooru {
           if (fakeLimit) {
             r = Utils.shuffle(r)
           }
-          resolve(r.slice(0, limit).map(v => new BooruImage(v, this)))
+          resolve(r.slice(0, limit).map(v => new Post(v, this)))
         })
         .catch(e => reject(new Constants.BooruError(e.message || e.error)))
     })

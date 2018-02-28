@@ -3,16 +3,14 @@
 const snekfetch = require('snekfetch')
 
 const Constants = require('./src/Constants.js')
-const {
-  BooruError
-} = Constants
+const { BooruError } = Constants
 const Utils = require('./src/Utils.js')
 const IBooru = require('./src/boorus/IBooru.js')
 
 const BooruTypes = {
-  'json': require('./src/boorus/JsonBooru'),
-  'xml': require('./src/boorus/XmlBooru'),
-  'derpi': require('./src/boorus/Derpibooru'),
+  'json': require('./src/boorus/JsonBooru.js'),
+  'xml': require('./src/boorus/XmlBooru.js'),
+  'derpi': require('./src/boorus/Derpibooru.js'),
 }
 
 /**
@@ -58,17 +56,14 @@ const booruCache = {}
  * @param {Object} [searchOptions={}] The options for searching
  * @param {Number|String} [searchOptions.limit=1] The limit of images to return
  * @param {Boolean} [searchOptions.random=false] If it should grab randomly sorted results
- * @return {Promise} A promise with the images as an array of objects
+ * @return {Promise<Post[]>} A promise with the images as an array of objects
  *
  * @example
  * const Booru = require('booru')
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
  */
-function search(site, tags = [], {
-  limit = 1,
-  random = false
-} = {}) {
+function search(site, tags = [], {limit = 1, random = false} = {}) {
   const rSite = Utils.resolveSite(site)
   limit = parseInt(limit)
 

@@ -1,7 +1,7 @@
 //@ts-check
 
 const {BooruError, sites} = require('../Constants.js')
-const BooruImage = require('../Image.js')
+const Post = require('../structures/Post.js')
 const {resolveSite} = require('../Utils.js')
 
 /*
@@ -15,7 +15,6 @@ const {resolveSite} = require('../Utils.js')
 /**
  * Represents an interface to a generic Booru
  *
- * @private
  * @interface IBooru
  */
 class IBooru {
@@ -41,7 +40,7 @@ class IBooru {
    * @param {Object} searchArgs The arguments for the search
    * @param {Number} [searchArgs.limit=1] The number of images to return
    * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
-   * @return {Promise<BooruImage[]>} The images from the booru
+   * @return {Promise<Post[]>} The results as an array of Posts
    */
   search(tags, {limit = 1, random = false} = {}) {
     if (!Array.isArray(tags)) {
@@ -57,7 +56,7 @@ class IBooru {
    */
   postView(id) {
     if (Number.isNaN(parseInt(id))) {
-      throw new BooruError(`Not a vaid id for postView: ${id}`)
+      throw new BooruError(`Not a valid id for postView: ${id}`)
     }
 
     return this.domain + this.site.api.postView + id
