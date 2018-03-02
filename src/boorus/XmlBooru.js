@@ -47,11 +47,15 @@ class XmlBooru extends IBooru {
 
     return new Promise((resolve, reject) => {
       Snekfetch.get(uri, options)
-        .then(result => {
-          let r = Utils.jsonfy(result.text)
+        .then(async result => {
+          let r = await Utils.jsonfy(result.text)
+          
+          console.log(r)
+          
           if (fakeLimit) {
             r = Utils.shuffle(r)
           }
+          
           resolve(r.slice(0, limit).map(v => new Post(v, this)))
         })
         .catch(e => reject(new Constants.BooruError(e.message || e.error)))

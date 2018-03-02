@@ -43,23 +43,26 @@ module.exports.resolveSite = function resolveSite(siteToResolve) {
  * Parses xml to json, which can be used with js
  *
  * @private
- * @param  {String[]} xml The xml to convert to json
- * @return {Object[]}     An array of objects created from the xml
+ * @param  {String} xml The xml to convert to json
+ * @return {Promise<Object[]>} A Promise with an array of objects created from the xml
  */
 module.exports.jsonfy = function jsonfy(xml) {
-  // If it's an object, assume it's already jsonfied
-  if (typeof xml !== 'object') {
+  return new Promise((resolve, reject) => {
+    // If it's an object, assume it's already jsonfied
+    if (typeof xml === 'object') {
+      resolve(xml)
+    }
+  
     parser.parseString(xml, (err, res) => {
-      if (err)
-        throw err
+      if (err) reject(err)
 
       if (res.posts.post !== undefined) {
-        return res.posts.post.map(val => val.$)
+        resolve(res.posts.post.map(val => val.$))
       } else {
-        return []
+        resolve([])
       }
     })
-  } else return xml
+  })
 }
 
 
