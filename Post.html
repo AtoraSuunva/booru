@@ -69,7 +69,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line31">line 31</a>
+        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -120,6 +120,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -132,7 +134,7 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>_data</code></td>
             
 
             <td class="type">
@@ -145,6 +147,12 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -155,7 +163,7 @@
 
         <tr>
             
-                <td class="name"><code>Booru</code></td>
+                <td class="name"><code>booru</code></td>
             
 
             <td class="type">
@@ -168,6 +176,12 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -178,23 +192,445 @@
 
         <tr>
             
-                <td class="name"><code>common</code></td>
+                <td class="name"><code>id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#PostCommon">PostCommon</a></span>
+<span class="param-type">String</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">Contains several useful and common props for each booru</td>
+            <td class="description last">The id of the post</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>file_url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The direct link to the image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The height of the full image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The width of the full image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tags</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The tags of the image in an array</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>score</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The score of the image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Source of the image, if supplied</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rating</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Rating of the image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>createdAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The date it was created at</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preview_url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The smallest image size available</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preview_height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The height of the preview image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>preview_width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The width of the preview image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sample_url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The medium image size available</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sample_height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The height of the sample image</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sample_width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The width of the preview image</td>
         </tr>
 
     
@@ -216,6 +652,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Post { file_url: 'https://aaaa.com/image.jpg', id: '124125', tags: ['cat', 'cute'], score: 5, source: 'https://giraffeduck.com/aaaa.png', rating: 's'}</code></pre>
 
 
 
@@ -324,7 +765,7 @@
 
         
             
-<h4 class="name" id="common"><span class="type-signature"></span>common<span class="type-signature"> :<a href="global.html#PostCommon">PostCommon</a></span></h4>
+<h4 class="name" id="common"><span class="type-signature"></span>common<span class="type-signature"> :Object</span></h4>
 
 
 
@@ -335,7 +776,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line65">line 65</a>
+        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -353,6 +794,8 @@
 
     
 
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>All common props are now attached directly to the image</li></ul></dd>
     
 
     
@@ -375,7 +818,7 @@
 
 
 <div class="description">
-    An extra property called "common" with a few common properties, normalized between all boorus
+    Get some common props on the image
 </div>
 
 
@@ -384,7 +827,7 @@
     <ul>
         <li>
             
-<span class="param-type"><a href="global.html#PostCommon">PostCommon</a></span>
+<span class="param-type">Object</span>
 
 
         </li>
@@ -396,20 +839,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const e9 = new Booru('e9')
-const imgs = e9.search(['cat', 'dog'])
-
-// Log the url of the first image
-console.log(imgs[0].common.file_url)
-
- common: {
-   file_url: 'https://aaaa.com/image.jpg',
-   id: '124125',
-   tags: ['cat', 'cute'],
-   score: 5,
-   source: 'https://giraffeduck.com/aaaa.png',
-   rating: 's'
- }</code></pre>
+    <pre class="prettyprint"><code>image.common.id// deprecated, use this insteadimage.id// To access the image's raw data from the booru, doimage._data.id</code></pre>
 
 
 
@@ -426,7 +856,7 @@ console.log(imgs[0].common.file_url)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line137">line 137</a>
+        <a href="src_structures_Post.js.html">src/structures/Post.js</a>, <a href="src_structures_Post.js.html#line98">line 98</a>
     </li></ul></dd>
     
 
@@ -487,11 +917,7 @@ console.log(imgs[0].common.file_url)
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const e9 = new Booru('e9')
-const imgs = e9.search(['cat', 'dog'])
-
-// Log the post url of the first image
-console.log(imgs[0].postView)</code></pre>
+    <pre class="prettyprint"><code>const e9 = new Booru('e9')const imgs = e9.search(['cat', 'dog'])// Log the post url of the first imageconsole.log(imgs[0].postView)</code></pre>
 
 
 
@@ -515,7 +941,7 @@ console.log(imgs[0].postView)</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Feb 28 2018 12:42:55 GMT-0500 (STD) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 01 2018 23:09:09 GMT-0500 (STD) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
