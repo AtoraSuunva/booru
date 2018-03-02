@@ -98,6 +98,24 @@ class Post {
   get postView() {
     return this.booru.postView(this.id)
   }
+
+  /**
+   * Get some common props on the image
+   *
+   * @deprecated All common props are now attached directly to the image
+   * @type {Object} stuff
+   *
+   * @example
+   * image.common.id
+   * // deprecated, use this instead
+   * image.id
+   *
+   * // To access the image's raw data from the booru, do
+   * image._data.id
+   */
+  get common() {
+    return this
+  }
 }
 module.exports = Post
 
