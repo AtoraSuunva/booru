@@ -103,7 +103,7 @@ class Post {
    * Get some common props on the image
    *
    * @deprecated All common props are now attached directly to the image
-   * @type {Object} stuff
+   * @type {Object}
    *
    * @example
    * image.common.id
