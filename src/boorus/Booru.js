@@ -86,7 +86,7 @@ class Booru {
       r = Utils.shuffle(result.body)
     }
 
-    const posts = (r || result.body).slice(0, limit).map(v => new Post(v, this))
+    const posts = (r || result.body || result).slice(0, limit).map(v => new Post(v, this))
     const options = { limit, random, page }
 
     return new SearchResults(posts, tags, options, this)

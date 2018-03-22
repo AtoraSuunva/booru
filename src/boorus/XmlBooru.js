@@ -32,7 +32,7 @@ class XmlBooru extends Booru {
           result = await Utils.jsonfy(result.text)
           resolve(super._parseSearchResult(result, { fakeLimit, tags, limit, random, page }))
         })
-        .catch(e => reject(new Constants.BooruError(e.message || e.error)))
+        .catch(e => {e.name = 'BooruError'; reject(e)})
     })
   }
 }
