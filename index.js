@@ -14,24 +14,11 @@ const BooruTypes = {
 
 /**
  * Create a new booru to search with
+ * @private
  * @constructor
  * @param {String} site The {@link Site} (or alias of it) to create a booru from
  * @param {*} credentials The credentials to use on this booru
  * @return {Booru} A booru to use
- *
- * @example
- * const Booru = require('booru')
- * // Aliases are supported
- * const e9 = new Booru('e9')
- *
- * // You can then search the site
- * const imgs = await e9.search(['cat', 'cute'], {limit: 3})
- *
- * // And use the images
- * imgs.forEach(i => console.log(i.common.file_url))
- *
- * // Or access other methods on the Booru
- * e9.postView(imgs[0].common.id)
  */
 function _Booru(site, credentials = null) {
   const rSite = Utils.resolveSite(site)

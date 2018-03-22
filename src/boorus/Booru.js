@@ -17,9 +17,20 @@ const SearchResults = require('../structures/SearchResults.js')
 */
 
 /**
- * Represents an interface to a generic Booru
+ * A basic, JSON booru
+ * @example
+ * const Booru = require('booru')
+ * // Aliases are supported
+ * const e9 = new Booru('e9')
  *
- * @interface Booru
+ * // You can then search the site
+ * const imgs = await e9.search(['cat', 'cute'], {limit: 3})
+ *
+ * // And use the images
+ * imgs.forEach(i => console.log(i.common.file_url))
+ *
+ * // Or access other methods on the Booru
+ * e9.postView(imgs[0].common.id)
  */
 class Booru {
   /**
