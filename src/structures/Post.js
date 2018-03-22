@@ -78,7 +78,7 @@ class Post {
     } else if (typeof data.created_at === 'number') {
       this.createdAt = new Date(data.created_at * 1000)
     } else {
-      this.createdAt = new Date(data.created_at)
+      this.createdAt = new Date(data.created_at || data.date)
     }
 
   }
