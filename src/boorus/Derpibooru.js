@@ -1,5 +1,5 @@
 //@ts-check
-const IBooru = require('./IBooru.js')
+const Booru = require('./Booru.js')
 const Utils = require('../Utils.js')
 const Constants = require('../Constants.js')
 const Post = require('../structures/Post.js')
@@ -7,11 +7,12 @@ const Snekfetch = require('snekfetch')
 
 /**
  * A class designed for Derpibooru
+ * >:(
  * @private
- * @extends IBooru
+ * @extends Booru
  * @inheritDoc
  */
-class Derpibooru extends IBooru {
+class Derpibooru extends Booru {
   /**
    * Create a new booru for Derpibooru from a site
    * @param {Site} site The site to use
@@ -22,10 +23,7 @@ class Derpibooru extends IBooru {
   }
 
   /** @inheritDoc */
-  search(tags, {
-    limit = 1,
-    random = false
-  } = {}) {
+  search(tags, {limit = 1, random = false} = {}) {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -34,6 +32,7 @@ class Derpibooru extends IBooru {
     if (tags[0] === undefined) {
       tags[0] = '*'
     }
+
     // Includes random limit for derpi
     // http://example.com/posts/?tags=some_example&limit=100&sf=random%AB43FF
     // Sorry, but derpibooru has an odd and confusing api that's not similar to the others at all

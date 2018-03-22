@@ -51,17 +51,17 @@ class Post {
     this.width = parseInt(data.width || data.image_width)
 
     this.sample_url = parseImageUrl(data.sample_url || data.large_file_url ||
-      data.representations ? data.representations.large : undefined, data)
+      (data.representations ? data.representations.large : undefined), data)
     this.sample_height = parseInt(data.sample_height)
     this.sample_width = parseInt(data.sample_width)
 
     this.preview_url = parseImageUrl(data.preview_url || data.preview_file_url ||
-      data.representations ? data.representations.small : undefined, data)
+      (data.representations ? data.representations.small : undefined), data)
     this.preview_height = parseInt(data.preview_height)
     this.preview_width = parseInt(data.preview_width)
 
     this.id = data.id.toString()
-    this.tags = ((data.tags !== undefined) ? data.tags.split(' ') : data.tag_string.split(' ')).map(v => v.replace(/,/g, '').replace(/ /g, '_'))
+    this.tags = (data.tags) ? data.tags.split(' ') : data.tag_string.split(' ').map(v => v.replace(/,/g, '').replace(/ /g, '_'))
     this.tags = this.tags.filter(v => v !== '')
     this.score = parseInt(data.score)
     this.source = data.source

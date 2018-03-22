@@ -5,21 +5,19 @@ const snekfetch = require('snekfetch')
 const Constants = require('./src/Constants.js')
 const { BooruError } = Constants
 const Utils = require('./src/Utils.js')
-const IBooru = require('./src/boorus/IBooru.js')
+const Booru = require('./src/boorus/Booru.js')
 
 const BooruTypes = {
-  'json': require('./src/boorus/JsonBooru.js'),
   'xml': require('./src/boorus/XmlBooru.js'),
   'derpi': require('./src/boorus/Derpibooru.js'),
 }
 
 /**
  * Create a new booru to search with
- * @extends {IBooru}
  * @constructor
  * @param {String} site The {@link Site} (or alias of it) to create a booru from
  * @param {*} credentials The credentials to use on this booru
- * @return {IBooru} A booru to use
+ * @return {Booru} A booru to use
  *
  * @example
  * const Booru = require('booru')
@@ -35,7 +33,7 @@ const BooruTypes = {
  * // Or access other methods on the Booru
  * e9.postView(imgs[0].common.id)
  */
-function Booru(site, credentials = null) {
+function _Booru(site, credentials = null) {
   const rSite = Utils.resolveSite(site)
 
   if (rSite === null) {
@@ -44,7 +42,8 @@ function Booru(site, credentials = null) {
 
   const booruSite = Constants.sites[rSite]
 
-  return new BooruTypes[booruSite.type](booruSite, credentials)
+  // If special type, use that booru, else use default Booru
+  return new (BooruTypes[booruSite.type] || Booru)(booruSite, credentials)
 }
 
 const booruCache = {}
@@ -71,8 +70,8 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
     throw new BooruError('Site not supported')
   }
 
-  if (!(tags instanceof Array)) {
-    throw new BooruError('`tags` should be an array')
+  if (!Array.isArray(tags) && typeof tags !== 'string') {
+    throw new BooruError('`tags` should be an array or string')
   }
 
   if (typeof limit !== 'number' || Number.isNaN(limit)) {
@@ -84,13 +83,10 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
   const booruSite = Constants.sites[rSite]
 
   if (!booruCache[rSite]) {
-    booruCache[rSite] = new BooruTypes[booruSite.type](booruSite)
+    booruCache[rSite] = new (BooruTypes[booruSite.type] || Booru)(booruSite)
   }
 
-  return booruCache[rSite].search(tags, {
-    limit,
-    random
-  })
+  return booruCache[rSite].search(tags, {limit, random})
 }
 
 /**
@@ -105,7 +101,7 @@ function commonfy(images) {
   return Promise.resolve(images)
 }
 
-module.exports = Booru
+module.exports = _Booru
 
 module.exports.search = search
 module.exports.commonfy = commonfy // do nothing

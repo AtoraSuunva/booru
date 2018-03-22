@@ -1,6 +1,5 @@
 {
   "e621.net": {
-    "type": "json",
     "aliases": ["e6", "e621"],
     "nsfw": true,
     "api": {
@@ -10,7 +9,6 @@
     "random": true
   },
   "e926.net": {
-    "type": "json",
     "aliases": ["e9", "e926"],
     "nsfw": false,
     "api": {
@@ -20,7 +18,6 @@
     "random": true
   },
   "hypnohub.net": {
-    "type": "json",
     "aliases": ["hh", "hypo", "hypohub"],
     "nsfw": true,
     "api": {
@@ -30,7 +27,6 @@
     "random": true
   },
   "danbooru.donmai.us": {
-    "type": "json",
     "aliases": ["db", "dan", "danbooru"],
     "nsfw": true,
     "api": {
@@ -40,7 +36,6 @@
     "random": true
   },
   "konachan.com": {
-    "type": "json",
     "aliases": ["kc", "konac", "kcom"],
     "nsfw": true,
     "api": {
@@ -50,7 +45,6 @@
     "random": true
   },
   "konachan.net": {
-    "type": "json",
     "aliases": ["kn", "konan", "knet"],
     "nsfw": false,
     "api": {
@@ -60,7 +54,6 @@
     "random": true
   },
   "yande.re": {
-    "type": "json",
     "aliases": ["yd", "yand", "yandere"],
     "nsfw": true,
     "api": {
@@ -70,75 +63,71 @@
     "random": true
   },
   "gelbooru.com": {
-    "type": "xml",
     "aliases": ["gb", "gel", "gelbooru"],
     "nsfw": true,
     "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&",
-      "postView": "/index.php?page=post&s=view&id="
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
+      "postView": "/index.php?page=post&s=view&json=1&id="
     },
+    "paginate": "page",
     "random": false
   },
   "rule34.xxx": {
-    "type": "xml",
     "aliases": ["r34", "rule34"],
     "nsfw": true,
     "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&",
-      "postView": "/index.php?page=post&s=view&id="
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
+      "postView": "/index.php?page=post&s=view&json=1&id="
     },
     "random": false
   },
   "safebooru.org": {
-    "type": "xml",
     "aliases": ["sb", "safe", "safebooru"],
     "nsfw": false,
     "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&",
-      "postView": "/index.php?page=post&s=view&id="
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
+      "postView": "/index.php?page=post&s=view&json=1&id="
     },
     "random": false
   },
   "tbib.org": {
-    "type": "xml",
     "aliases": ["tb", "tbib", "big"],
     "nsfw": false,
     "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&",
-      "postView": "/index.php?page=post&s=view&id="
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
+      "postView": "/index.php?page=post&s=view&json=1&id="
     },
     "random": false
   },
   "xbooru.com": {
-    "type": "xml",
+    "type": "json",
     "aliases": ["xb", "xbooru"],
     "nsfw": true,
     "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&",
-      "postView": "/index.php?page=post&s=view&id="
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
+      "postView": "/index.php?page=post&s=view&json=1&id="
     },
     "random": false
   },
   "youhate.us": {
-    "type": "xml",
     "aliases": ["yh", "you", "youhate"],
     "nsfw": true,
     "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&",
-      "postView": "/index.php?page=post&s=view&id="
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
+      "postView": "/index.php?page=post&s=view&json=1&id="
     },
     "random": false
   },
-  "dollbooru.org": {
-    "type": "xml",
-    "aliases": ["do", "doll", "dollbooru"],
-    "nsfw": false,
+  "lolibooru.moe": {
+    "aliases": ["lb", "lol", "loli", "lolibooru"],
+    "nsfw": true,
     "api": {
-      "search": "/api/danbooru/find_posts/index.xml?",
-      "postView": "/post/view/"
+      "search": "/post/index.json?",
+      "postView": "/post/show/"
     },
-    "random": false
+    "random": true
   },
+
   "rule34.paheal.net": {
     "type": "xml",
     "aliases": ["pa", "paheal"],
@@ -148,16 +137,6 @@
       "postView": "/post/view/"
     },
     "random": false
-  },
-  "lolibooru.moe": {
-    "type": "json",
-    "aliases": ["lb", "lol", "loli", "lolibooru"],
-    "nsfw": true,
-    "api": {
-      "search": "/post/index.json?",
-      "postView": "/post/show/"
-    },
-    "random": true
   },
   "derpibooru.org": {
     "type": "derpi",

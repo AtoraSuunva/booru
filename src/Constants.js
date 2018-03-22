@@ -34,17 +34,16 @@ module.exports.sites = sites
 
 /**
  * Custom error type for when the boorus error or for user-side error, not my code (probably)
+ * <br>The name of the error is 'BooruError'
  * @type {Error}
- * @param {String?} message The error message to use
  */
-function BooruError(message) {
-  this.name = 'BooruError'
-  this.message = message || 'Error messsage unspecified.'
-  this.stack = (new Error()).stack
+class BooruError extends Error {
+  constructor(...args) {
+    super(...args)
+    Error.captureStackTrace(this, BooruError)
+    this.name = 'BooruError'
+  }
 }
-BooruError.prototype = Object.create(Error.prototype)
-BooruError.prototype.constructor = BooruError
-
 module.exports.BooruError = BooruError
 
 /**
@@ -61,10 +60,11 @@ module.exports.userAgent = `Booru v${pkg.version}, a node package for booru sear
  * @param {Site} site The site to search
  * @param {String[]} [tags=[]] The tags to search for
  * @param {Number} [limit=100] The limit for images to return
+ * @param {Number} [page=0] The page to get
  */
-module.exports.searchURI = (domain, site, tags = [], limit = 100) =>
+module.exports.searchURI = (domain, site, tags = [], limit = 100, page = 0) =>
   `http://${domain}${site.api.search}${(site.tagQuery) ? site.tagQuery : 'tags'}`
-  + `=${tags.join('+')}&limit=${limit}`
+  + `=${tags.join('+')}&limit=${limit}&${site.paginate || 'page'}=${page}`
 
 /**
  * The default options to use for requests
