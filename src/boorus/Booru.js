@@ -54,7 +54,7 @@ class Booru {
         .then(result => {
           resolve(this._parseSearchResult(result, {fakeLimit, tags, limit, random, page}))
         })
-        .catch(e => reject(new Constants.BooruError(e.message || e.error)))
+        .catch(e => {e.name = 'BooruError'; reject(e)})
     })
   }
 
