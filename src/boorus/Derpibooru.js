@@ -48,7 +48,7 @@ class Derpibooru extends Booru {
         .then(result => {
           resolve((result.body.search).slice(0, limit).map(v => new Post(v, this)))
         })
-        .catch(e => reject(new Constants.BooruError(e.message || e.error)))
+        .catch(e => {e.name = 'BooruError'; reject(e)})
     })
   }
 }
