@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="Post.html">Post</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBooru.html">IBooru</a><ul class='methods'><li data-type='method'><a href="IBooru.html#postView">postView</a></li><li data-type='method'><a href="IBooru.html#search">search</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#BooruError">BooruError</a></li><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="BooruError.html">BooruError</a></li><li><a href="Post.html">Post</a></li><li><a href="SearchResults.html">SearchResults</a><ul class='methods'><li data-type='method'><a href="SearchResults.html#nextPage">nextPage</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
 </nav>
 
 <div id="main">
@@ -43,6 +43,8 @@
         Booru
         </h2>
         
+            <div class="class-description">A basic, JSON booru</div>
+        
     
 </header>
 
@@ -52,8 +54,10 @@
         
 
     
+    <h2>Constructor</h2>
+    
 
-    <h4 class="name" id="Booru"><span class="type-signature"></span>new Booru<span class="signature">(site, credentials)</span><span class="type-signature"> &rarr; {<a href="IBooru.html">IBooru</a>}</span></h4>
+    <h4 class="name" id="Booru"><span class="type-signature"></span>new Booru<span class="signature">(site, credentials<span class="signature-attributes">nullable</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -65,7 +69,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line38">line 38</a>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -105,7 +109,7 @@
 
 
 <div class="description">
-    Create a new booru to search with
+    Create a new booru from a site
 </div>
 
 
@@ -118,7 +122,18 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const Booru = require('booru')// Aliases are supportedconst e9 = new Booru('e9')// You can then search the siteconst imgs = await e9.search(['cat', 'cute'], {limit: 3})// And use the imagesimgs.forEach(i => console.log(i.common.file_url))// Or access other methods on the Boorue9.postView(imgs[0].common.id)</code></pre>
+    <pre class="prettyprint"><code>const Booru = require('booru')
+// Aliases are supported
+const e9 = new Booru('e9')
+
+// You can then search the site
+const imgs = await e9.search(['cat', 'cute'], {limit: 3})
+
+// And use the images
+imgs.forEach(i => console.log(i.common.file_url))
+
+// Or access other methods on the Booru
+e9.postView(imgs[0].common.id)</code></pre>
 
 
 
@@ -135,6 +150,8 @@
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -156,12 +173,20 @@
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type"><a href="global.html#Site">Site</a></span>
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -170,7 +195,7 @@
                 </td>
             
 
-            <td class="description last">The <a href="global.html#Site"><code>Site</code></a> (or alias of it) to create a booru from</td>
+            <td class="description last">The site to use</td>
         </tr>
 
     
@@ -183,12 +208,22 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">Object</span>
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
             
 
             
@@ -199,7 +234,7 @@
                 </td>
             
 
-            <td class="description last">The credentials to use on this booru</td>
+            <td class="description last">Credentials for the API (Currently not used)</td>
         </tr>
 
     
@@ -219,43 +254,10 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A booru to use
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="IBooru.html">IBooru</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="IBooru.html">IBooru</a></li>
-    </ul>
-
 
     
 
@@ -289,7 +291,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_boorus_IBooru.js.html">src/boorus/IBooru.js</a>, <a href="src_boorus_IBooru.js.html#line57">line 57</a>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -297,11 +299,6 @@
 
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="IBooru.html#postView">IBooru#postView</a>
-    </li></ul></dd>
     
 
     
@@ -427,7 +424,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_boorus_IBooru.js.html">src/boorus/IBooru.js</a>, <a href="src_boorus_IBooru.js.html#line45">line 45</a>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -435,11 +432,6 @@
 
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="IBooru.html#search">IBooru#search</a>
-    </li></ul></dd>
     
 
     
@@ -722,7 +714,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 01 2018 23:09:09 GMT-0500 (STD) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 12:17:44 GMT-0400 (DST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
