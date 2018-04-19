@@ -197,7 +197,7 @@ function jsonfy(images) {
           return reject(err)
 
         if (res.posts.post !== undefined) {
-          resolve(res.posts.post.map(val => val.$))
+          resolve(res.posts.post.map(val => Object.assign({}, val.$, { resultCount: res.posts.$.count })))
         } else {
           resolve([])
         }
