@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "1.0.2-dev",
+  "version": "1.0.3-dev",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "main": "index.js",
   "scripts": {
