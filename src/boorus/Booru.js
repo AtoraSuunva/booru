@@ -94,10 +94,12 @@ class Booru {
   _parseSearchResult(result, {fakeLimit, tags, limit, random, page}) {
     let r
     if (fakeLimit) {
-      r = Utils.shuffle(result.body)
+      r = Utils.shuffle(result.body instanceof Buffer ? JSON.parse(result.text) : result.body)
     }
 
-    const posts = (r || result.body || result).slice(0, limit).map(v => new Post(v, this))
+    const results = r || (result.body instanceof Buffer ? JSON.parse(result.text) : result.body) || result
+    
+    const posts = results.slice(0, limit).map(v => new Post(v, this))
     const options = { limit, random, page }
 
     return new SearchResults(posts, tags, options, this)

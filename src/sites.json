@@ -69,7 +69,6 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
-    "paginate": "page",
     "random": false
   },
   "rule34.xxx": {
@@ -79,6 +78,7 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
+    "paginate": "pid",
     "random": false
   },
   "safebooru.org": {
