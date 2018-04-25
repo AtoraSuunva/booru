@@ -112,8 +112,7 @@ class Booru {
       throw new BooruError(`Not a valid id for postView: ${id}`)
     }
 
-    // TODO: Check if https is supported
-    return 'https://' + this.domain + this.site.api.postView + id
+    return `http${this.site.insecure ? '' : 's'}://` + this.domain + this.site.api.postView + id
   }
 }
 

@@ -63,7 +63,7 @@ module.exports.userAgent = `Booru v${pkg.version}, a node package for booru sear
  * @param {Number} [page=0] The page to get
  */
 module.exports.searchURI = (domain, site, tags = [], limit = 100, page = 0) =>
-  `http://${domain}${site.api.search}${(site.tagQuery) ? site.tagQuery : 'tags'}`
+  `http${site.insecure ? '' : 's'}://${domain}${site.api.search}${(site.tagQuery) ? site.tagQuery : 'tags'}`
   + `=${tags.join('+')}&limit=${limit}&${site.paginate || 'page'}=${page}`
 
 /**
