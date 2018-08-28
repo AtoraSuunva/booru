@@ -69,7 +69,8 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
-    "random": false
+    "random": false,
+    "paginate": "dummy"
   },
   "rule34.xxx": {
     "aliases": ["r34", "rule34"],
