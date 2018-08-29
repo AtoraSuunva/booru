@@ -52,7 +52,7 @@ module.exports.jsonfy = function jsonfy(xml) {
     if (typeof xml === 'object') {
       resolve(xml)
     }
-  
+
     parser.parseString(xml, (err, res) => {
       if (err) reject(err)
 
@@ -124,4 +124,24 @@ module.exports.validateSearchParams = (site, limit) => {
     throw new BooruError('`limit` should be an int')
 
   return {site, limit}
+}
+
+/**
+ * Finds the matching strings between two arrays
+ *
+ * @param {String[]} arr1 The first array
+ * @param {String[]} arr2 The second array
+ * @return {String[]} The shared strings between the arrays
+ */
+module.exports.compareArrays = (arr1, arr2) => {
+  const matches = []
+  arr1.forEach(ele1 => {
+    arr2.forEach(ele2 => {
+      if (ele1.toLowerCase() === ele2.toLowerCase()) {
+        matches.push(ele1)
+      }
+    })
+  })
+
+  return matches
 }

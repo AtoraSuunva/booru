@@ -2,6 +2,7 @@
 
 const Booru = require('../boorus/Booru.js')
 const Post = require('../structures/Post.js')
+const Utils = require('../Utils.js')
 
 /**
  * Represents a page of search results, works like an array of {@link Post}
@@ -73,6 +74,38 @@ class SearchResults extends Array {
     return this.booru.search(this._tags, opts)
   }
 
-  //TODO: Add methods like "tagged(tags: Array|String)" or "blacklist(tags: Array|String)" ??
+  /**
+   * Create a new SearchResults with just images with the matching tags
+   *
+   * @param {String[]|String} tags The tags (or tag) to search for
+   * @param {Object} options The extra options for the search
+   * @param {Boolean} [options.invert=false] If the results should be inverted and return images *not* tagged
+   * @return {SearchResults}
+   */
+  tagged(tags, {invert = false} = {}) {
+    if (!Array.isArray(tags)) {
+      tags = [tags]
+    }
+
+    const posts = []
+
+    for (let p of this) {
+      const m = Utils.compareArrays(tags, p.tags).length
+      if ((!invert && m > 0) || (invert && m === 0)) {
+        posts.push(p)
+      }
+    }
+
+    return new SearchResults(posts, this._tags, this._options, this.booru)
+  }
+
+  /**
+   * Returns a SearchResults with images *not* tagged with any of the specified tags (or tag)
+   * @param {String[]|String} tags The tags (or tag) to blacklist
+   * @return {SearchResults} The results without any images with the specified tags
+   */
+  blacklist(tags) {
+    return this.tagged(tags, {invert: true})
+  }
 }
 module.exports = SearchResults
