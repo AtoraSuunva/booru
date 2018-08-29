@@ -65,7 +65,7 @@ class Booru {
    * @param {Number} [searchArgs.limit=1] The number of images to return
    * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
    * @param {Number} [searchArgs.page=0] The page to search
-   * @return {Promise<Post[]>} The results as an array of Posts
+   * @return {Promise<SearchResults>} The results as an array of Posts
    */
   search(tags, { limit = 1, random = false, page = 0 } = {}) {
     let fakeLimit = random && !this.site.random ? 100 : 0
