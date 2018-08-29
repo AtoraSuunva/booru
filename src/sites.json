@@ -103,7 +103,6 @@
     "random": false
   },
   "xbooru.com": {
-    "type": "json",
     "aliases": ["xb", "xbooru"],
     "nsfw": true,
     "api": {

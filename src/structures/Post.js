@@ -1,29 +1,9 @@
 //@ts-check
 
+const Booru = require('../boorus/Booru.js')
+
 /**
  * An image from a booru with a few common props
- * @prop {Object} _data All the data given by the booru
- * @prop {Booru} booru The {@link Booru} it came from
- * @prop {String} id The id of the post
- *
- * @prop {String} file_url The direct link to the image
- * @prop {Number} height The height of the full image
- * @prop {Number} width The width of the full image
- *
- * @prop {String[]} tags The tags of the image in an array
- * @prop {Number} score The score of the image
- * @prop {String} source Source of the image, if supplied
- * @prop {String} rating  Rating of the image
- *
- * @prop {Date} createdAt The date it was created at
- *
- * @prop {String} preview_url The smallest image size available
- * @prop {Number?} preview_height The height of the preview image
- * @prop {Number?} preview_width The width of the preview image
- *
- * @prop {String?} sample_url The medium image size available
- * @prop {Number?} sample_height The height of the sample image
- * @prop {Number?} sample_width The width of the preview image
  *
  * @example
  * Post {
@@ -40,33 +20,99 @@ class Post {
    * Create an image from a booru
    *
    * @param {Object} data The raw data from the Booru
-   * @param {IBooru} booru The booru that created the image
+   * @param {Booru} booru The booru that created the image
    */
   constructor(data, booru) {
+    /**
+     * All the data given by the booru
+     * @type {Object}
+     * @private
+     */
     this._data = data
+
+    /**
+     * The {@link Booru} it came from
+     * @type {Booru}
+     */
     this.booru = booru
 
+    /**
+     * The direct link to the image
+     * @type {String}
+     */
     this.file_url = parseImageUrl(data.file_url || data.image || data.source, data, booru)
 
+    /**
+     * The height of this image
+     * @type {Number}
+     */
     this.height = parseInt(data.height || data.image_height)
+    /**
+     * The width of this image
+     * @type {Number}
+     */
     this.width = parseInt(data.width || data.image_width)
 
+    /**
+     * The url to the medium-sized image (if available)
+     * @type {String?}
+     */
     this.sample_url = parseImageUrl(data.sample_url || data.large_file_url ||
       (data.representations ? data.representations.large : undefined), data)
+    /**
+     * The height of the medium-sized image (if available)
+     * @type {Number?}
+     */
     this.sample_height = parseInt(data.sample_height)
+    /**
+     * The width of the medium-sized image (if available)
+     * @type {Number?}
+     */
     this.sample_width = parseInt(data.sample_width)
 
+    /**
+     * The url to the smallest image (if available)
+     * @type {String?}
+     */
     this.preview_url = parseImageUrl(data.preview_url || data.preview_file_url ||
       (data.representations ? data.representations.small : undefined), data)
+    /**
+     * The height of the smallest image (if available)
+     * @type {Number?}
+     */
     this.preview_height = parseInt(data.preview_height)
+    /**
+     * The width of the smallest image (if available)
+     * @type {Number?}
+     */
     this.preview_width = parseInt(data.preview_width)
 
+    /**
+     * The id of this post
+     * @type {String}
+     */
     this.id = data.id.toString()
+    /**
+     * The tags of the post
+     * @type {String[]}
+     */
     this.tags = (data.tags) ? data.tags.split(' ') : data.tag_string.split(' ').map(v => v.replace(/,/g, '').replace(/ /g, '_'))
     this.tags = this.tags.filter(v => v !== '')
+    /**
+     * The score of this post
+     * @type {Number}
+     */
     this.score = parseInt(data.score)
+    /**
+     * The source of this post (if available)
+     * @type {String?}
+     */
     this.source = data.source
-    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)[0]
+    /**
+     * The rating of the image, as just the first letter (s/q/e)
+     * @type {String}
+     */
+    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)
 
     // i just give up at this point
     if (this.rating === 'suggestive') {
@@ -74,6 +120,11 @@ class Post {
     }
     this.rating = this.rating.charAt(0)
 
+    /**
+     * The date the post was created at
+     * @type {Date}
+     */
+    this.createdAt = null
     if (typeof data.created_at === 'object') {
       this.createdAt = new Date((data.created_at.s * 1000) + (data.created_at.n / 1000000000))
     } else if (typeof data.created_at === 'number') {

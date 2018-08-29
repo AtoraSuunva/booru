@@ -1,6 +1,7 @@
 //@ts-check
 const Booru = require('./Booru.js')
 const Utils = require('../Utils.js')
+const Site = require('../structures/Site.js')
 const Constants = require('../Constants.js')
 const Post = require('../structures/Post.js')
 const Snekfetch = require('snekfetch')
