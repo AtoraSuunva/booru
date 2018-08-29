@@ -6,6 +6,7 @@ const Constants = require('./src/Constants.js')
 const { BooruError } = Constants
 const Utils = require('./src/Utils.js')
 const Booru = require('./src/boorus/Booru.js')
+const Post = require('./src/structures/Post.js')
 
 const BooruTypes = {
   'xml': require('./src/boorus/XmlBooru.js'),

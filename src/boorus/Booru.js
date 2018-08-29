@@ -1,6 +1,7 @@
 //@ts-check
 
 const Snekfetch = require('snekfetch')
+const Site = require('../structures/Site.js')
 const Utils = require('../Utils.js')
 const Constants =  require('../Constants.js')
 const {BooruError} = Constants
@@ -41,7 +42,15 @@ class Booru {
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
   constructor(site, credentials = null) {
+    /**
+     * The domain of the booru
+     * @type {String}
+     */
     this.domain = Utils.resolveSite(site.aliases[0])
+    /**
+     * The site object representing this booru
+     * @type {Site}
+     */
     this.site = site
 
     if (this.domain === null) {
@@ -55,6 +64,7 @@ class Booru {
    * @param {Object} searchArgs The arguments for the search
    * @param {Number} [searchArgs.limit=1] The number of images to return
    * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
+   * @param {Number} [searchArgs.page=0] The page to search
    * @return {Promise<Post[]>} The results as an array of Posts
    */
   search(tags, { limit = 1, random = false, page = 0 } = {}) {
@@ -69,6 +79,17 @@ class Booru {
     })
   }
 
+  /**
+   * The internal & common searching logic, pls dont use this use .search instead
+   *
+   * @private
+   * @param {String[]|String} tags The tags to search with
+   * @param {Object} searchArgs The arguments for the search
+   * @param {Number} [searchArgs.limit=1] The number of images to return
+   * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
+   * @param {Number} [searchArgs.page=0] The page number to search
+   * @return {Promise<Snekfetch.SnekfetchResponse>}
+   */
   _doSearchRequest(tags, {limit = 1, random = false, page = 0} = {}) {
     if (!Array.isArray(tags)) {
       tags = [tags]
@@ -91,6 +112,19 @@ class Booru {
     return Snekfetch.get(uri, options)
   }
 
+  /**
+   * Parse the response from the booru
+   *
+   * @private
+   * @param {Object} result The response of the booru
+   * @param {Object} searchArgs The arguments used for the search
+   * @param {Number?} [searchArgs.fakeLimit] If the `order:random` should be faked
+   * @param {String[]|String} [searchArgs.tags] The tags used on the search
+   * @param {Number} [searchArgs.limit] The number of images to return
+   * @param {Boolean} [searchArgs.random] If it should randomly grab results
+   * @param {Number} [searchArgs.page] The page number searched
+   * @return {SearchResults} The results of this search
+   */
   _parseSearchResult(result, {fakeLimit, tags, limit, random, page}) {
     if (Array.isArray(result)) {
       result = {body: result}
@@ -114,7 +148,9 @@ class Booru {
 
   /**
    * Gets the url you'd see in your browser from a post id for this booru
+   *
    * @param {String} id The id to get the postView for
+   * @return {String} The url to the post
    */
   postView(id) {
     if (Number.isNaN(parseInt(id))) {
