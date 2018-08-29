@@ -46,7 +46,8 @@ class Post {
     this._data = data
     this.booru = booru
 
-    this.file_url = parseImageUrl(data.file_url || data.image || data.source, data)
+    this.file_url = parseImageUrl(data.file_url || data.image || data.source, data, booru)
+
     this.height = parseInt(data.height || data.image_height)
     this.width = parseInt(data.width || data.image_width)
 
@@ -119,7 +120,7 @@ class Post {
 }
 module.exports = Post
 
-function parseImageUrl(url, data) {
+function parseImageUrl(url, data, booru) {
   // if the image's file_url is *still* undefined or the source is empty or it's deleted
   // thanks danbooru *grumble grumble*
   if (url === undefined || url.trim() === '' || data.is_deleted) {
@@ -142,6 +143,11 @@ function parseImageUrl(url, data) {
     url = 'https:' + data.image
   }
 
+    // Why???
+    if (data.directory) {
+      url = '//' + booru.domain + '//images/' + data.directory + '/' + data.image
+    }
+
   if (!url.startsWith('http')) {
     url = 'https:' + url
   }
@@ -151,5 +157,5 @@ function parseImageUrl(url, data) {
     url = data.sample_url.replace(/(.*booru \d+ ).*(\..*)/, '$1sample$2')
   }
 
-  return url
+  return encodeURI(url)
 }

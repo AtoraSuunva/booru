@@ -69,8 +69,8 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
-    "random": false,
-    "paginate": "dummy"
+    "paginate": "pid",
+    "random": false
   },
   "rule34.xxx": {
     "aliases": ["r34", "rule34"],
@@ -89,6 +89,7 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
+    "paginate": "pid",
     "random": false
   },
   "tbib.org": {
@@ -98,6 +99,7 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
+    "paginate": "pid",
     "random": false
   },
   "xbooru.com": {
@@ -108,6 +110,7 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
+    "paginate": "pid",
     "random": false
   },
   "youhate.us": {
@@ -117,6 +120,7 @@
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id="
     },
+    "paginate": "pid",
     "random": false
   },
   "lolibooru.moe": {
