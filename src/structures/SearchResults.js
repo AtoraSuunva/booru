@@ -1,5 +1,8 @@
 //@ts-check
 
+const Booru = require('../boorus/Booru.js')
+const Post = require('../structures/Post.js')
+
 /**
  * Represents a page of search results, works like an array of {@link Post}
  * <br> Usable like an array and allows to easily get the next page
@@ -20,21 +23,39 @@ class SearchResults extends Array {
   /** @private */
   constructor(posts, tags, options, booru) {
     super(...posts)
+    /**
+     * The tags used for this search
+     * @type {String[]}
+     */
     this._tags = tags
+    /**
+     * The options used for this search
+     * @type {Object}
+     */
     this._options = options
+    /**
+     * The booru used for this search
+     * @type {Booru}
+     */
     this.booru = booru
+    /**
+     * The page of this search
+     * @type {Number}
+     */
     this.page = options.page
   }
 
   /**
-   * Get the first image in this result set
+   * Get the first post in this result set
+   * @return {Post}
    */
   get first() {
     return this[0]
   }
 
   /**
-   * Get the last image in this result set
+   * Get the last post in this result set
+   * @return {Post}
    */
   get last() {
     return this[this.length - 1]
@@ -43,6 +64,7 @@ class SearchResults extends Array {
   /**
    * Get the next page
    * <br>Works like <code>sb.search('cat', {page: 1}); sb.search('cat', {page: 2})</code>
+   * @return {Promise<SearchResults>}
    */
   nextPage() {
     const opts = this._options
