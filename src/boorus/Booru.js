@@ -92,13 +92,20 @@ class Booru {
   }
 
   _parseSearchResult(result, {fakeLimit, tags, limit, random, page}) {
+    if (Array.isArray(result)) {
+      result = {body: result}
+    }
+
     let r
-    if (fakeLimit) {
+    // if gelbooru/other booru decides to return *nothing* instead of an empty array 😒
+    if (result.text === '') {
+      r = []
+    } else if (fakeLimit) {
       r = Utils.shuffle(result.body instanceof Buffer ? JSON.parse(result.text) : result.body)
     }
 
     const results = r || (result.body instanceof Buffer ? JSON.parse(result.text) : result.body) || result
-    
+
     const posts = results.slice(0, limit).map(v => new Post(v, this))
     const options = { limit, random, page }
 

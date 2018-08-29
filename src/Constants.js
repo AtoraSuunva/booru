@@ -64,8 +64,31 @@ module.exports.userAgent = `Booru v${pkg.version}, a node package for booru sear
  */
 module.exports.searchURI = (domain, site, tags = [], limit = 100, page = 0) =>
   `http${site.insecure ? '' : 's'}://${domain}${site.api.search}${(site.tagQuery) ? site.tagQuery : 'tags'}`
-  + `=${tags.join('+')}&limit=${limit}&${site.paginate || 'page'}=${page}`
+  + `=${expandTags(tags).join('+')}&limit=${limit}&${site.paginate || 'page'}=${page}`
 
+// THANKS GELBOORU
+const expandedTags = {
+  'rating:s': 'rating:safe',
+  'rating:q': 'rating:questionable',
+  'rating:e': 'rating:explicit',
+}
+
+/**
+ * Expands tags based on a simple map, used for gelbooru/safebooru/etc compat :(
+ *
+ * @private
+ * @param {String[]} tags The tags to expand
+ */
+function expandTags(tags) {
+  for (let i = 0; i < tags.length; i++) {
+    const ex = expandedTags[tags[i].toLowerCase()]
+    if (ex) {
+      tags[i] = ex
+    }
+  }
+
+  return tags
+}
 /**
  * The default options to use for requests
  * @private
