@@ -7,6 +7,7 @@ const { BooruError } = Constants
 const Utils = require('./src/Utils.js')
 const Booru = require('./src/boorus/Booru.js')
 const Post = require('./src/structures/Post.js')
+const SearchResults = require('./src/structures/SearchResults.js')
 
 const BooruTypes = {
   'xml': require('./src/boorus/XmlBooru.js'),
@@ -43,7 +44,7 @@ const booruCache = {}
  * @param {Object} [searchOptions={}] The options for searching
  * @param {Number|String} [searchOptions.limit=1] The limit of images to return
  * @param {Boolean} [searchOptions.random=false] If it should grab randomly sorted results
- * @return {Promise<Post[]>} A promise with the images as an array of objects
+ * @return {Promise<SearchResults>} A promise with the images as an array of objects
  *
  * @example
  * const Booru = require('booru')
