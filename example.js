@@ -9,6 +9,10 @@ const Booru = require('./index.js')
 
 Booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
 .then(images => {
+  if (images.length === 0) {
+    console.log('No images with those tags found.')
+  }
+
   // Log the direct link to each image
   for (let image of images) {
     console.log(image.common.file_url)
@@ -17,7 +21,7 @@ Booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
 .catch(err => {
   if (err.name === 'BooruError') {
     // It's a custom error thrown by the package
-    console.log(err.message)
+    console.log(err)
   } else {
     // This means I messed up. Whoops.
     console.log(err)
