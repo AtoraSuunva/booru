@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="BooruError.html">BooruError</a></li><li><a href="Post.html">Post</a></li><li><a href="SearchResults.html">SearchResults</a><ul class='methods'><li data-type='method'><a href="SearchResults.html#nextPage">nextPage</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Booru.html">Booru</a><ul class='methods'><li data-type='method'><a href="Booru.html#postView">postView</a></li><li data-type='method'><a href="Booru.html#search">search</a></li></ul></li><li><a href="BooruError.html">BooruError</a></li><li><a href="Post.html">Post</a></li><li><a href="SearchResults.html">SearchResults</a><ul class='methods'><li data-type='method'><a href="SearchResults.html#blacklist">blacklist</a></li><li data-type='method'><a href="SearchResults.html#nextPage">nextPage</a></li><li data-type='method'><a href="SearchResults.html#tagged">tagged</a></li></ul></li><li><a href="global.html#Site">Site</a></li></ul><h3>Global</h3><ul><li><a href="global.html#commonfy">commonfy</a></li><li><a href="global.html#compareArrays">compareArrays</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sites">sites</a></li></ul>
 </nav>
 
 <div id="main">
@@ -69,7 +69,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line35">line 35</a>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -122,18 +122,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const Booru = require('booru')
-// Aliases are supported
-const e9 = new Booru('e9')
-
-// You can then search the site
-const imgs = await e9.search(['cat', 'cute'], {limit: 3})
-
-// And use the images
-imgs.forEach(i => console.log(i.common.file_url))
-
-// Or access other methods on the Booru
-e9.postView(imgs[0].common.id)</code></pre>
+    <pre class="prettyprint"><code>const Booru = require('booru')// Aliases are supportedconst e9 = new Booru('e9')// You can then search the siteconst imgs = await e9.search(['cat', 'cute'], {limit: 3})// And use the imagesimgs.forEach(i => console.log(i.common.file_url))// Or access other methods on the Boorue9.postView(imgs[0].common.id)</code></pre>
 
 
 
@@ -270,6 +259,156 @@ e9.postView(imgs[0].common.id)</code></pre>
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="domain"><span class="type-signature"></span>domain<span class="type-signature"> :String</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    The domain of the booru
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">String</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="site"><span class="type-signature"></span>site<span class="type-signature"> :<a href="global.html#Site">Site</a></span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    The site object representing this booru
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="global.html#Site">Site</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -279,7 +418,7 @@ e9.postView(imgs[0].common.id)</code></pre>
 
     
 
-    <h4 class="name" id="postView"><span class="type-signature"></span>postView<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="postView"><span class="type-signature"></span>postView<span class="signature">(id)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -291,7 +430,7 @@ e9.postView(imgs[0].common.id)</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line110">line 110</a>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line155">line 155</a>
     </li></ul></dd>
     
 
@@ -405,6 +544,28 @@ e9.postView(imgs[0].common.id)</code></pre>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The url to the post
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
         
@@ -412,7 +573,7 @@ e9.postView(imgs[0].common.id)</code></pre>
 
     
 
-    <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(tags, searchArgs)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="Post.html">Post</a>>>}</span></h4>
+    <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(tags, searchArgs)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="SearchResults.html">SearchResults</a>>}</span></h4>
 
     
 
@@ -424,7 +585,7 @@ e9.postView(imgs[0].common.id)</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line60">line 60</a>
+        <a href="src_boorus_Booru.js.html">src/boorus/Booru.js</a>, <a href="src_boorus_Booru.js.html#line70">line 70</a>
     </li></ul></dd>
     
 
@@ -649,6 +810,45 @@ e9.postView(imgs[0].common.id)</code></pre>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>page</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last">The page to search</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -687,7 +887,7 @@ e9.postView(imgs[0].common.id)</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Array.&lt;<a href="Post.html">Post</a>>></span>
+<span class="param-type">Promise.&lt;<a href="SearchResults.html">SearchResults</a>></span>
 
 
     </dd>
@@ -714,7 +914,7 @@ e9.postView(imgs[0].common.id)</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 12:17:44 GMT-0400 (DST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 29 2018 21:13:07 GMT-0400 (DST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
