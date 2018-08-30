@@ -1,16 +1,15 @@
 # booru
 
->*A node package for searching various boorus (with promises!)*
+>*A node package to do stuff on various boorus, like search 'em*
 
 ## Features
 
 - Able to search 17 different boorus (check [sites.json](./sites.json))
 - Also alias support so you can be lazy (`sb` for `safebooru.org`)
 - Promises because they're magical
-- Little utility to convert xml to json (and add a .common prop to each image)
 - Choose the amount of images to get
 - Random support for all sites, using `order:random` on sites that support it and using a bit of magic on sites that don't
-- Some other stuff I probably forgot
+- Coming soon: Support for more than just searching
 
 ---
 
@@ -31,10 +30,17 @@ yarn add booru
 ## Usage
 
 ```js
-const booru = require('booru')
+const Booru = require('booru')
 
-booru.search(site, [tag1, tag2], {limit: 1, random: false})
-.then(booru.commonfy)
+// Instantiate a booru and search it
+const e9 = new Booru('e9')
+let imgs = await e9.search(['cute', 'cat'], {limit: 3})
+
+// Log the url to first post found
+console.log(imgs[0].postView)
+
+// Don't instantiate, plus some demo error-checking
+Booru.search(site, [tag1, tag2], {limit: 1, random: false})
 .then(images => {
   //Log the direct link to each image
   for (let image of images) {
@@ -56,21 +62,7 @@ booru.search(site, [tag1, tag2], {limit: 1, random: false})
 
 ## Docs
 
-### booru.search(site, tags, options)
-
-| Parameter | Type          | Optional | Default | Description |
-|-----------|:-------------:|:--------:|:-------:|-------------|
-| site      | string        |          | *none*  | The site to search, supports aliases
-| tags      | string[]      |    X     | []      | The tags to search with
-| options   | SearchOptions |    X     | {}      | For amount of images to fetch and if to return a random result or not (Check below table)
-
-
-### SearchOptions ({limit: 1, random: false})
-
-| Parameter | Type          | Optional | Default | Description |
-|-----------|:-------------:|:--------:|:-------:|-------------|
-| limit     | number        |    X     | 1       | The max amount of images to return
-| random    | boolean       |    X     | false   | If the images returned should be random everytime
+Available here: [https://booru.js.org](https://booru.js.org)
 
 ---
 
@@ -83,18 +75,20 @@ booru.search(site, [tag1, tag2], {limit: 1, random: false})
 
 ## FAQ
 
-### What the ".common prop" do?
+### What are the properties of a `Post`?
 
-Calling `booru.commonfy` not only transforms all the xml into json, it adds a .common prop to each image
+The basic structure of a `Post` object looks like:
 
 ```js
-common: {
-  file_url: 'https://aaaa.com/image.jpg',   //The direct link to the image, ready to post
-  id: '124125',                             //The image ID, as a string
-  tags: ['cat', 'cute'],                    //The tags, split into an Array
-  score: 5,                                 //The score as a Number
-  source: 'https://giraffeduck.com/aaa.png',//source of the image, if supplied
-  rating: 's'                               //rating of the image
+Post {
+  _data: {/*...*/},                     // The raw data from the booru
+  file_url: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
+  id: '124125',                         // The image ID, as a string
+  tags: ['cat', 'cute'],                // The tags, split into an Array
+  score: 5,                             // The score as a Number
+  source: 'https://ex.com/aaa.png',     // Source of the image, if supplied
+  rating: 's',                          // Rating of the image
+  createdAt: Date,                      // The `Date` this image was created at
 }
 ```
 
@@ -103,7 +97,7 @@ common: {
 `e`: 'Explicit'
 `u`: 'Unrated'
 
-Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive` will be shown as `q` in `image.common`
+Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive` will be shown as `q` in `<Post>.rating`
 
 ### Can I contribute?
 

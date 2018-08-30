@@ -1,11 +1,10 @@
 {
   "name": "booru",
-  "version": "0.4.0",
-  "description": "Search a bunch of different boorus using package magic!",
+  "version": "1.1.0",
+  "description": "Search (and do other things) on a bunch of different boorus!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "standard example.js index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -38,8 +37,5 @@
   "dependencies": {
     "snekfetch": "^3.6.4",
     "xml2js": "^0.4.17"
-  },
-  "devDependencies": {
-    "standard": "^10.0.3"
   }
 }
