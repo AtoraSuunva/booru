@@ -75,21 +75,20 @@ Available here: [https://booru.js.org](https://booru.js.org)
 
 ## FAQ
 
-### What the ".common prop" do?
+### What are the properties of a `Post`?
 
-Each BooruImage has a .common property with a getter, which returns a normalized object containing
-a few common properties across all boorus.
-
-tl;dr: `img.common.tags` will work the same for any booru
+The basic structure of a `Post` object looks like:
 
 ```js
-common: {
-  file_url: 'https://aaaa.com/image.jpg',   //The direct link to the image, ready to post
-  id: '124125',                             //The image ID, as a string
-  tags: ['cat', 'cute'],                    //The tags, split into an Array
-  score: 5,                                 //The score as a Number
-  source: 'https://giraffeduck.com/aaa.png',//source of the image, if supplied
-  rating: 's'                               //rating of the image
+Post {
+  _data: {/*...*/},                     // The raw data from the booru
+  file_url: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
+  id: '124125',                         // The image ID, as a string
+  tags: ['cat', 'cute'],                // The tags, split into an Array
+  score: 5,                             // The score as a Number
+  source: 'https://ex.com/aaa.png',     // Source of the image, if supplied
+  rating: 's',                          // Rating of the image
+  createdAt: Date,                      // The `Date` this image was created at
 }
 ```
 
@@ -98,7 +97,7 @@ common: {
 `e`: 'Explicit'
 `u`: 'Unrated'
 
-Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive` will be shown as `q` in `image.common`
+Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive` will be shown as `q` in `<Post>.rating`
 
 ### Can I contribute?
 
