@@ -69,7 +69,10 @@ Available here: [https://booru.js.org](https://booru.js.org)
 ## Contributors
 
 [BobbyWibowo](https://github.com/BobbyWibowo/booru)
-> Change from request-promise-native to snek-fetch
+> Change from request-promise-native to snek-fetch (#9)[https://github.com/AtlasTheBot/booru/pull/9]
+
+[rubikscraft](https://github.com/rubikscraft/booru)
+> Add 2 new boorus (furry.booru.org/realbooru.com) (#17)[https://github.com/AtlasTheBot/booru/pull/17]
 
 ---
 
