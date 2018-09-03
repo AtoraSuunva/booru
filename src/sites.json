@@ -152,5 +152,19 @@
     },
     "tagQuery": "q",
     "random": "sf=random%"
+  },
+  "furry.booru.org": {
+    "aliases": ["fb", "furrybooru"],
+    "nsfw": true,
+    "api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id=",
+    "random": false
+  },
+  "realbooru.com": {
+    "aliases": ["rb", "realbooru"],
+    "nsfw": true,
+    "api": "/index.php?page=dapi&s=post&q=index&",
+    "postView": "/index.php?page=post&s=view&id=",
+    "random": false
   }
 }
