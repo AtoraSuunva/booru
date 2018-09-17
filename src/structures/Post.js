@@ -196,7 +196,7 @@ function parseImageUrl(url, data, booru) {
 
     // Why???
     if (data.directory) {
-      url = '//' + booru.domain + '//images/' + data.directory + '/' + data.image
+      url = '//' + booru.domain + '/images/' + data.directory + '/' + data.image
     }
 
   if (!url.startsWith('http')) {
