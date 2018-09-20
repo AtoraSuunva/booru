@@ -23,7 +23,7 @@ class Derpibooru extends Booru {
   }
 
   /** @inheritDoc */
-  search(tags, {limit = 1, random = false, derpikey = false} = {}) {
+  search(tags, {limit = 1, random = false, credentials = false} = {}) {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -38,8 +38,10 @@ class Derpibooru extends Booru {
     // Sorry, but derpibooru has an odd and confusing api that's not similar to the others at all
     const uri = Constants.searchURI(this.domain, this.site, tags, limit) + (random ?
       `&${this.site.random}` +
-      `${(this.site.random.endsWith('%'))?Array(7).fill(0).map(v=>Utils.randInt(0,16)).join(''):''}`
-      : '') + (derpikey ? "&key=" + derpikey : "")
+      //`${(this.site.random.endsWith('%'))?Array(7).fill(0).map(v=>Utils.randInt(0,16)).join(''):''}`
+      : '') + (credentials ? "&key=" + credentials : "")
+
+    console.log(uri)
 
     const options = Constants.defaultOptions
 
