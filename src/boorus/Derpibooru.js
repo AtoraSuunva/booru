@@ -24,6 +24,8 @@ class Derpibooru extends Booru {
 
   /** @inheritDoc */
   search(tags, {limit = 1, random = false, credentials = false} = {}) {
+    if(!credentials && this.credentials) credentials = this.credentials;
+
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
