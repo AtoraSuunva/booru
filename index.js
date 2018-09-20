@@ -51,7 +51,7 @@ const booruCache = {}
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
  */
-function search(site, tags = [], {limit = 1, random = false} = {}) {
+function search(site, tags = [], {limit = 1, random = false, credentials = false} = {}) {
   const rSite = Utils.resolveSite(site)
   limit = parseInt(limit)
 
@@ -75,7 +75,7 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
     booruCache[rSite] = new (BooruTypes[booruSite.type] || Booru)(booruSite)
   }
 
-  return booruCache[rSite].search(tags, {limit, random})
+  return booruCache[rSite].search(tags, {limit, random, credentials})
 }
 
 /**
