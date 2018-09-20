@@ -112,14 +112,17 @@ class Post {
      * The rating of the image, as just the first letter (s/q/e)
      * @type {String}
      */
-    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)
+    if (this.rating) {
+      this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)
 
-    // i just give up at this point
-    if (this.rating === 'suggestive') {
-      this.rating = 'q'
+      // i just give up at this point
+      if (this.rating === 'suggestive') {
+        this.rating = 'q'
+      }
+      this.rating = this.rating.charAt(0)
+    } else {
+      this.rating = 'u'
     }
-    this.rating = this.rating.charAt(0)
-
     /**
      * The date the post was created at
      * @type {Date}
@@ -194,10 +197,10 @@ function parseImageUrl(url, data, booru) {
     url = 'https:' + data.image
   }
 
-    // Why???
-    if (data.directory) {
-      url = '//' + booru.domain + '/images/' + data.directory + '/' + data.image
-    }
+  // Why???
+  if (data.directory) {
+    url = '//' + booru.domain + '/images/' + data.directory + '/' + data.image
+  }
 
   if (!url.startsWith('http')) {
     url = 'https:' + url

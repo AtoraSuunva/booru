@@ -23,7 +23,7 @@ class Derpibooru extends Booru {
   }
 
   /** @inheritDoc */
-  search(tags, {limit = 1, random = false} = {}) {
+  search(tags, {limit = 1, random = false, derpikey = false} = {}) {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -39,7 +39,7 @@ class Derpibooru extends Booru {
     const uri = Constants.searchURI(this.domain, this.site, tags, limit) + (random ?
       `&${this.site.random}` +
       `${(this.site.random.endsWith('%'))?Array(7).fill(0).map(v=>Utils.randInt(0,16)).join(''):''}`
-      : '')
+      : '') + (derpikey ? "&key=" + derpikey : "")
 
     const options = Constants.defaultOptions
 
