@@ -112,7 +112,7 @@ class Post {
      * The rating of the image, as just the first letter (s/q/e)
      * @type {String}
      */
-    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)
+    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)[0]
 
     // i just give up at this point
     if (this.rating === 'suggestive') {
