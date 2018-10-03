@@ -151,7 +151,7 @@
       "postView": "/images/"
     },
     "tagQuery": "q",
-    "random": "sf=random%"
+    "random": "sf=random"
   },
   "furry.booru.org": {
     "aliases": ["fb", "furrybooru"],
