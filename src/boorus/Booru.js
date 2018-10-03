@@ -1,6 +1,6 @@
 //@ts-check
 
-const Snekfetch = require('snekfetch')
+const fetch = require('node-fetch')
 const Site = require('../structures/Site.js')
 const Utils = require('../Utils.js')
 const Constants =  require('../Constants.js')
@@ -70,15 +70,11 @@ class Booru {
    * @return {Promise<SearchResults>} The results as an array of Posts
    */
   search(tags, { limit = 1, random = false, page = 0 } = {}) {
-    let fakeLimit = random && !this.site.random ? 100 : 0
+    const fakeLimit = random && !this.site.random ? 100 : 0
 
-    return new Promise((resolve, reject) => {
-      this._doSearchRequest(tags, {limit, random, page})
-        .then(result => {
-          resolve(this._parseSearchResult(result, {fakeLimit, tags, limit, random, page}))
-        })
-        .catch(e => {e.name = 'BooruError'; reject(e)})
-    })
+    return this._doSearchRequest(tags, { limit, random, page })
+      .then(r => this._parseSearchResult(r, { fakeLimit, tags, limit, random, page }))
+      .catch(e => {e.name = 'BooruError'; return Promise.reject(e)})
   }
 
   /**
@@ -90,9 +86,10 @@ class Booru {
    * @param {Number} [searchArgs.limit=1] The number of images to return
    * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
    * @param {Number} [searchArgs.page=0] The page number to search
-   * @return {Promise<Snekfetch.SnekfetchResponse>}
+   * @param {String?} [searchArgs.uri=null] If the uri should be overwritten
+   * @return {Promise<Object>}
    */
-  _doSearchRequest(tags, {limit = 1, random = false, page = 0} = {}) {
+  _doSearchRequest(tags, {limit = 1, random = false, page = 0, uri = null} = {}) {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -108,10 +105,15 @@ class Booru {
       }
     }
 
-    const uri = Constants.searchURI(this.domain, this.site, tags, fakeLimit || limit, page)
+    const fetchuri = uri ||
+                    Constants.searchURI(this.domain, this.site, tags, fakeLimit || limit, page)
     const options = Constants.defaultOptions
+    const xml = this.site.type === 'xml'
 
-    return Snekfetch.get(uri, options)
+    return fetch(fetchuri, options)
+          .then(r => xml ? r.text() : r.json())
+          .then(r => xml ? Utils.jsonfy(r) : Promise.resolve(r))
+          .catch(e => e.type === 'invalid-json' ? Promise.resolve('') : Promise.reject(e))
   }
 
   /**
@@ -128,19 +130,17 @@ class Booru {
    * @return {SearchResults} The results of this search
    */
   _parseSearchResult(result, {fakeLimit, tags, limit, random, page}) {
-    if (Array.isArray(result)) {
-      result = {body: result}
-    }
+    console.log(result)
 
     let r
     // if gelbooru/other booru decides to return *nothing* instead of an empty array 😒
-    if (result.text === '') {
+    if (result === '') {
       r = []
     } else if (fakeLimit) {
-      r = Utils.shuffle(result.body instanceof Buffer ? JSON.parse(result.text) : result.body)
+      r = Utils.shuffle(result)
     }
 
-    const results = r || (result.body instanceof Buffer ? JSON.parse(result.text) : result.body) || result
+    const results = r || result
 
     const posts = results.slice(0, limit).map(v => new Post(v, this))
     const options = { limit, random, page }

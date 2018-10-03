@@ -6,6 +6,7 @@
     => .userAgent
     => .searchURI(site, tags, limit)
 */
+const Site = require('./structures/Site.js')
 const sites = require('./sites.json')
 const pkg = require('../package.json')
 
@@ -50,7 +51,7 @@ module.exports.BooruError = BooruError
  * The user-agent to use for searches
  * @private
  */
-module.exports.userAgent = `Booru v${pkg.version}, a node package for booru searching (by AtlasTheBot)`
+module.exports.userAgent = `booru/${pkg.version} (+https://github.com/AtlasTheBot/booru)`
 
 /**
  * Create a full uri to search with
@@ -94,5 +95,8 @@ function expandTags(tags) {
  * @private
  */
 module.exports.defaultOptions = {
-  headers: { 'User-Agent': module.exports.userAgent }
+  headers: {
+    'Accept': 'application/json, application/xml;q=0.9, */*;q=0.8',
+    'User-Agent': module.exports.userAgent
+  }
 }

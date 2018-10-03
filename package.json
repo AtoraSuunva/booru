@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "dependencies": {
-    "snekfetch": "^3.6.4",
+    "node-fetch": "^2.2.0",
     "xml2js": "^0.4.17"
   }
 }

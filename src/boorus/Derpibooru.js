@@ -1,9 +1,7 @@
 //@ts-check
 const Booru = require('./Booru.js')
-const Utils = require('../Utils.js')
 const Constants = require('../Constants.js')
-const Post = require('../structures/Post.js')
-const Snekfetch = require('snekfetch')
+const Site = require('../structures/Site.js')
 
 /**
  * A class designed for Derpibooru
@@ -23,9 +21,7 @@ class Derpibooru extends Booru {
   }
 
   /** @inheritDoc */
-  search(tags, {limit = 1, random = false, credentials = null} = {}) {
-    if (!credentials && this.credentials) credentials = this.credentials;
-
+  search(tags, { limit = 1, random = false, page = 0 } = {}) {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -37,16 +33,11 @@ class Derpibooru extends Booru {
 
     const uri = Constants.searchURI(this.domain, this.site, tags, limit)
               + (random ? `&${this.site.random}` : '')
-              + (credentials ? '&key=' + credentials : '')
-    const options = Constants.defaultOptions
+              + (this.credentials ? '&key=' + this.credentials : '')
 
-    return new Promise((resolve, reject) => {
-      Snekfetch.get(uri, options)
-        .then(result => {
-          resolve((result.body.search).slice(0, limit).map(v => new Post(v, this)))
-        })
-        .catch(e => {e.name = 'BooruError'; reject(e)})
-    })
+    return super._doSearchRequest(tags, {limit, random, page, uri})
+      .then(r => super._parseSearchResult(r, { fakeLimit: 0, tags, limit, random, page }))
+      .catch(e => {e.name = 'BooruError'; return Promise.reject(e)})
   }
 }
 module.exports = Derpibooru
