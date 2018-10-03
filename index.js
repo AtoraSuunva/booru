@@ -1,7 +1,5 @@
 //@ts-check
 // Declare the dependencies
-const snekfetch = require('snekfetch')
-
 const Constants = require('./src/Constants.js')
 const { BooruError } = Constants
 const Utils = require('./src/Utils.js')
