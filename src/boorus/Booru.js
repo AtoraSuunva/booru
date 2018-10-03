@@ -56,6 +56,8 @@ class Booru {
     if (this.domain === null) {
       throw new Error(`Invalid site passed: ${site}`)
     }
+
+    this.credentials = credentials
   }
 
   /**
