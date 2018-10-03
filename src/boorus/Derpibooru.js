@@ -36,7 +36,7 @@ class Derpibooru extends Booru {
               + (this.credentials ? '&key=' + this.credentials : '')
 
     return super._doSearchRequest(tags, {limit, random, page, uri})
-      .then(r => super._parseSearchResult(r, { fakeLimit: 0, tags, limit, random, page }))
+      .then(r => super._parseSearchResult(r.search, { fakeLimit: 0, tags, limit, random, page }))
       .catch(e => {e.name = 'BooruError'; return Promise.reject(e)})
   }
 }
