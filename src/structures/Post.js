@@ -109,15 +109,20 @@ class Post {
      */
     this.source = data.source
     /**
-     * The rating of the image, as just the first letter (s/q/e)
+     * The rating of the image, as just the first letter (s/q/e/u)
      * @type {String}
      */
-    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags)[0]
+    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags) || 'u'
 
-    // i just give up at this point
+    if (Array.isArray(this.rating)) {
+      this.rating = this.rating[0]
+    }
+
+    // thanks derpibooru
     if (this.rating === 'suggestive') {
       this.rating = 'q'
     }
+
     this.rating = this.rating.charAt(0)
 
     /**
@@ -194,10 +199,10 @@ function parseImageUrl(url, data, booru) {
     url = 'https:' + data.image
   }
 
-    // Why???
-    if (data.directory) {
-      url = '//' + booru.domain + '/images/' + data.directory + '/' + data.image
-    }
+  // Why???
+  if (data.directory) {
+    url = '//' + booru.domain + '/images/' + data.directory + '/' + data.image
+  }
 
   if (!url.startsWith('http')) {
     url = 'https:' + url

@@ -44,6 +44,7 @@ const booruCache = {}
  * @param {Object} [searchOptions={}] The options for searching
  * @param {Number|String} [searchOptions.limit=1] The limit of images to return
  * @param {Boolean} [searchOptions.random=false] If it should grab randomly sorted results
+ * @param {Object?} [searchOptions.credentials=null] Credentials to use to search the booru, if provided (Unused)
  * @return {Promise<SearchResults>} A promise with the images as an array of objects
  *
  * @example
@@ -51,7 +52,7 @@ const booruCache = {}
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
  */
-function search(site, tags = [], {limit = 1, random = false} = {}) {
+function search(site, tags = [], {limit = 1, random = false, credentials = null} = {}) {
   const rSite = Utils.resolveSite(site)
   limit = parseInt(limit)
 
@@ -75,7 +76,7 @@ function search(site, tags = [], {limit = 1, random = false} = {}) {
     booruCache[rSite] = new (BooruTypes[booruSite.type] || Booru)(booruSite)
   }
 
-  return booruCache[rSite].search(tags, {limit, random})
+  return booruCache[rSite].search(tags, {limit, random, credentials})
 }
 
 /**
