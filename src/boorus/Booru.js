@@ -130,6 +130,10 @@ class Booru {
    * @return {SearchResults} The results of this search
    */
   _parseSearchResult(result, {fakeLimit, tags, limit, random, page}) {
+	if (result.success === false) {
+	  throw new BooruError(result.message || result.reason)
+	}
+	  
     let r
     // if gelbooru/other booru decides to return *nothing* instead of an empty array 😒
     if (result === '') {
