@@ -29,6 +29,7 @@ yarn add booru
 
 ## Usage
 
+**in JavaScript**
 ```js
 const Booru = require('booru')
 
@@ -58,6 +59,40 @@ Booru.search(site, [tag1, tag2], {limit: 1, random: false})
 })
 ```
 
+**in TypeScript**
+```ts
+import * as booru from 'booru';
+
+booru.search(site, [tag1, tag2], {limit: 1, random: false})
+.then(images => {
+  //Log the direct link to each image
+  for (let image of images) {
+    console.log(image.common.file_url)
+  }
+})
+.catch(err => {
+  if (err.name === 'BooruError') {
+    //It's a custom error thrown by the package
+    console.log(err.message)
+  } else {
+    //This means I messed up. Whoops.
+    console.log(err)
+  }
+})
+
+// or with async/await and ES6 Arrow Functions:
+
+const booruSearch = async () => {
+    const search = await booru.search('e9', ['cute', 'cat'], {limit: 3, random: true});
+    const parseable = await booru.commonfy(search);
+
+    console.log(parseable[0].common);
+}
+
+console.log(booru.sites); // you can also check the sites and the options for each
+console.log(Object.keys(booru.sites)); // or just the site URLs
+```
+
 ---
 
 ## Docs
@@ -75,6 +110,8 @@ Available here: [https://booru.js.org](https://booru.js.org)
 > Add 2 new boorus (furry.booru.org/realbooru.com) https://github.com/AtlasTheBot/booru/pull/17  
 > Various Derpibooru fixes https://github.com/AtlasTheBot/booru/pull/19
 
+[Favna](https://github.com/favna/)
+> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21
 ---
 
 ## FAQ
