@@ -1,6 +1,4 @@
 declare namespace booru {
-    function commonfy(images: any): any;
-
     function resolveSite(siteToResolve: any): any;
 
     function search(site: string, tags: Array<string>, { limit, random, credentials }: {limit?: number|string, random?:boolean, credentials?:object}): any;
