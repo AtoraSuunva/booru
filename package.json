@@ -1,8 +1,9 @@
 {
   "name": "booru",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "main": "index.js",
+  "types": "./typings/booru.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
