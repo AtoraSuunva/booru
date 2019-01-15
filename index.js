@@ -52,7 +52,7 @@ const booruCache = {}
  */
 function search(site, tags = [], {limit = 1, random = false, credentials = null} = {}) {
   const rSite = Utils.resolveSite(site)
-  limit = parseInt(limit)
+  limit = Number(limit)
 
   if (rSite === null) {
     throw new BooruError('Site not supported')

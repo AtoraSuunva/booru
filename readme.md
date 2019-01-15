@@ -15,14 +15,9 @@
 
 ## Installation
 
-```bash
+```sh
 npm i --save booru
-```
-
-Or if you use yarn
-
-```bash
-yarn add booru
+# Replace "npm i --save" with "yarn add" when using yarn
 ```
 
 ---
@@ -30,7 +25,14 @@ yarn add booru
 ## Usage
 
 ```js
-const Booru = require('booru')
+const Booru = require('booru');
+/**
+ * or for Babel / TypeScript:
+ * import Booru from 'booru'
+ * Note: Requires --esmoduleinterop for TypeScript
+ * use "import * as Booru" with --allowsyntheticdefaultimport
+ * or "import booru = require('booru')" with neither
+ */
 
 // Instantiate a booru and search it
 const e9 = new Booru('e9')
@@ -55,7 +57,17 @@ Booru.search(site, [tag1, tag2], {limit: 1, random: false})
     //This means I messed up. Whoops.
     console.log(err)
   }
-})
+});
+
+// or with async/await and ES6 Arrow Functions:
+const booruSearch = async (site, tags, limit = 0, random = true) => {
+    const images = await Booru.search(site, tags, {limit, random});
+
+    console.log(images[0].common.file_url);
+}
+
+console.log(booru.sites); // you can also check the sites and the options for each
+console.log(Object.keys(booru.sites)); // or just the site URLs
 ```
 
 ---
@@ -75,6 +87,8 @@ Available here: [https://booru.js.org](https://booru.js.org)
 > Add 2 new boorus (furry.booru.org/realbooru.com) https://github.com/AtlasTheBot/booru/pull/17  
 > Various Derpibooru fixes https://github.com/AtlasTheBot/booru/pull/19
 
+[Favna](https://github.com/favna/)
+> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21 (and other things)
 ---
 
 ## FAQ
