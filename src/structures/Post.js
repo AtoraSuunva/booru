@@ -200,7 +200,7 @@ function parseImageUrl(url, data, booru) {
   }
 
   // Why???
-  if (data.directory) {
+  if (!data.file_url && data.directory) {
     url = '//' + booru.domain + '/images/' + data.directory + '/' + data.image
   }
 
