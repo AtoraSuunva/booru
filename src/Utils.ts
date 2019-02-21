@@ -1,5 +1,3 @@
-//@ts-check
-
 /*
 - Utils
   => .resolveSite(site/alias)
@@ -8,9 +6,7 @@
   => .randInt(min, max)
 */
 
-const {
-  sites, BooruError
-} = require('./Constants.js')
+import { sites, BooruError } from './Constants'
 
 // For XML only apis
 const xml2js = require('xml2js')
@@ -19,19 +15,18 @@ const parser = new xml2js.Parser()
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
  *
- * @private
- * @param  {String} siteToResolve The site to resolveSite
- * @return {String?} Null if site is not supported, the site otherwise
+ * @param  {String} domain The site to resolveSite
+ * @return {String?} null if site is not supported, the site otherwise
  */
-module.exports.resolveSite = function resolveSite(siteToResolve) {
-  if (typeof siteToResolve !== 'string') {
+export function resolveSite(domain: string): string|null {
+  if (typeof domain !== 'string') {
     return null
   }
 
-  siteToResolve = siteToResolve.toLowerCase()
+  domain = domain.toLowerCase()
 
   for (let site in sites) {
-    if (site === siteToResolve || sites[site].aliases.includes(siteToResolve)) {
+    if (site === domain || sites[site].aliases.includes(domain)) {
       return site
     }
   }
@@ -46,18 +41,18 @@ module.exports.resolveSite = function resolveSite(siteToResolve) {
  * @param  {String} xml The xml to convert to json
  * @return {Promise<Object[]>} A Promise with an array of objects created from the xml
  */
-module.exports.jsonfy = function jsonfy(xml) {
+export function jsonfy(xml: string): Promise<object[]> {
   return new Promise((resolve, reject) => {
     // If it's an object, assume it's already jsonfied
     if (typeof xml === 'object') {
       resolve(xml)
     }
 
-    parser.parseString(xml, (err, res) => {
+    parser.parseString(xml, (err: Error|null, res: any) => {
       if (err) reject(err)
 
       if (res.posts.post !== undefined) {
-        resolve(res.posts.post.map(val => val.$))
+        resolve(res.posts.post.map((val: any) => val.$))
       } else {
         resolve([])
       }
@@ -68,16 +63,16 @@ module.exports.jsonfy = function jsonfy(xml) {
 
 /**
  * Yay fisher-bates
- * <p>Taken from http://stackoverflow.com/a/2450976</p>
+ * <p>Taken from http://stackoverflow.com/a/2450976
  *
  * @private
  * @param  {Array} array Array of something
  * @return {Array}       Shuffled array of something
  */
-module.exports.shuffle = function shuffle(array) {
-  let currentIndex = array.length
-  let temporaryValue
-  let randomIndex
+export function shuffle<T>(array: T[]): T[] {
+  let currentIndex: number = array.length
+  let temporaryValue: T
+  let randomIndex: number
 
   // While there remain elements to shuffle...
   while (currentIndex !== 0) {
@@ -100,7 +95,7 @@ module.exports.shuffle = function shuffle(array) {
  * @param {Number} min The minimum (inclusive)
  * @param {Number} max The maximum (inclusive)
  */
-module.exports.randInt = function randInt(min, max) {
+export function randInt(min: number, max: number): number {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -110,31 +105,34 @@ module.exports.randInt = function randInt(min, max) {
  * Performs some basic search validation
  *
  * @private
- * @param {*} site The site to resolve
- * @param {*} limit The limit for the amount of images to fetch
+ * @param {String} site The site to resolve
+ * @param {Number|String} limit The limit for the amount of images to fetch
  */
-module.exports.validateSearchParams = (site, limit) => {
-  site = module.exports.resolveSite(site)
-  limit = parseInt(limit)
+export function validateSearchParams(site: string, limit: number|string): {site: string, limit: number} {
+  const resolvedSite = resolveSite(site)
 
-  if (site === null)
+  if (typeof limit !== 'number')
+    limit = parseInt(limit)
+
+  if (resolvedSite === null)
     throw new BooruError('Site not supported')
 
   if (typeof limit !== 'number' || Number.isNaN(limit))
     throw new BooruError('`limit` should be an int')
 
-  return {site, limit}
+  return { site: resolvedSite, limit }
 }
 
 /**
  * Finds the matching strings between two arrays
  *
+ * @private
  * @param {String[]} arr1 The first array
  * @param {String[]} arr2 The second array
  * @return {String[]} The shared strings between the arrays
  */
-module.exports.compareArrays = (arr1, arr2) => {
-  const matches = []
+export function compareArrays(arr1: string[], arr2: string[]): string[] {
+  const matches: string[] = []
   arr1.forEach(ele1 => {
     arr2.forEach(ele2 => {
       if (ele1.toLowerCase() === ele2.toLowerCase()) {

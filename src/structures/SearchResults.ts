@@ -1,12 +1,11 @@
-//@ts-check
-
-const Booru = require('../boorus/Booru.js')
-const Post = require('../structures/Post.js')
-const Utils = require('../Utils.js')
+import Booru from '../boorus/Booru'
+import Post from '../structures/Post'
+import * as Utils from '../Utils'
+import SearchParameters from './SearchParameters';
 
 /**
  * Represents a page of search results, works like an array of {@link Post}
- * <br> Usable like an array and allows to easily get the next page
+ * <p> Usable like an array and allows to easily get the next page
  *
  * @example
  * const Booru = require('booru')
@@ -20,37 +19,39 @@ const Utils = require('../Utils.js')
  * const imgs2 = await imgs.nextPage()
  * imgs2.forEach(i => console.log(i.postView))
  */
-class SearchResults extends Array {
+export default class SearchResults extends Array {
+
+  /** The tags used for this search @private */
+  _tags: string[]
+  /** The options used for this search @private */
+  _options: SearchParameters
+  /** The booru used for this search */
+  booru: Booru
+  /** The page of this search */
+  page: number
+
   /** @private */
-  constructor(posts, tags, options, booru) {
-    super(...posts)
-    /**
-     * The tags used for this search
-     * @type {String[]}
-     */
+  constructor(posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
+    // TypeScript seems to fail to recongnize that i can pass an array by spreading it, which
+    // creates a new array from the parameters passed
+    // So `super(...posts)` is (incorrectly) interpreted as an error
+    // Thank you TypeScript, very cool!
+    super(posts.length)
+
+    for (let i: number = 0; i < posts.length; i++)
+      this[i] = posts[i]
+
     this._tags = tags
-    /**
-     * The options used for this search
-     * @type {Object}
-     */
     this._options = options
-    /**
-     * The booru used for this search
-     * @type {Booru}
-     */
     this.booru = booru
-    /**
-     * The page of this search
-     * @type {Number}
-     */
-    this.page = options.page
+    this.page = options.page || 0
   }
 
   /**
    * Get the first post in this result set
    * @return {Post}
    */
-  get first() {
+  get first(): Post {
     return this[0]
   }
 
@@ -58,17 +59,17 @@ class SearchResults extends Array {
    * Get the last post in this result set
    * @return {Post}
    */
-  get last() {
+  get last(): Post {
     return this[this.length - 1]
   }
 
   /**
    * Get the next page
-   * <br>Works like <code>sb.search('cat', {page: 1}); sb.search('cat', {page: 2})</code>
+   * <p>Works like <code>sb.search('cat', {page: 1}); sb.search('cat', {page: 2})</code>
    * @return {Promise<SearchResults>}
    */
-  nextPage() {
-    const opts = this._options
+  nextPage(): Promise<SearchResults> {
+    const opts: SearchParameters = this._options
     opts.page = this.page + 1
 
     return this.booru.search(this._tags, opts)
@@ -82,15 +83,15 @@ class SearchResults extends Array {
    * @param {Boolean} [options.invert=false] If the results should be inverted and return images *not* tagged
    * @return {SearchResults}
    */
-  tagged(tags, {invert = false} = {}) {
+  tagged(tags: string[]|string, {invert = false} = {}): SearchResults {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
 
-    const posts = []
+    const posts: Post[] = []
 
     for (let p of this) {
-      const m = Utils.compareArrays(tags, p.tags).length
+      const m: number = Utils.compareArrays(tags, p.tags).length
       if ((!invert && m > 0) || (invert && m === 0)) {
         posts.push(p)
       }
@@ -104,8 +105,7 @@ class SearchResults extends Array {
    * @param {String[]|String} tags The tags (or tag) to blacklist
    * @return {SearchResults} The results without any images with the specified tags
    */
-  blacklist(tags) {
+  blacklist(tags: string[]|string): SearchResults {
     return this.tagged(tags, {invert: true})
   }
 }
-module.exports = SearchResults

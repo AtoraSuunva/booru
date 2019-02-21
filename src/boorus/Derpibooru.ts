@@ -1,7 +1,9 @@
-//@ts-check
-const Booru = require('./Booru.js')
-const Constants = require('../Constants.js')
-const Site = require('../structures/Site.js')
+import Booru from './Booru'
+import { BooruError } from '../Constants'
+import * as Constants from '../Constants'
+import Site from '../structures/Site'
+import SearchParameters from '../structures/SearchParameters';
+import SearchResults from '../structures/SearchResults';
 
 /**
  * A class designed for Derpibooru
@@ -10,18 +12,19 @@ const Site = require('../structures/Site.js')
  * @extends Booru
  * @inheritDoc
  */
-class Derpibooru extends Booru {
+export default class Derpibooru extends Booru {
   /**
    * Create a new booru for Derpibooru from a site
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
-  constructor(site, credentials) {
+  constructor(site: Site, credentials?: any) {
     super(site, credentials)
   }
 
   /** @inheritDoc */
-  search(tags, { limit = 1, random = false, page = 0 } = {}) {
+  search(tags: string[]|string, { limit = 1, random = false, page = 0 }: SearchParameters = {}):
+    Promise<SearchResults> {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -31,13 +34,12 @@ class Derpibooru extends Booru {
       tags[0] = '*'
     }
 
-    const uri = Constants.searchURI(this.domain, this.site, tags, limit)
+    const uri = Constants.searchURI(this.site, tags, limit)
               + (random ? `&${this.site.random}` : '')
               + (this.credentials ? '&key=' + this.credentials : '')
 
     return super._doSearchRequest(tags, {limit, random, page, uri})
       .then(r => super._parseSearchResult(r.search, { fakeLimit: 0, tags, limit, random, page }))
-      .catch(e => {e.name = 'BooruError'; return Promise.reject(e)})
+      .catch(e => Promise.reject(new BooruError(e)))
   }
 }
-module.exports = Derpibooru
