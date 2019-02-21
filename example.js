@@ -5,21 +5,21 @@
 
 // You can use any site in sites.json (or their aliases)
 
-const Booru = require('./index.js')
+const Booru = require('./dist/index.js')
 
 Booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
-.then(images => {
-  if (images.length === 0) {
-    console.log('No images with those tags found.')
+.then(posts => {
+  if (posts.length === 0) {
+    console.log('No posts with those tags found.')
   }
 
-  // Log the direct link to each image
-  for (let image of images) {
-    console.log(image.common.file_url)
+  // Log the direct file link & post view to each post
+  for (let i = 0; i < posts.length; i++) {
+    console.log(`Result #${i}`, posts[i].fileUrl, posts[i].postView)
   }
 })
 .catch(err => {
-  if (err.name === 'BooruError') {
+  if (err instanceof Booru.BooruError) {
     // It's a custom error thrown by the package
     console.log(err)
   } else {
@@ -40,6 +40,6 @@ async function example() {
   // Log the post url to the first image
   console.log(imgs[0].postView)
 
-  // In the future, things like `e9.favorite(BooruImage)` or `e9.fetchComments(BooruImage)`
-  // Will be available (and maybe even <BooruImage>.favorite())
+  // In the future, things like `e9.favorite(Post)` or `e9.fetchComments(Post)`
+  // Will be available (and <Post>.favorite())
 }
