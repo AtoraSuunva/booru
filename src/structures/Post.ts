@@ -221,7 +221,7 @@ export default class Post {
    * @type {String}
    * @example
    *
-   * const e9 = new Booru('e9')
+   * const e9 = Booru('e9')
    * const imgs = e9.search(['cat', 'dog'])
    *
    * // Log the post url of the first image
@@ -238,7 +238,7 @@ export default class Post {
    * @type {Object}
    *
    * @example
-   * image.common.id
+   * image.id
    * // deprecated, use this instead
    * image.id
    *

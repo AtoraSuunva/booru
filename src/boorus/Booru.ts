@@ -20,16 +20,16 @@ import { jsonfy, resolveSite, shuffle } from '../Utils';
  * @example
  * const Booru = require('booru')
  * // Aliases are supported
- * const e9 = new Booru('e9')
+ * const e9 = Booru('e9')
  *
  * // You can then search the site
  * const imgs = await e9.search(['cat', 'cute'], {limit: 3})
  *
  * // And use the images
- * imgs.forEach(i => console.log(i.common.file_url))
+ * imgs.forEach(i => console.log(i.fileUrl))
  *
  * // Or access other methods on the Booru
- * e9.postView(imgs[0].common.id)
+ * e9.postView(imgs[0].id)
  */
 export class Booru {
   /** The domain of the booru */

@@ -35,7 +35,7 @@ Booru.search(site, [tag1, tag2], {limit: 1, random: false})
   .then(posts => {
     //Log the direct link to each image
     for (let post of posts) {
-      console.log(post.file_url)
+      console.log(post.fileUrl)
     }
   })
   .catch(err => {
@@ -52,14 +52,14 @@ Booru.search(site, [tag1, tag2], {limit: 1, random: false})
 const booruSearch = async (site, tags, limit = 1, random = true) => {
   const posts = await Booru.search(site, tags, {limit, random});
 
-  return console.log(posts[0].file_url);
+  return console.log(posts[0].fileUrl);
 };
 
 // Search without instantiation and with async/await (a.k.a. the fancy pants way)
 const booruSearchDirect = async (site, tags, limit = 1, random = true) => {
   const posts = await search(site, tags, {limit, random});
 
-  return console.log(posts[0].file_url);
+  return console.log(posts[0].fileUrl);
 };
 
 console.log(Booru.SiteMap); // you can also check the sites and the options for each
@@ -98,7 +98,7 @@ The basic structure of a `Post` object looks like:
 ```js
 Post {
   _data: {/*...*/},                     // The raw data from the booru
-  file_url: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
+  fileUrl: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
   id: '124125',                         // The image ID, as a string
   tags: ['cat', 'cute'],                // The tags, split into an Array
   score: 5,                             // The score as a Number
