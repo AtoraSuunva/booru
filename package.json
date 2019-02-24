@@ -19,7 +19,7 @@
     "test": "jest --no-cache",
     "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
     "clean": "rimraf ./dist",
-    "prebuild": "yarn clean && yarn lint",
+    "prebuild": "yarn clean && yarn lint && yarn test",
     "build": "tsc",
     "postbuild": "uglifyjs-folder ./dist -yeo ./dist -x .js && copyfiles ./example.js ./dist"
   },
