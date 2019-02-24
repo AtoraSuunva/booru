@@ -25,9 +25,9 @@ const booruCache: SMap = {};
  */
 const booruFrom = (booruSite: Site, credentials?: any): Booru => {
   return new (booruSite.type !== undefined && BooruTypes[booruSite.type]
-      ? BooruTypes[booruSite.type]
-      : Booru)
-    (booruSite, credentials);
+    ? BooruTypes[booruSite.type]
+    : Booru)
+  (booruSite, credentials);
 };
 
 /**
@@ -64,8 +64,8 @@ export default (site: string, credentials: any = null): Booru => {
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
  */
-export const search = (site: string, tags: string[]|string = [], { limit = 1, random = false, page = 0, credentials = null}: SearchParameters = {}): Promise<SearchResults> => {
-  const rSite: string|null = resolveSite(site);
+export const search = (site: string, tags: string[] | string = [], {limit = 1, random = false, page = 0, credentials = null}: SearchParameters = {}): Promise<SearchResults> => {
+  const rSite: string | null = resolveSite(site);
 
   if (typeof limit === 'string') limit = parseInt(limit, 10);
   if (rSite === null) throw new BooruError('Site not supported');

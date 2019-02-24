@@ -13,9 +13,9 @@ import SearchParameters from './SearchParameters';
  */
 export default interface InternalSearchParameters extends SearchParameters {
   /** The uri to override with, if provided */
-  uri?: string|null;
+  uri?: string | null;
   /** If `order:random` should be faked */
   fakeLimit?: number;
   /** The tags used in the search */
-  tags?: string[]|string;
+  tags?: string[] | string;
 }

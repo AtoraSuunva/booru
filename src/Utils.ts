@@ -1,10 +1,10 @@
 /*
-- Utils
-  => .resolveSite(site/alias)
-  => .jsonfy([images])
-  => .shuffle([arr])
-  => .randInt(min, max)
-*/
+ - Utils
+ => .resolveSite(site/alias)
+ => .jsonfy([images])
+ => .shuffle([arr])
+ => .randInt(min, max)
+ */
 
 import { parse as xml2json } from 'fast-xml-parser';
 import { BooruError, SiteMap as sites } from './Constants';
@@ -15,7 +15,7 @@ import { BooruError, SiteMap as sites } from './Constants';
  * @param  {String} domain The site to resolveSite
  * @return {String?} null if site is not supported, the site otherwise
  */
-export const resolveSite = (domain: string): string|null => {
+export const resolveSite = (domain: string): string | null => {
   if (typeof domain !== 'string') {
     return null;
   }
@@ -55,7 +55,7 @@ export const jsonfy = async (xml: string): Promise<object[]> => {
  * @param  {Array} array Array of something
  * @return {Array}       Shuffled array of something
  */
-export const shuffle = <T extends {}>(array: T[]): T[] => {
+export const shuffle = <T extends {}> (array: T[]): T[] => {
   let currentIndex: number = array.length;
   let temporaryValue: T;
   let randomIndex: number;
@@ -93,7 +93,7 @@ export const randInt = (min: number, max: number): number => {
  * @param {String} site The site to resolve
  * @param {Number|String} limit The limit for the amount of images to fetch
  */
-export const validateSearchParams = (site: string, limit: number|string): {site: string, limit: number} => {
+export const validateSearchParams = (site: string, limit: number | string): { site: string, limit: number } => {
   const resolvedSite = resolveSite(site);
 
   if (typeof limit !== 'number') {
@@ -108,7 +108,7 @@ export const validateSearchParams = (site: string, limit: number|string): {site:
     throw new BooruError('`limit` should be an int');
   }
 
-  return { site: resolvedSite, limit };
+  return {site: resolvedSite, limit};
 };
 
 /**

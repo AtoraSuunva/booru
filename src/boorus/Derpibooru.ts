@@ -22,7 +22,7 @@ export default class Derpibooru extends Booru {
   }
 
   /** @inheritDoc */
-  public search (tags: string[]|string, { limit = 1, random = false, page = 0 }: SearchParameters = {}): Promise<SearchResults> {
+  public search (tags: string[] | string, {limit = 1, random = false, page = 0}: SearchParameters = {}): Promise<SearchResults> {
     if (!Array.isArray(tags)) {
       tags = [tags];
     }
@@ -33,11 +33,11 @@ export default class Derpibooru extends Booru {
     }
 
     const uri = searchURI(this.site, tags, limit)
-              + (random ? `&${this.site.random}` : '')
-              + (this.credentials ? `&key=${this.credentials}` : '');
+      + (random ? `&${this.site.random}` : '')
+      + (this.credentials ? `&key=${this.credentials}` : '');
 
     return super.doSearchRequest(tags, {limit, random, page, uri})
-      .then(r => super.parseSearchResult(r.search, { fakeLimit: 0, tags, limit, random, page }))
+      .then(r => super.parseSearchResult(r.search, {fakeLimit: 0, tags, limit, random, page}))
       .catch(e => Promise.reject(new BooruError(e)));
   }
 }

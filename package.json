@@ -1,9 +1,19 @@
 {
   "name": "booru",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Search (and do other things) on a bunch of different boorus!",
+  "author": "AtlasTheBot",
+  "license": "GPL-3.0",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "homepage": "https://github.com/AtlasTheBot/booru#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtlasTheBot/booru.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AtlasTheBot/booru/issues"
+  },
   "scripts": {
     "test": "jest",
     "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
@@ -11,10 +21,6 @@
     "prebuild": "yarn clean && yarn lint",
     "build": "tsc",
     "postbuild": "terser ./dist/index.js --compress --mangle --output ./dist/index.js && copyfiles ./example.js ./dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AtlasTheBot/booru.git"
   },
   "keywords": [
     "booru",
@@ -34,12 +40,9 @@
     "lolibooru",
     "derpibooru"
   ],
-  "author": "AtlasTheBot",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/AtlasTheBot/booru/issues"
+  "engines": {
+    "node": ">=8.0.0"
   },
-  "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "dependencies": {
     "common-tags": "^1.8.0",
     "fast-xml-parser": "^3.12.13",
