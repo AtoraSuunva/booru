@@ -6,6 +6,7 @@
   "license": "GPL-3.0",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "runkitExampleFilename": "./dist/example.js",
   "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "repository": {
     "type": "git",
@@ -20,7 +21,7 @@
     "clean": "rimraf ./dist",
     "prebuild": "yarn clean && yarn lint",
     "build": "tsc",
-    "postbuild": "terser ./dist/index.js --compress --mangle --output ./dist/index.js && copyfiles ./example.js ./dist"
+    "postbuild": "uglifyjs-folder ./dist -yeo ./dist -x .js && copyfiles ./example.js ./dist"
   },
   "keywords": [
     "booru",
@@ -48,24 +49,20 @@
     "node-fetch": "^2.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.3",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.3.3",
-    "@babel/register": "^7.0.0",
     "@types/common-tags": "^1.8.0",
     "@types/jest": "^24.0.6",
     "@types/node": "^11.9.4",
     "@types/node-fetch": "^2.1.6",
     "copyfiles": "^2.1.0",
     "jest": "^24.1.0",
-    "jsdoc-babel": "^0.5.0",
-    "jsdoc-to-markdown": "^4.0.1",
     "rimraf": "^2.6.3",
-    "terser": "^3.16.1",
     "tslint": "^5.13.0",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.3.3333",
+    "uglifyjs-folder": "^1.5.1"
   },
   "files": [
     "dist/"
