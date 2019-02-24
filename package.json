@@ -15,7 +15,7 @@
     "url": "https://github.com/AtlasTheBot/booru/issues"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --no-cache",
     "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
     "clean": "rimraf ./dist",
     "prebuild": "yarn clean && yarn lint",
