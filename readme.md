@@ -4,7 +4,7 @@
 
 ## Features
 
-- Able to search 17 different boorus (check [sites.json](./sites.json))
+- Able to search 17 different boorus (check [sites.json](./src/sites.json))
 - Also alias support so you can be lazy (`sb` for `safebooru.org`)
 - Promises because they're magical
 - Choose the amount of images to get
@@ -83,7 +83,9 @@ Available here: [https://booru.js.org](https://booru.js.org)
 > Various Derpibooru fixes https://github.com/AtlasTheBot/booru/pull/19
 
 [Favna](https://github.com/favna/)
-> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21 (and other things)
+> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21  
+> Improve TypeScript port  
+> Various other small fixes
 ---
 
 ## FAQ
