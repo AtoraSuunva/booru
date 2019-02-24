@@ -7,7 +7,7 @@
  */
 
 import { parse as xml2json } from 'fast-xml-parser';
-import { BooruError, SiteMap as sites } from './Constants';
+import { BooruError, sites as sites } from './Constants';
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
@@ -15,7 +15,7 @@ import { BooruError, SiteMap as sites } from './Constants';
  * @param  {String} domain The site to resolveSite
  * @return {String?} null if site is not supported, the site otherwise
  */
-export const resolveSite = (domain: string): string | null => {
+export function resolveSite (domain: string): string | null {
   if (typeof domain !== 'string') {
     return null;
   }
@@ -29,7 +29,7 @@ export const resolveSite = (domain: string): string | null => {
   }
 
   return null;
-};
+}
 
 /**
  * Parses xml to json, which can be used with js
@@ -38,13 +38,13 @@ export const resolveSite = (domain: string): string | null => {
  * @param  {String} xml The xml to convert to json
  * @return {Promise<Object[]>} A Promise with an array of objects created from the xml
  */
-export const jsonfy = async (xml: string): Promise<object[]> => {
+export async function jsonfy (xml: string): Promise<object[]> {
   if (typeof xml === 'object') return xml;
 
   const jsond = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''});
   if (jsond.posts.post) return jsond.posts.post;
   return [];
-};
+}
 
 
 /**

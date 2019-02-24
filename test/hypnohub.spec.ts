@@ -1,4 +1,4 @@
-import Booru, { BooruClass, search, SiteMap } from '../src/index';
+import Booru, { BooruClass, search, sites } from '../src/index';
 import Post from '../src/structures/Post';
 import SearchResults from '../src/structures/SearchResults';
 
@@ -20,7 +20,7 @@ describe('Using instantiation method', () => {
     const searchResult: SearchResults = await danbooru.search([tag1]);
     const image: Post = searchResult[0];
     expect(searchResult.booru.domain).toBe('hypnohub.net');
-    expect(searchResult.booru.site).toMatchObject(SiteMap[searchResult.booru.domain]);
+    expect(searchResult.booru.site).toMatchObject(sites[searchResult.booru.domain]);
     expect(typeof image.fileUrl).toBe('string');
   });
 });
@@ -30,7 +30,7 @@ describe('Using fancy pants method', () => {
     const searchResult = await search(site, [tag1]);
     const image: Post = searchResult[0];
     expect(searchResult.booru.domain).toBe('hypnohub.net');
-    expect(searchResult.booru.site).toMatchObject(SiteMap[searchResult.booru.domain]);
+    expect(searchResult.booru.site).toMatchObject(sites[searchResult.booru.domain]);
     expect(typeof image.fileUrl).toBe('string');
   });
 });
