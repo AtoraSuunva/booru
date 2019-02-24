@@ -1,5 +1,5 @@
 import path from 'path';
-import { BooruClass, BooruError, resolveSite, SiteMap } from '../src';
+import { BooruClass, BooruError, resolveSite, sites } from '../src';
 import Site from '../src/structures/Site';
 
 let site: string;
@@ -39,9 +39,9 @@ describe('check BooruClass', () => {
   });
 });
 
-describe('check SiteMap', () => {
+describe('check sites', () => {
   it('should support 17 sites', () => {
-    const map = SiteMap;
+    const map = sites;
     expect(Object.keys(map)).toHaveLength(17);
   });
 });

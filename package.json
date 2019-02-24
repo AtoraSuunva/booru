@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtlasTheBot",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "runkitExampleFilename": "./dist/example.js",
@@ -19,7 +19,7 @@
     "test": "jest --no-cache",
     "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
     "clean": "rimraf ./dist",
-    "prebuild": "yarn clean && yarn lint && yarn test",
+    "prebuild": "npm run clean && npm run lint && npm test",
     "build": "tsc",
     "postbuild": "uglifyjs-folder ./dist -yeo ./dist -x .js && copyfiles ./example.js ./dist"
   },
@@ -42,7 +42,7 @@
     "derpibooru"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "dependencies": {
     "fast-xml-parser": "^3.12.13",

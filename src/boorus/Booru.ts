@@ -129,7 +129,7 @@ export class Booru {
       return xml ? await jsonfy(response as unknown as string) : response;
     } catch (err) {
       if ((err as FetchError).type === 'invalid-json') return '';
-      return err;
+      throw err;
     }
   }
 

@@ -1,15 +1,15 @@
 import { RequestInit } from 'node-fetch';
-import sites from './sites.json';
+import siteJson from './sites.json';
 import SearchParameters from './structures/SearchParameters.js';
 import Site from './structures/Site';
 import SiteInfo from './structures/SiteInfo';
 
-type searchFunction = {
+export type searchFunction = {
   search: (tags: string | string[], SearchArgs: SearchParameters) => any;
 };
 
-export interface SMap {
-  [key: string]: SiteInfo & searchFunction;
+export interface SMap<V> {
+  [key: string]: V;
 }
 
 type gelTags = {
@@ -29,7 +29,7 @@ const expandedTags: gelTags = {
 /**
  * A map of site url/{@link SiteInfo}
  */
-export const SiteMap: SMap = sites as any;
+export const sites: SMap<SiteInfo> = siteJson as any;
 
 /**
  * Custom error type for when the boorus error or for user-side error, not my code (probably)

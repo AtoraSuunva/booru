@@ -50,7 +50,7 @@ function parseImageUrl (url: string, data: any, booru: Booru): string | null {
   }
 
   return encodeURI(url);
-};
+}
 
 /**
  * An image from a booru with a few common props
