@@ -25,9 +25,9 @@ export default class SearchResults extends Array {
   /** The page of this search */
   public page: number;
   /** The tags used for this search @private */
-  private tags: string[];
+  private readonly tags: string[];
   /** The options used for this search @private */
-  private options: SearchParameters;
+  private readonly options: SearchParameters;
 
   /** @private */
   constructor (posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
@@ -85,7 +85,7 @@ export default class SearchResults extends Array {
    * @param {Boolean} [options.invert=false] If the results should be inverted and return images *not* tagged
    * @return {SearchResults}
    */
-  public tagged (tags: string[]|string, {invert = false} = {}): SearchResults {
+  public tagged (tags: string[] | string, {invert = false} = {}): SearchResults {
     if (!Array.isArray(tags)) {
       tags = [tags];
     }
@@ -107,7 +107,7 @@ export default class SearchResults extends Array {
    * @param {String[]|String} tags The tags (or tag) to blacklist
    * @return {SearchResults} The results without any images with the specified tags
    */
-  public blacklist (tags: string[]|string): SearchResults {
+  public blacklist (tags: string[] | string): SearchResults {
     return this.tagged(tags, {invert: true});
   }
 }

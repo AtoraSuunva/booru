@@ -2,7 +2,8 @@ import { deprecate } from 'util';
 import Booru from '../boorus/Booru';
 
 // tslint:disable-next-line:no-empty
-const common = deprecate(() => {}, 'Common is now deprecated, just access the properties directly');
+const common = deprecate(() => {
+}, 'Common is now deprecated, just access the properties directly');
 
 /**
  * Tries to figure out what the image url should be
@@ -11,10 +12,10 @@ const common = deprecate(() => {}, 'Common is now deprecated, just access the pr
  * @param {*}      data  boorus
  * @param {Booru}  booru so hard
  */
-const parseImageUrl = (url: string, data: any, booru: Booru): string|null => {
+const parseImageUrl = (url: string, data: any, booru: Booru): string | null => {
   // If the image's file_url is *still* undefined or the source is empty or it's deleted
   // Thanks danbooru *grumble grumble*
-  if (url === undefined || url.trim() === '' || data.is_deleted) {
+  if (!url || url.trim() === '' || data.is_deleted) {
     return null;
   }
 
@@ -66,11 +67,103 @@ const parseImageUrl = (url: string, data: any, booru: Booru): string|null => {
  */
 export default class Post {
 
+  /** The {@link Booru} it came from */
+  public booru: Booru;
+  /** The direct link to the file */
+  public fileUrl: string | null;
+  /** The height of the file */
+  public height: number;
+  /** The width of the file */
+  public width: number;
+  /** The url to the medium-sized image (if available) */
+  public sampleUrl: string | null;
+  /** The height of the medium-sized image (if available) */
+  public sampleHeight: number | null;
+  /** The width of the medium-sized image (if available) */
+  public sampleWidth: number | null;
+  /** The url to the smallest image (if available) */
+  public previewUrl: string | null;
+  /** The height of the smallest image (if available) */
+  public previewHeight: number | null;
+  /** The width of the smallest image (if available) */
+  public previewWidth: number | null;
+  /** The id of this post */
+  public id: string;
+  /** The tags of this post */
+  public tags: string[];
+  /** The score of this post */
+  public score: number;
+  /** The source of this post, if available */
+  public source?: string;
+  /** The rating of the image, as just the first letter (s/q/e/u) => safe/questionable/explicit/unrated */
+  public rating: string;
+  /** The Date this post was created at */
+  public createdAt?: Date | null;
+  /** All the data given by the booru @private */
+  protected data: any;
+
+  /**
+   * Create an image from a booru
+   *
+   * @param {Object} data The raw data from the Booru
+   * @param {Booru} booru The booru that created the image
+   */
+  constructor (data: any, booru: Booru) {
+    this.data = data;
+    this.booru = booru;
+
+    this.fileUrl = parseImageUrl(data.file_url || data.image || data.source, data, booru);
+
+    this.height = parseInt(data.height || data.image_height, 10);
+    this.width = parseInt(data.width || data.image_width, 10);
+
+    this.sampleUrl = parseImageUrl(data.sample_url || data.large_file_url ||
+      (data.representations ? data.representations.large : undefined), data, booru);
+    this.sampleHeight = parseInt(data.sample_height, 10);
+    this.sampleWidth = parseInt(data.sample_width, 10);
+
+    this.previewUrl = parseImageUrl(data.preview_url || data.preview_file_url ||
+      (data.representations ? data.representations.small : undefined), data, booru);
+    this.previewHeight = parseInt(data.preview_height, 10);
+    this.previewWidth = parseInt(data.preview_width, 10);
+
+    this.id = data.id.toString();
+    this.tags = ((data.tags)
+        ? data.tags.split(' ')
+        : data.tag_string.split(' ').map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
+    ).filter((v: string) => v !== '');
+
+    this.score = parseInt(data.score, 10);
+    this.source = data.source;
+    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags) || 'u';
+
+    if (Array.isArray(this.rating)) {
+      this.rating = this.rating[0];
+    }
+
+    // Thanks derpibooru
+    if (this.rating === 'suggestive') {
+      this.rating = 'q';
+    }
+
+    this.rating = this.rating.charAt(0);
+
+    this.createdAt = null;
+    // tslint:disable-next-line:prefer-conditional-expression
+    if (typeof data.created_at === 'object') {
+      this.createdAt = new Date((data.created_at.s * 1000) + (data.created_at.n / 1000000000));
+    } else if (typeof data.created_at === 'number') {
+      this.createdAt = new Date(data.created_at * 1000);
+    } else {
+      this.createdAt = new Date(data.created_at || data.date);
+    }
+  }
+
   /**
    * The direct link to the file
    * <p>It's prefered to use `.fileUrl` instead because camelCase
    */
-  get file_url (): string|null {
+  get file_url (): string | null {
     return this.fileUrl;
   }
 
@@ -78,7 +171,7 @@ export default class Post {
    * The url to the medium-sized image (if available)
    * <p>It's prefered to use `.sampleUrl` instead because camelCase
    */
-  get sample_url (): string|null {
+  get sample_url (): string | null {
     return this.sampleUrl;
   }
 
@@ -86,7 +179,7 @@ export default class Post {
    * The height of the medium-sized image (if available)
    * <p>It's prefered to use `.sampleHeight` instead because camelCase
    */
-  get sample_height (): number|null {
+  get sample_height (): number | null {
     return this.sampleHeight;
   }
 
@@ -94,7 +187,7 @@ export default class Post {
    * The width of the medium-sized image (if available)
    * <p>It's prefered to use `.sampleWidth` instead because camelCase
    */
-  get sample_width (): number|null {
+  get sample_width (): number | null {
     return this.sampleWidth;
   }
 
@@ -102,7 +195,7 @@ export default class Post {
    * The url to the smallest image (if available)
    * <p>It's prefered to use `.previewUrl` instead because camelCase
    */
-  get preview_url (): string|null {
+  get preview_url (): string | null {
     return this.previewUrl;
   }
 
@@ -110,7 +203,7 @@ export default class Post {
    * The height of the smallest image (if available)
    * <p>It's prefered to use `.previewHeight` instead because camelCase
    */
-  get preview_height (): number|null {
+  get preview_height (): number | null {
     return this.previewHeight;
   }
 
@@ -118,7 +211,7 @@ export default class Post {
    * The width of the smallest image (if available)
    * <p>It's prefered to use `.previewWidth` instead because camelCase
    */
-  get preview_width (): number|null {
+  get preview_width (): number | null {
     return this.previewWidth;
   }
 
@@ -155,98 +248,5 @@ export default class Post {
   get common (): this {
     common();
     return this;
-  }
-  /** The {@link Booru} it came from */
-  public booru: Booru;
-  /** The direct link to the file */
-  public fileUrl: string|null;
-  /** The height of the file */
-  public height: number;
-  /** The width of the file */
-  public width: number;
-  /** The url to the medium-sized image (if available) */
-  public sampleUrl: string|null;
-  /** The height of the medium-sized image (if available) */
-  public sampleHeight: number|null;
-  /** The width of the medium-sized image (if available) */
-  public sampleWidth: number|null;
-  /** The url to the smallest image (if available) */
-  public previewUrl: string|null;
-  /** The height of the smallest image (if available) */
-  public previewHeight: number|null;
-  /** The width of the smallest image (if available) */
-  public previewWidth: number|null;
-
-  /** The id of this post */
-  public id: string;
-  /** The tags of this post */
-  public tags: string[];
-  /** The score of this post */
-  public score: number;
-  /** The source of this post, if available */
-  public source?: string;
-  /** The rating of the image, as just the first letter (s/q/e/u) => safe/questionable/explicit/unrated */
-  public rating: string;
-  /** The Date this post was created at */
-  public createdAt?: Date|null;
-  /** All the data given by the booru @private */
-  protected data: any;
-
-  /**
-   * Create an image from a booru
-   *
-   * @param {Object} data The raw data from the Booru
-   * @param {Booru} booru The booru that created the image
-   */
-  constructor (data: any, booru: Booru) {
-    this.data = data;
-    this.booru = booru;
-
-    this.fileUrl = parseImageUrl(data.file_url || data.image || data.source, data, booru);
-
-    this.height = parseInt(data.height || data.image_height, 10);
-    this.width = parseInt(data.width || data.image_width, 10);
-
-    this.sampleUrl = parseImageUrl(data.sample_url || data.large_file_url ||
-      (data.representations ? data.representations.large : undefined), data, booru);
-    this.sampleHeight = parseInt(data.sample_height, 10);
-    this.sampleWidth = parseInt(data.sample_width, 10);
-
-    this.previewUrl = parseImageUrl(data.preview_url || data.preview_file_url ||
-      (data.representations ? data.representations.small : undefined), data, booru);
-    this.previewHeight = parseInt(data.preview_height, 10);
-    this.previewWidth = parseInt(data.preview_width, 10);
-
-    this.id = data.id.toString();
-    this.tags = (
-      (data.tags) ?
-        data.tags.split(' ') :
-        data.tag_string.split(' ').map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
-      ).filter((v: string) => v !== '');
-
-    this.score = parseInt(data.score, 10);
-    this.source = data.source;
-    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags) || 'u';
-
-    if (Array.isArray(this.rating)) {
-      this.rating = this.rating[0];
-    }
-
-    // Thanks derpibooru
-    if (this.rating === 'suggestive') {
-      this.rating = 'q';
-    }
-
-    this.rating = this.rating.charAt(0);
-
-    this.createdAt = null;
-    // tslint:disable-next-line:prefer-conditional-expression
-    if (typeof data.created_at === 'object') {
-      this.createdAt = new Date((data.created_at.s * 1000) + (data.created_at.n / 1000000000));
-    } else if (typeof data.created_at === 'number') {
-      this.createdAt = new Date(data.created_at * 1000);
-    } else {
-      this.createdAt = new Date(data.created_at || data.date);
-    }
   }
 }

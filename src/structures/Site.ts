@@ -18,7 +18,7 @@ export default class Site {
   /** The url query param to paginate on the site */
   public paginate: string;
   /** If the site supports `order:random`. If a string, this means a custom random system is used :/ */
-  public random: boolean|string;
+  public random: boolean | string;
   /** The url query param for tags */
   public tagQuery: string;
   /** If this site supports only http:// */

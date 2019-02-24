@@ -8,12 +8,12 @@ import Site from '../structures/Site';
 import { jsonfy, resolveSite, shuffle } from '../Utils';
 
 /*
-- new Booru
-    => Constructor, params {name, {nsfw, {search, postView, ...}, random}, {apiTokens...}}
-    => .search([tags...], {limit, random})
-    => .postView(id)
-    => .site
-*/
+ - new Booru
+ => Constructor, params {name, {nsfw, {search, postView, ...}, random}, {apiTokens...}}
+ => .search([tags...], {limit, random})
+ => .postView(id)
+ => .site
+ */
 
 /**
  * A basic, JSON booru
@@ -38,10 +38,6 @@ export class Booru {
   public site: Site;
   /** The credentials to use for this booru */
   public credentials: any;
-  public aliases: string[] | undefined;
-  public nsfw: boolean | undefined;
-  public api: any;
-  public random: boolean | string | undefined;
 
   /**
    * Create a new booru from a site
@@ -50,7 +46,7 @@ export class Booru {
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
-  constructor (site: Site, credentials: object|null = null, aliases?: string[], nsfw?: boolean, api?: any, random?: boolean | string) {
+  constructor (site: Site, credentials: object | null = null) {
     const domain = resolveSite(site.domain);
 
     if (domain === null) {
@@ -59,10 +55,6 @@ export class Booru {
 
     this.domain = domain;
     this.site = site;
-    this.aliases = aliases;
-    this.nsfw = nsfw;
-    this.api = api;
-    this.random = random;
     this.credentials = credentials;
   }
 
@@ -75,13 +67,13 @@ export class Booru {
    * @param {Number} [searchArgs.page=0] The page to search
    * @return {Promise<SearchResults>} The results as an array of Posts
    */
-  public async search (tags: string|string[], { limit = 1, random = false, page = 0 }: SearchParameters = {}): Promise<SearchResults> {
+  public async search (tags: string | string[], {limit = 1, random = false, page = 0}: SearchParameters = {}): Promise<SearchResults> {
 
     const fakeLimit: number = random && !this.site.random ? 100 : 0;
 
     try {
-      const searchResult = await this.doSearchRequest(tags, { limit, random, page });
-      return this.parseSearchResult(searchResult, { fakeLimit, tags, limit, random, page });
+      const searchResult = await this.doSearchRequest(tags, {limit, random, page});
+      return this.parseSearchResult(searchResult, {fakeLimit, tags, limit, random, page});
     } catch (err) {
       throw new BooruError(err.message);
     }
@@ -93,7 +85,7 @@ export class Booru {
    * @param {String} id The id to get the postView for
    * @return {String} The url to the post
    */
-  public postView (id: string|number): string {
+  public postView (id: string | number): string {
     if (typeof id === 'string' && Number.isNaN(parseInt(id, 10))) {
       throw new BooruError(`Not a valid id for postView: ${id}`);
     }
@@ -113,11 +105,11 @@ export class Booru {
    * @param {String?} [searchArgs.uri=null] If the uri should be overwritten
    * @return {Promise<Object>}
    */
-  protected async doSearchRequest (tags: string[]|string,{uri = null, limit = 1, random = false, page = 0}: InternalSearchParameters = {}): Promise<any> {
+  protected async doSearchRequest (tags: string[] | string, {uri = null, limit = 1, random = false, page = 0}: InternalSearchParameters = {}): Promise<any> {
     if (!Array.isArray(tags)) tags = [tags];
 
     // Used for random on sites without order:random
-    let fakeLimit: number|undefined;
+    let fakeLimit: number | undefined;
 
     if (random) {
       if (this.site.random) {
@@ -162,7 +154,7 @@ export class Booru {
       throw new BooruError(result.message || result.reason);
     }
 
-    let r: string[]|undefined;
+    let r: string[] | undefined;
     // If gelbooru/other booru decides to return *nothing* instead of an empty array
     if (result === '') {
       r = [];
@@ -172,7 +164,7 @@ export class Booru {
 
     const results = r || result;
     const posts = results.slice(0, limit).map((v: any) => new Post(v, this));
-    const options = { limit, random, page };
+    const options = {limit, random, page};
 
     if (tags === undefined) {
       tags = [];

@@ -13,10 +13,6 @@ export interface SMap {
   [key: string]: SiteInfo & searchFunction;
 }
 
-export interface NMap<V> {
-  [key: number]: V;
-}
-
 type gelTags = {
   'rating:e': 'rating:explicit',
   'rating:q': 'rating:questionable',
