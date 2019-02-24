@@ -12,11 +12,11 @@ export default class Site {
   /** The aliases of this site */
   public aliases: string[];
   /** If this site serves NSFW posts or not */
-  public nsfw: boolean;
+  public nsfw: boolean | undefined;
   /** An object representing the api of this site */
   public api: SiteApi;
   /** The url query param to paginate on the site */
-  public paginate?: string;
+  public paginate: string;
   /** If the site supports `order:random`. If a string, this means a custom random system is used :/ */
   public random: boolean | string;
   /** The url query param for tags */
@@ -28,7 +28,7 @@ export default class Site {
     this.domain = data.domain;
     this.type = data.type || 'json';
     this.aliases = data.aliases || [];
-    this.nsfw = data.nsfw || true;
+    this.nsfw = data.nsfw;
     this.api = data.api || {};
     this.paginate = data.paginate || 'page';
     this.random = data.random || false;
