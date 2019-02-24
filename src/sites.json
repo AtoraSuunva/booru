@@ -168,21 +168,6 @@
     "paginate": "pid",
     "random": false
   },
-  "youhate.us": {
-    "domain": "youhate.us",
-    "aliases": [
-      "yh",
-      "you",
-      "youhate"
-    ],
-    "nsfw": true,
-    "api": {
-      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/index.php?page=post&s=view&json=1&id="
-    },
-    "paginate": "pid",
-    "random": false
-  },
   "lolibooru.moe": {
     "domain": "lolibooru.moe",
     "aliases": [
