@@ -30,37 +30,33 @@ const Booru = require('booru');
 // You can also import the search function directly:
 // const { search } = require('booru') or import { search } from 'booru'
 
-// Instantiate a booru and search it
-const e9 = Booru('e9');
-
 // Search with promises, plus some demo error-checking
-e9.search(site, [tag1, tag2], {limit: 1, random: false})
-.then(images => {
-  //Log the direct link to each image
-  for (let image of images) {
-    console.log(image.data.file_url)
-  }
-})
-.catch(err => {
-  if (err.name === 'BooruError') {
-    //It's a custom error thrown by the package
-    console.log(err.message)
-  } else {
-    //This means I messed up. Whoops.
-    console.log(err)
-  }
-});
+Booru.search(site, [tag1, tag2], {limit: 1, random: false})
+  .then(images => {
+    //Log the direct link to each image
+    for (let image of images) {
+      console.log(image.data.file_url)
+    }
+  })
+  .catch(err => {
+    if (err.name === 'BooruError') {
+      //It's a custom error thrown by the package
+      console.log(err.message)
+    } else {
+      //This means I messed up. Whoops.
+      console.log(err)
+    }
+  });
 
-// Search with async/await
-const booruSearch = async (site, tags, limit = 1, random = true) => {
-  const images = await e9.search(site, tags, {limit, random});
+// or with async/await:
+const booruSearchDirect = async (site, tags, limit = 1, random = true) => {
+  const images = await search(site, tags, {limit, random});
 
   return console.log(images[0].data.file_url);
 };
 
-// Search without instantiation and with async/await (a.k.a. the fancy pants way)
-const booruSearchDirect = async (site,tags,limit = 1,random = true) => {
-  const images = await search(site, tags, { limit, random });
+const booruSearch = async (site, tags, limit = 1, random = true) => {
+  const images = await Booru.search(site, tags, {limit, random});
 
   return console.log(images[0].data.file_url);
 };
