@@ -21,7 +21,7 @@
     "clean": "rimraf ./dist",
     "prebuild": "npm run clean && npm run lint && npm test",
     "build": "tsc",
-    "postbuild": "uglifyjs-folder ./dist -yeo ./dist -x .js && copyfiles ./example.js ./dist"
+    "postbuild": "terser-folder ./dist -eo ./dist -x .js && copyfiles ./example.js ./dist"
   },
   "keywords": [
     "booru",
@@ -59,9 +59,9 @@
     "copyfiles": "^2.1.0",
     "jest": "^24.1.0",
     "rimraf": "^2.6.3",
+    "terser-folder": "^2.0.0",
     "tslint": "^5.13.0",
-    "typescript": "^3.3.3333",
-    "uglifyjs-folder": "^1.5.1"
+    "typescript": "^3.3.3333"
   },
   "files": [
     "dist/"
