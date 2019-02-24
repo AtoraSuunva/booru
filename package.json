@@ -44,7 +44,6 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "common-tags": "^1.8.0",
     "fast-xml-parser": "^3.12.13",
     "node-fetch": "^2.2.0"
   },
