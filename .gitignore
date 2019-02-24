@@ -10,4 +10,4 @@ node_modules/*
 dist/*
 
 # Only publish one type of lockfile
-package-lock.json
+yarn.lock

@@ -28,7 +28,7 @@ export default class Site {
     this.domain = data.domain;
     this.type = data.type || 'json';
     this.aliases = data.aliases || [];
-    this.nsfw = data.nsfw;
+    this.nsfw = !! data.nsfw;
     this.api = data.api || {};
     this.paginate = data.paginate || 'page';
     this.random = data.random || false;
