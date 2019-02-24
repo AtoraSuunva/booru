@@ -12,7 +12,7 @@ export default class Site {
   /** The aliases of this site */
   public aliases: string[];
   /** If this site serves NSFW posts or not */
-  public nsfw: boolean | undefined;
+  public nsfw: boolean;
   /** An object representing the api of this site */
   public api: SiteApi;
   /** The url query param to paginate on the site */
@@ -28,7 +28,7 @@ export default class Site {
     this.domain = data.domain;
     this.type = data.type || 'json';
     this.aliases = data.aliases || [];
-    this.nsfw = !! data.nsfw;
+    this.nsfw = data.nsfw !== false;
     this.api = data.api || {};
     this.paginate = data.paginate || 'page';
     this.random = data.random || false;

@@ -15,7 +15,7 @@ describe('Check resolveSite', () => {
 });
 
 describe('check BooruError', () => {
-  it('should blah', () => {
+  it('should resolve to a BooruError', () => {
     const booruError = new BooruError();
     expect(booruError.name).toBe('BooruError');
     expect(booruError.stack).toContain(path.basename(__filename));
@@ -23,7 +23,7 @@ describe('check BooruError', () => {
 });
 
 describe('check BooruClass', () => {
-  it('should blah', () => {
+  it('should resolve to a BooruClass', () => {
     const SiteData: Site = {
       aliases: ['sb', 'safe', 'safebooru'],
       api: {search: '/index.php?page=dapi&s=post&q=index&json=1&', postView: '/index.php?page=post&s=view&json=1&id='},
@@ -40,8 +40,8 @@ describe('check BooruClass', () => {
 });
 
 describe('check SiteMap', () => {
-  it('should blah', () => {
+  it('should support 17 sites', () => {
     const map = SiteMap;
-    expect(Object.keys(map)).toHaveLength(18);
+    expect(Object.keys(map)).toHaveLength(17);
   });
 });
