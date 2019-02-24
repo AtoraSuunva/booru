@@ -88,9 +88,9 @@ export const search = (site: string, tags: string[] | string = [], {limit = 1, r
  * @param  {Post[]} images   Array of {@link Post} objects
  * @return {Promise<Post[]>} Array of {@link Post} objects
  */
-export const commonfy = async (images: Post[]): Promise<any> => {
+export async function commonfy (images: Post[]): Promise<any> {
   return deprecate(() => images, 'Common is now deprecated, just access the properties directly');
-};
+}
 
 export { Booru as BooruClass } from './boorus/Booru';
 export { SiteMap } from './Constants';
