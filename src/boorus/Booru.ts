@@ -126,9 +126,7 @@ export class Booru {
     try {
       const siteData = await fetch(fetchuri, options);
       const response: Response = xml ? await siteData.text() : await siteData.json();
-      const data: string | object = xml ? jsonfy(response as unknown as string) : response;
-
-      return data;
+      return xml ? await jsonfy(response as unknown as string) : response;
     } catch (err) {
       if ((err as FetchError).type === 'invalid-json') return '';
       return err;
@@ -160,6 +158,8 @@ export class Booru {
       r = [];
     } else if (fakeLimit) {
       r = shuffle(result);
+    } else if (result.constructor === Object) { // For XML based sites
+      r = [result];
     }
 
     const results = r || result;

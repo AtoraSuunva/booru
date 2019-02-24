@@ -41,8 +41,8 @@ export const resolveSite = (domain: string): string | null => {
 export const jsonfy = async (xml: string): Promise<object[]> => {
   if (typeof xml === 'object') return xml;
 
-  const jsond = xml2json(xml);
-  if (jsond.posts.post) return jsond.posts.post.map((val: any) => val.$);
+  const jsond = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''});
+  if (jsond.posts.post) return jsond.posts.post;
   return [];
 };
 
