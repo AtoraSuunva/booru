@@ -41,7 +41,7 @@ const booruFrom = (booruSite: Site, credentials?: any): Booru => {
 export default (site: string, credentials: any = null): Booru => {
   const rSite = resolveSite(site);
 
-  if (rSite === null) throw new BooruError('Site not supported');
+  if (!rSite) throw new BooruError('Site not supported');
 
   const booruSite = new Site(SiteMap[rSite]);
 

@@ -8,7 +8,7 @@ export default class Site {
   /** The domain of the Site (the "google.com" part of "https://google.com/foo") */
   public domain: string;
   /** The type of this site (json/xml/derpi) */
-  public type: string;
+  public type?: string;
   /** The aliases of this site */
   public aliases: string[];
   /** If this site serves NSFW posts or not */
@@ -16,13 +16,13 @@ export default class Site {
   /** An object representing the api of this site */
   public api: SiteApi;
   /** The url query param to paginate on the site */
-  public paginate: string;
+  public paginate?: string;
   /** If the site supports `order:random`. If a string, this means a custom random system is used :/ */
   public random: boolean | string;
   /** The url query param for tags */
-  public tagQuery: string;
+  public tagQuery?: string;
   /** If this site supports only http:// */
-  public insecure: boolean;
+  public insecure?: boolean;
 
   constructor (data: SiteInfo) {
     this.domain = data.domain;

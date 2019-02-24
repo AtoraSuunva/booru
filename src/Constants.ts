@@ -1,4 +1,3 @@
-import { stripIndents } from 'common-tags';
 import { RequestInit } from 'node-fetch';
 import sites from './sites.json';
 import SearchParameters from './structures/SearchParameters.js';
@@ -85,10 +84,10 @@ const expandTags = (tags: string[]): string[] => {
  * @param {number} [page=0] The page to get
  */
 export const searchURI = (site: Site, tags: string[] = [], limit: number = 100, page: number = 0): string => {
-  return stripIndents`http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}
-    ${site.tagQuery ? site.tagQuery : 'tags'}
-    =${expandTags(tags).join('+')}&limit=${limit}&${site.paginate}=${page}
-  `;
+  // tslint:disable-next-line:prefer-template
+  return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}`
+    + (site.tagQuery ? site.tagQuery : 'tags')
+    + `=${expandTags(tags).join('+')}&limit=${limit}&${site.paginate}=${page}`;
 };
 
 /**
