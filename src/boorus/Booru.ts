@@ -1,14 +1,11 @@
-const fetch = require('node-fetch')
-
-import Site from '../structures/Site'
-import Post from '../structures/Post'
-import SearchResults from '../structures/SearchResults'
-import SearchParameters from '../structures/SearchParameters'
-import InternalSearchParameters from '../structures/InternalSearchParameters'
-import * as Utils from '../Utils'
-import * as Constants from '../Constants'
-import { FetchError } from 'node-fetch';
-const { BooruError } = Constants
+import fetch, { FetchError, Response } from 'node-fetch';
+import { BooruError, defaultOptions, searchURI } from '../Constants';
+import InternalSearchParameters from '../structures/InternalSearchParameters';
+import Post from '../structures/Post';
+import SearchParameters from '../structures/SearchParameters';
+import SearchResults from '../structures/SearchResults';
+import Site from '../structures/Site';
+import { jsonfy, resolveSite, shuffle } from '../Utils';
 
 /*
 - new Booru
@@ -34,13 +31,17 @@ const { BooruError } = Constants
  * // Or access other methods on the Booru
  * e9.postView(imgs[0].common.id)
  */
-export default class Booru {
+export class Booru {
   /** The domain of the booru */
-  domain: string
+  public domain: string;
   /** The site object representing this booru */
-  site: Site
+  public site: Site;
   /** The credentials to use for this booru */
-  credentials: any
+  public credentials: any;
+  public aliases: string[] | undefined;
+  public nsfw: boolean | undefined;
+  public api: any;
+  public random: boolean | string | undefined;
 
   /**
    * Create a new booru from a site
@@ -49,16 +50,20 @@ export default class Booru {
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
-  constructor(site: Site, credentials: object|null = null) {
-    const domain = Utils.resolveSite(site.domain)
+  constructor (site: Site, credentials: object|null = null, aliases?: string[], nsfw?: boolean, api?: any, random?: boolean | string) {
+    const domain = resolveSite(site.domain);
 
     if (domain === null) {
-      throw new Error(`Invalid site passed: ${site}`)
+      throw new Error(`Invalid site passed: ${site}`);
     }
 
-    this.domain = domain
-    this.site = site
-    this.credentials = credentials
+    this.domain = domain;
+    this.site = site;
+    this.aliases = aliases;
+    this.nsfw = nsfw;
+    this.api = api;
+    this.random = random;
+    this.credentials = credentials;
   }
 
   /**
@@ -70,14 +75,30 @@ export default class Booru {
    * @param {Number} [searchArgs.page=0] The page to search
    * @return {Promise<SearchResults>} The results as an array of Posts
    */
-  search(tags: string|string[],
-    { limit = 1, random = false, page = 0 }: SearchParameters = {}): Promise<SearchResults> {
+  public async search (tags: string|string[], { limit = 1, random = false, page = 0 }: SearchParameters = {}): Promise<SearchResults> {
 
-    const fakeLimit: number = random && !this.site.random ? 100 : 0
+    const fakeLimit: number = random && !this.site.random ? 100 : 0;
 
-    return this._doSearchRequest(tags, { limit, random, page })
-      .then(r => this._parseSearchResult(r, { fakeLimit, tags, limit, random, page }))
-      .catch(e => Promise.reject(new BooruError(e)))
+    try {
+      const searchResult = await this.doSearchRequest(tags, { limit, random, page });
+      return this.parseSearchResult(searchResult, { fakeLimit, tags, limit, random, page });
+    } catch (err) {
+      throw new BooruError(err.message);
+    }
+  }
+
+  /**
+   * Gets the url you'd see in your browser from a post id for this booru
+   *
+   * @param {String} id The id to get the postView for
+   * @return {String} The url to the post
+   */
+  public postView (id: string|number): string {
+    if (typeof id === 'string' && Number.isNaN(parseInt(id, 10))) {
+      throw new BooruError(`Not a valid id for postView: ${id}`);
+    }
+
+    return `http${this.site.insecure ? '' : 's'}://${this.domain}${this.site.api.postView}${id}`;
   }
 
   /**
@@ -92,33 +113,34 @@ export default class Booru {
    * @param {String?} [searchArgs.uri=null] If the uri should be overwritten
    * @return {Promise<Object>}
    */
-  protected _doSearchRequest(tags: string[]|string,
-     {limit = 1, random = false, page = 0, uri = null}: InternalSearchParameters = {}): Promise<any> {
-
-    if (!Array.isArray(tags)) {
-      tags = [tags]
-    }
+  protected async doSearchRequest (tags: string[]|string,{uri = null, limit = 1, random = false, page = 0}: InternalSearchParameters = {}): Promise<any> {
+    if (!Array.isArray(tags)) tags = [tags];
 
     // Used for random on sites without order:random
-    let fakeLimit: number|undefined
+    let fakeLimit: number|undefined;
 
     if (random) {
       if (this.site.random) {
-        tags.push('order:random')
+        tags.push('order:random');
       } else {
-        fakeLimit = 100
+        fakeLimit = 100;
       }
     }
 
-    const fetchuri = uri ||
-                    Constants.searchURI(this.site, tags, fakeLimit || limit, page)
-    const options = Constants.defaultOptions
-    const xml = this.site.type === 'xml'
+    const fetchuri = uri || searchURI(this.site, tags, fakeLimit || limit, page);
+    const options = defaultOptions;
+    const xml = this.site.type === 'xml';
 
-    return fetch(fetchuri, options)
-          .then((r: Response) => xml ? r.text() : r.json())
-          .then((r: string|object) => xml ? Utils.jsonfy(r as string) : Promise.resolve(r))
-          .catch((e: FetchError) => e.type === 'invalid-json' ? Promise.resolve('') : Promise.reject(e))
+    try {
+      const siteData = await fetch(fetchuri, options);
+      const response: Response = xml ? await siteData.text() : await siteData.json();
+      const data: string | object = xml ? jsonfy(response as unknown as string) : response;
+
+      return data;
+    } catch (err) {
+      if ((err as FetchError).type === 'invalid-json') return '';
+      return err;
+    }
   }
 
   /**
@@ -134,47 +156,34 @@ export default class Booru {
    * @param {Number} [searchArgs.page] The page number searched
    * @return {SearchResults} The results of this search
    */
-  protected _parseSearchResult(result: any,
-    {fakeLimit, tags, limit, random, page}: InternalSearchParameters) {
+  protected parseSearchResult (result: any, {fakeLimit, tags, limit, random, page}: InternalSearchParameters) {
 
     if (result.success === false) {
-      throw new BooruError(result.message || result.reason)
+      throw new BooruError(result.message || result.reason);
     }
 
-    let r: string[]|undefined
-    // if gelbooru/other booru decides to return *nothing* instead of an empty array
+    let r: string[]|undefined;
+    // If gelbooru/other booru decides to return *nothing* instead of an empty array
     if (result === '') {
-      r = []
+      r = [];
     } else if (fakeLimit) {
-      r = Utils.shuffle(result)
+      r = shuffle(result);
     }
 
-    const results = r || result
-    const posts = results.slice(0, limit).map((v: any) => new Post(v, this))
-    const options = { limit, random, page }
+    const results = r || result;
+    const posts = results.slice(0, limit).map((v: any) => new Post(v, this));
+    const options = { limit, random, page };
 
     if (tags === undefined) {
-      tags = []
+      tags = [];
     }
 
     if (!Array.isArray(tags)) {
-      tags = [tags]
+      tags = [tags];
     }
 
-    return new SearchResults(posts, tags, options, this)
-  }
-
-  /**
-   * Gets the url you'd see in your browser from a post id for this booru
-   *
-   * @param {String} id The id to get the postView for
-   * @return {String} The url to the post
-   */
-  postView(id: string|number): string {
-    if (typeof id === 'string' && Number.isNaN(parseInt(id))) {
-      throw new BooruError(`Not a valid id for postView: ${id}`)
-    }
-
-    return `http${this.site.insecure ? '' : 's'}://` + this.domain + this.site.api.postView + id
+    return new SearchResults(posts, tags, options, this);
   }
 }
+
+export default Booru;

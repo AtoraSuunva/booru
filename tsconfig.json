@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "outDir": "./dist/",
+    "rootDir": "./src",
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2018"],
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "noErrorTruncation": true,
-    "strict": true,
-    "alwaysStrict": true,
-    "outDir": "dist/",
-    "rootDir": "./src",
-    "emitBOM": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "removeComments": true,
     "newLine": "lf",
-    "forceConsistentCasingInFileNames": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noErrorTruncation": true,
+    "removeComments": true,
+    "alwaysStrict": true,
+    "strict": true,
+    "emitBOM": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

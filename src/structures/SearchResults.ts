@@ -1,6 +1,6 @@
-import Booru from '../boorus/Booru'
-import Post from '../structures/Post'
-import * as Utils from '../Utils'
+import Booru from '../boorus/Booru';
+import Post from '../structures/Post';
+import * as Utils from '../Utils';
 import SearchParameters from './SearchParameters';
 
 /**
@@ -20,47 +20,49 @@ import SearchParameters from './SearchParameters';
  * imgs2.forEach(i => console.log(i.postView))
  */
 export default class SearchResults extends Array {
-
-  /** The tags used for this search @private */
-  _tags: string[]
-  /** The options used for this search @private */
-  _options: SearchParameters
   /** The booru used for this search */
-  booru: Booru
+  public booru: Booru;
   /** The page of this search */
-  page: number
+  public page: number;
+  /** The tags used for this search @private */
+  private tags: string[];
+  /** The options used for this search @private */
+  private options: SearchParameters;
 
   /** @private */
-  constructor(posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
-    // TypeScript seems to fail to recongnize that i can pass an array by spreading it, which
-    // creates a new array from the parameters passed
-    // So `super(...posts)` is (incorrectly) interpreted as an error
-    // Thank you TypeScript, very cool!
-    super(posts.length)
+  constructor (posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
+    /**
+     * TypeScript seems to fail to recongnize that i can pass an array by spreading it, which
+     * creates a new array from the parameters passed
+     * So `super(...posts)` is (incorrectly) interpreted as an error
+     * Thank you TypeScript, very cool!
+     */
+    super(posts.length);
 
-    for (let i: number = 0; i < posts.length; i++)
-      this[i] = posts[i]
+    for (let i: number = 0; i < posts.length; i++) {
+      this[i] = posts[i];
+    }
 
-    this._tags = tags
-    this._options = options
-    this.booru = booru
-    this.page = options.page || 0
+    this.tags = tags;
+    this.options = options;
+    this.booru = booru;
+    this.page = options.page || 0;
   }
 
   /**
    * Get the first post in this result set
    * @return {Post}
    */
-  get first(): Post {
-    return this[0]
+  get first (): Post {
+    return this[0];
   }
 
   /**
    * Get the last post in this result set
    * @return {Post}
    */
-  get last(): Post {
-    return this[this.length - 1]
+  get last (): Post {
+    return this[this.length - 1];
   }
 
   /**
@@ -68,11 +70,11 @@ export default class SearchResults extends Array {
    * <p>Works like <code>sb.search('cat', {page: 1}); sb.search('cat', {page: 2})</code>
    * @return {Promise<SearchResults>}
    */
-  nextPage(): Promise<SearchResults> {
-    const opts: SearchParameters = this._options
-    opts.page = this.page + 1
+  public nextPage (): Promise<SearchResults> {
+    const opts: SearchParameters = this.options;
+    opts.page = this.page + 1;
 
-    return this.booru.search(this._tags, opts)
+    return this.booru.search(this.tags, opts);
   }
 
   /**
@@ -83,21 +85,21 @@ export default class SearchResults extends Array {
    * @param {Boolean} [options.invert=false] If the results should be inverted and return images *not* tagged
    * @return {SearchResults}
    */
-  tagged(tags: string[]|string, {invert = false} = {}): SearchResults {
+  public tagged (tags: string[]|string, {invert = false} = {}): SearchResults {
     if (!Array.isArray(tags)) {
-      tags = [tags]
+      tags = [tags];
     }
 
-    const posts: Post[] = []
+    const posts: Post[] = [];
 
-    for (let p of this) {
-      const m: number = Utils.compareArrays(tags, p.tags).length
+    for (const p of this) {
+      const m: number = Utils.compareArrays(tags, p.tags).length;
       if ((!invert && m > 0) || (invert && m === 0)) {
-        posts.push(p)
+        posts.push(p);
       }
     }
 
-    return new SearchResults(posts, this._tags, this._options, this.booru)
+    return new SearchResults(posts, this.tags, this.options, this.booru);
   }
 
   /**
@@ -105,7 +107,7 @@ export default class SearchResults extends Array {
    * @param {String[]|String} tags The tags (or tag) to blacklist
    * @return {SearchResults} The results without any images with the specified tags
    */
-  blacklist(tags: string[]|string): SearchResults {
-    return this.tagged(tags, {invert: true})
+  public blacklist (tags: string[]|string): SearchResults {
+    return this.tagged(tags, {invert: true});
   }
 }
