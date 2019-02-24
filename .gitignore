@@ -1,3 +1,13 @@
+# Filter IDE settings
 .vs/*
+.vscode/
+.idea/
+
+# Filter node modules
 node_modules/*
+
+# Filter build
 dist/*
+
+# Only publish one type of lockfile
+package-lock.json

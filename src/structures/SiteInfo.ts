@@ -1,5 +1,4 @@
-import Site from './Site'
-import SiteApi from './SiteApi'
+import SiteApi from './SiteApi';
 
 /**
  * Represents the info needed to create a new {@link Site}
@@ -8,21 +7,21 @@ import SiteApi from './SiteApi'
  */
 export default interface SiteInfo {
   /** The domain of the Site (the "google.com" part of "https://google.com/foo") */
-  domain: string
+  domain: string;
   /** The type of this site (json/xml/derpi) */
-  type?: string
+  type?: string;
   /** The aliases of this site */
-  aliases: string[]
+  aliases?: string[];
   /** If this site serves NSFW posts or not */
-  nsfw: boolean
+  nsfw?: boolean;
   /** An object representing the api of this site */
-  api: SiteApi
+  api?: SiteApi;
   /** The url query param to paginate on the site */
-  paginate?: string
+  paginate?: string;
   /** If the site supports `order:random` */
-  random: boolean
+  random?: boolean | string;
   /** The url query param for tags */
-  tagQuery?: string
+  tagQuery?: string;
   /** If this site supports only http:// */
-  insecure?: boolean
+  insecure?: boolean;
 }

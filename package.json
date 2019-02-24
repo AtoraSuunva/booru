@@ -5,11 +5,16 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
+    "clean": "rimraf ./dist",
+    "prebuild": "yarn clean && yarn lint",
+    "build": "tsc",
+    "postbuild": "terser ./dist/index.js --compress --mangle --output ./dist/index.js && copyfiles ./example.js ./dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/AtlasTheBot/booru.git"
+    "url": "git+https://github.com/AtlasTheBot/booru.git"
   },
   "keywords": [
     "booru",
@@ -30,17 +35,42 @@
     "derpibooru"
   ],
   "author": "AtlasTheBot",
-  "license": "GPL-3",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/AtlasTheBot/booru/issues"
   },
   "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "dependencies": {
-    "node-fetch": "^2.2.0",
-    "xml2js": "^0.4.17"
+    "common-tags": "^1.8.0",
+    "fast-xml-parser": "^3.12.13",
+    "node-fetch": "^2.2.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/register": "^7.0.0",
+    "@types/common-tags": "^1.8.0",
+    "@types/jest": "^24.0.6",
     "@types/node": "^11.9.4",
-    "@types/node-fetch": "^2.1.6"
+    "@types/node-fetch": "^2.1.6",
+    "copyfiles": "^2.1.0",
+    "jest": "^24.1.0",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^4.0.1",
+    "rimraf": "^2.6.3",
+    "terser": "^3.16.1",
+    "tslint": "^5.13.0",
+    "typescript": "^3.3.3333"
+  },
+  "files": [
+    "dist/"
+  ],
+  "directories": {
+    "doc": "./docs",
+    "lib": "./src",
+    "test": "./test"
   }
 }

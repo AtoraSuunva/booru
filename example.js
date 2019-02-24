@@ -1,45 +1,38 @@
-// cli example
+const Booru = require('booru');
+// import Booru from 'booru' for ES6
+// You can also import the search function directly:
+// const { search } = require('booru') or import { search } from 'booru'
 
-// Run with
-// node example.js [site] [tag1] [tag2] [tagn]
-
-// You can use any site in sites.json (or their aliases)
-
-const Booru = require('./dist/index.js')
-
-Booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
-.then(posts => {
-  if (posts.length === 0) {
-    console.log('No posts with those tags found.')
-  }
-
-  // Log the direct file link & post view to each post
-  for (let i = 0; i < posts.length; i++) {
-    console.log(`Result #${i}`, posts[i].fileUrl, posts[i].postView)
+// Search with promises, plus some demo error-checking
+Booru.search(site, [tag1, tag2], {limit: 1, random: false})
+.then(images => {
+  //Log the direct link to each image
+  for (let image of images) {
+    console.log(image.data.file_url)
   }
 })
 .catch(err => {
-  if (err instanceof Booru.BooruError) {
-    // It's a custom error thrown by the package
-    console.log(err)
+  if (err.name === 'BooruError') {
+    //It's a custom error thrown by the package
+    console.log(err.message)
   } else {
-    // This means I messed up. Whoops.
+    //This means I messed up. Whoops.
     console.log(err)
   }
-})
+});
 
-// Another example, where we instantiate a booru and then use it
-// instantiating a booru allows for you to do more complex things,
-// like favoriting a post (if you provide an api token) or posting/viewing comments, etc.
-async function example() {
-  const e9 = new Booru('e9', {token: 'goes here'})
-  let imgs
+// or with async/await:
+const booruSearchDirect = async (site,tags,limit = 1,random = true) => {
+  const images = await search(site, tags, { limit, random });
 
-  imgs = await e9.search(['cat', 'cute'], {limit: 1, random: true})
+  return console.log(images[0].data.file_url);
+};
 
-  // Log the post url to the first image
-  console.log(imgs[0].postView)
+const booruSearch = async (site, tags, limit = 1, random = true) => {
+  const images = await Booru.search(site, tags, {limit, random});
 
-  // In the future, things like `e9.favorite(Post)` or `e9.fetchComments(Post)`
-  // Will be available (and <Post>.favorite())
-}
+  return console.log(images[0].data.file_url);
+};
+
+console.log(Booru.SiteMap); // you can also check the sites and the options for each
+console.log(Object.keys(Booru.SiteMap)); // or just the site URLs

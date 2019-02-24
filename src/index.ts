@@ -1,22 +1,34 @@
-import * as Constants from './Constants'
-import { BooruError, SMap } from './Constants'
-import * as Utils from './Utils'
-import Booru from './boorus/Booru'
-import Site from './structures/Site'
-import XmlBooru from './boorus/XmlBooru'
-import Derpibooru from './boorus/Derpibooru'
-import SearchParameters from './structures/SearchParameters'
-import { deprecate } from 'util'
-import SearchResults from './structures/SearchResults'
-import Post from './structures/Post'
+import { deprecate } from 'util';
+import Booru from './boorus/Booru';
+import Derpibooru from './boorus/Derpibooru';
+import XmlBooru from './boorus/XmlBooru';
+import { BooruError, SiteMap, SMap } from './Constants';
+import Post from './structures/Post';
+import SearchParameters from './structures/SearchParameters';
+import SearchResults from './structures/SearchResults';
+import Site from './structures/Site';
+import { resolveSite } from './Utils';
 
-// lol i can't use SMap<Booru> because this is weird code
-const BooruTypes: SMap<any> = {
-  'xml': XmlBooru,
-  'derpi': Derpibooru
-}
+const BooruTypes: any = {
+  derpi: Derpibooru,
+  xml: XmlBooru,
+};
 
-const booruCache: SMap<any> = {}
+const booruCache: SMap = {};
+
+/**
+ * Create a new booru, if special type, use that booru, else use default Booru
+ *
+ * @param {SiteInfo} booruSite The site to use
+ * @param {*} credentials The credentials to use, if any
+ * @return {Booru} A new booru
+ */
+const booruFrom = (booruSite: Site, credentials?: any): Booru => {
+  return new (booruSite.type !== undefined && BooruTypes[booruSite.type]
+      ? BooruTypes[booruSite.type]
+      : Booru)
+    (booruSite, credentials);
+};
 
 /**
  * Create a new booru to search with
@@ -26,32 +38,16 @@ const booruCache: SMap<any> = {}
  * @param {*} credentials The credentials to use on this booru
  * @return {Booru} A booru to use
  */
-export default function _Booru(site: string, credentials: any = null): Booru {
-  const rSite = Utils.resolveSite(site)
+export default (site: string, credentials: any = null): Booru => {
+  const rSite = resolveSite(site);
 
-  if (rSite === null) {
-    throw new BooruError('Site not supported')
-  }
+  if (rSite === null) throw new BooruError('Site not supported');
 
-  const booruSite = new Site(Constants.sites[rSite])
+  const booruSite = new Site(SiteMap[rSite]);
 
   // If special type, use that booru, else use default Booru
-  return booruFrom(booruSite, credentials)
-}
-
-/**
- * Create a new booru, if special type, use that booru, else use default Booru
- *
- * @param {SiteInfo} booruSite The site to use
- * @param {*} credentials The credentials to use, if any
- * @return {Booru} A new booru
- */
-function booruFrom(booruSite: Site, credentials?: any): Booru {
-  return new (booruSite.type !== undefined && BooruTypes[booruSite.type]
-      ? BooruTypes[booruSite.type]
-      : Booru)
-    (booruSite, credentials)
-}
+  return booruFrom(booruSite, credentials);
+};
 
 /**
  * Searches a site for images with tags and returns the results
@@ -68,39 +64,20 @@ function booruFrom(booruSite: Site, credentials?: any): Booru {
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
  */
-export function search(site: string, tags: string[]|string = [],
-    { limit = 1, random = false, page = 0, credentials = null}: SearchParameters = {}):
-    Promise<SearchResults> {
+export const search = (site: string, tags: string[]|string = [], { limit = 1, random = false, page = 0, credentials = null}: SearchParameters = {}): Promise<SearchResults> => {
+  const rSite: string|null = resolveSite(site);
 
-  const rSite: string|null = Utils.resolveSite(site)
+  if (typeof limit === 'string') limit = parseInt(limit, 10);
+  if (rSite === null) throw new BooruError('Site not supported');
+  if (!Array.isArray(tags) && typeof tags !== 'string') throw new BooruError('`tags` should be an array or string');
+  if (typeof limit !== 'number' || Number.isNaN(limit)) throw new BooruError('`limit` should be an int');
 
-  if (typeof limit === 'string') {
-    limit = parseInt(limit)
-  }
+  const booruSite = new Site(SiteMap[rSite]);
 
-  if (rSite === null) {
-    throw new BooruError('Site not supported')
-  }
+  if (!booruCache[rSite]) booruCache[rSite] = booruFrom(booruSite);
 
-  if (!Array.isArray(tags) && typeof tags !== 'string') {
-    throw new BooruError('`tags` should be an array or string')
-  }
-
-  if (typeof limit !== 'number' || Number.isNaN(limit)) {
-    throw new BooruError('`limit` should be an int')
-  }
-
-  const booruSite = new Site(Constants.sites[rSite])
-
-  if (!booruCache[rSite]) {
-    booruCache[rSite] = booruFrom(booruSite)
-  }
-
-  return booruCache[rSite].search(tags, {limit, random, page, credentials})
-}
-
-const _commonfy =
-  deprecate(() => { }, 'Common is now deprecated, just access the properties directly')
+  return booruCache[rSite].search(tags, {limit, random, page, credentials});
+};
 
 /**
  * Deprecated, now a noop
@@ -111,11 +88,11 @@ const _commonfy =
  * @param  {Post[]} images   Array of {@link Post} objects
  * @return {Promise<Post[]>} Array of {@link Post} objects
  */
-export function commonfy(images: Post[]): Promise<Post[]> {
-  _commonfy()
-  return Promise.resolve(images)
-}
+export const commonfy = async (images: Post[]): Promise<any> => {
+  return deprecate(() => images, 'Common is now deprecated, just access the properties directly');
+};
 
-export { sites } from './Constants'
-export { resolveSite } from './Utils'
-export { BooruError } from './Constants'
+export { Booru as BooruClass } from './boorus/Booru';
+export { SiteMap } from './Constants';
+export { resolveSite } from './Utils';
+export { BooruError } from './Constants';
