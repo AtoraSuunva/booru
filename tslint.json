@@ -71,7 +71,7 @@
         "object-literal-shorthand": [true],
         "object-literal-sort-keys": false,
         "one-line": [true, "check-open-brace", "check-catch", "check-else", "check-whitespace"],
-        "only-arrow-functions": true,
+        "only-arrow-functions": false,
         "ordered-imports": true,
         "prefer-conditional-expression": [true, "check-else-if"],
         "prefer-const": [true, { "destructuring": "all" }],

@@ -55,7 +55,7 @@ export const jsonfy = async (xml: string): Promise<object[]> => {
  * @param  {Array} array Array of something
  * @return {Array}       Shuffled array of something
  */
-export const shuffle = <T extends {}> (array: T[]): T[] => {
+export function shuffle<T> (array: T[]): T[] {
   let currentIndex: number = array.length;
   let temporaryValue: T;
   let randomIndex: number;
@@ -70,7 +70,7 @@ export const shuffle = <T extends {}> (array: T[]): T[] => {
   }
 
   return array;
-};
+}
 
 // Thanks mdn and damnit derpibooru
 /**
@@ -80,11 +80,11 @@ export const shuffle = <T extends {}> (array: T[]): T[] => {
  * @param {Number} min The minimum (inclusive)
  * @param {Number} max The maximum (inclusive)
  */
-export const randInt = (min: number, max: number): number => {
+export function randInt (min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+}
 
 /**
  * Performs some basic search validation
@@ -93,7 +93,7 @@ export const randInt = (min: number, max: number): number => {
  * @param {String} site The site to resolve
  * @param {Number|String} limit The limit for the amount of images to fetch
  */
-export const validateSearchParams = (site: string, limit: number | string): { site: string, limit: number } => {
+export function validateSearchParams (site: string, limit: number | string): { site: string, limit: number } {
   const resolvedSite = resolveSite(site);
 
   if (typeof limit !== 'number') {
@@ -109,7 +109,7 @@ export const validateSearchParams = (site: string, limit: number | string): { si
   }
 
   return {site: resolvedSite, limit};
-};
+}
 
 /**
  * Finds the matching strings between two arrays
@@ -119,7 +119,7 @@ export const validateSearchParams = (site: string, limit: number | string): { si
  * @param {String[]} arr2 The second array
  * @return {String[]} The shared strings between the arrays
  */
-export const compareArrays = (arr1: string[], arr2: string[]): string[] => {
+export function compareArrays (arr1: string[], arr2: string[]): string[] {
   const matches: string[] = [];
   arr1.forEach(ele1 => {
     arr2.forEach(ele2 => {
@@ -130,4 +130,4 @@ export const compareArrays = (arr1: string[], arr2: string[]): string[] => {
   });
 
   return matches;
-};
+}
