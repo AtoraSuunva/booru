@@ -11,3 +11,6 @@ dist/*
 
 # Only publish one type of lockfile
 yarn.lock
+
+# For those pesky MacOS users
+.DS_Store

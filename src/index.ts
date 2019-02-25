@@ -80,6 +80,9 @@ export function search (site: string, tags: string[] | string = [], {limit = 1, 
   return booruCache[rSite].search(tags, {limit, random, page, credentials});
 }
 
+// tslint:disable-next-line:no-empty
+const deprecatedCommonfy = deprecate(() => { }, 'Common is now deprecated, just access the properties directly');
+
 /**
  * Deprecated, now a noop
  * <p>This will be removed *soon* please stop using it</p>
@@ -89,8 +92,9 @@ export function search (site: string, tags: string[] | string = [], {limit = 1, 
  * @param  {Post[]} images   Array of {@link Post} objects
  * @return {Promise<Post[]>} Array of {@link Post} objects
  */
-export async function commonfy (images: Post[]): Promise<any> {
-  return deprecate(() => images, 'Common is now deprecated, just access the properties directly');
+export function commonfy (images: Post[]): Promise<Post[]> {
+  deprecatedCommonfy();
+  return Promise.resolve(images);
 }
 
 export { Booru as BooruClass } from './boorus/Booru';
