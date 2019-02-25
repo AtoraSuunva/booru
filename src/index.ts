@@ -2,12 +2,11 @@ import { deprecate } from 'util';
 import Booru from './boorus/Booru';
 import Derpibooru from './boorus/Derpibooru';
 import XmlBooru from './boorus/XmlBooru';
-import { BooruError, searchFunction, sites, SMap } from './Constants';
+import { BooruError, sites, SMap } from './Constants';
 import Post from './structures/Post';
 import SearchParameters from './structures/SearchParameters';
 import SearchResults from './structures/SearchResults';
 import Site from './structures/Site';
-import SiteInfo from './structures/SiteInfo';
 import { resolveSite } from './Utils';
 
 const BooruTypes: any = {
@@ -15,7 +14,7 @@ const BooruTypes: any = {
   xml: XmlBooru,
 };
 
-const booruCache: SMap<SiteInfo & searchFunction> = {};
+const booruCache: SMap<Booru> = {};
 
 /**
  * Create a new booru, if special type, use that booru, else use default Booru

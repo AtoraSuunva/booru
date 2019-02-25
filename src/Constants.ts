@@ -1,12 +1,7 @@
 import { RequestInit } from 'node-fetch';
 import siteJson from './sites.json';
-import SearchParameters from './structures/SearchParameters.js';
 import Site from './structures/Site';
 import SiteInfo from './structures/SiteInfo';
-
-export type searchFunction = {
-  search: (tags: string | string[], SearchArgs: SearchParameters) => any;
-};
 
 export interface SMap<V> {
   [key: string]: V;
