@@ -7,7 +7,7 @@
  */
 
 import { parse as xml2json } from 'fast-xml-parser';
-import { BooruError, sites as sites } from './Constants';
+import { BooruError, sites } from './Constants';
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
