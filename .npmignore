@@ -1,6 +1,0 @@
-src/
-node_modules/
-.vs/
-tsconfig.json
-jsdoc.config.json
-.gitignore

@@ -4,7 +4,7 @@
 
 ## Features
 
-- Able to search 17 different boorus (check [sites.json](./sites.json))
+- Able to search 17 different boorus (check [sites.json](./src/sites.json))
 - Also alias support so you can be lazy (`sb` for `safebooru.org`)
 - Promises because they're magical
 - Choose the amount of images to get
@@ -25,49 +25,62 @@ npm i --save booru
 ## Usage
 
 ```js
-const Booru = require('booru');
-/**
- * or for Babel / TypeScript:
- * import Booru from 'booru'
- * Note: Requires --esmoduleinterop for TypeScript
- * use "import * as Booru" with --allowsyntheticdefaultimport
- * or "import booru = require('booru')" with neither
- */
+const Booru = require('booru')
+const {search, BooruError, sites} = require('booru')
+// for ES6:
+// import Booru, { search, BooruError, sites } from 'booru'
 
-// Instantiate a booru and search it
-const e9 = new Booru('e9')
-let imgs = await e9.search(['cute', 'cat'], {limit: 3})
+const site = 'safebooru';
+const tags = ['glaceon'];
 
-// Log the url to first post found
-console.log(imgs[0].postView)
-
-// Don't instantiate, plus some demo error-checking
+// Search with promises, plus some demo error-checking
 Booru.search(site, [tag1, tag2], {limit: 1, random: false})
-.then(images => {
-  //Log the direct link to each image
-  for (let image of images) {
-    console.log(image.common.file_url)
-  }
-})
-.catch(err => {
-  if (err.name === 'BooruError') {
-    //It's a custom error thrown by the package
-    console.log(err.message)
-  } else {
-    //This means I messed up. Whoops.
-    console.log(err)
-  }
-});
+  .then(posts => {
+    //Log the direct link to each image
+    for (let post of posts) {
+      console.log(post.fileUrl);
+    }
+  })
+  .catch(err => {
+    if (err instanceof BooruError) {
+      //It's a custom error thrown by the package
+      console.error(err.message);
+    } else {
+      //This means I messed up. Whoops.
+      console.error(err);
+    }
+  });
 
-// or with async/await and ES6 Arrow Functions:
-const booruSearch = async (site, tags, limit = 0, random = true) => {
-    const images = await Booru.search(site, tags, {limit, random});
+// Search with async/await
+async function booruSearch(site, tags, limit = 1, random = true) {
+  const posts = await Booru.search(site, tags, {limit, random});
 
-    console.log(images[0].common.file_url);
+  return console.log(posts[0].fileUrl);
 }
 
-console.log(booru.sites); // you can also check the sites and the options for each
-console.log(Object.keys(booru.sites)); // or just the site URLs
+// Create class then search (not recommended!)
+async function booruClassSearch(site, tags, limit = 1, random = true) {
+  const siteData = Object.values(sites).filter(entry => entry.domain.includes(site))[0]
+  const booruClass = new BooruClass(siteData);
+
+  const posts = await booruClass.search(tags, {limit, random});
+
+  return console.log(posts[0].fileUrl);
+}
+
+// Search with minimal setup and async/await (a.k.a. the fancy pants way)
+async function booruDirectSearch(site, tags, limit = 1, random = true) {
+  const posts = await search(site, tags, {limit, random});
+
+  return console.log(posts[0].fileUrl);
+}
+
+console.log(Booru.sites); // you can also check the sites and the options for each
+console.log(Object.keys(sites)); // or just the site URLs
+
+console.log(booruSearch(site, tags));
+console.log(booruClassSearch(site, tags));
+console.log(booruDirectSearch(site, tags));
 ```
 
 ---
@@ -88,7 +101,9 @@ Available here: [https://booru.js.org](https://booru.js.org)
 > Various Derpibooru fixes https://github.com/AtlasTheBot/booru/pull/19
 
 [Favna](https://github.com/favna/)
-> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21 (and other things)
+> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21  
+> Improve TypeScript port  
+> Various other small fixes
 ---
 
 ## FAQ
@@ -100,7 +115,7 @@ The basic structure of a `Post` object looks like:
 ```js
 Post {
   _data: {/*...*/},                     // The raw data from the booru
-  file_url: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
+  fileUrl: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
   id: '124125',                         // The image ID, as a string
   tags: ['cat', 'cute'],                // The tags, split into an Array
   score: 5,                             // The score as a Number
@@ -133,4 +148,4 @@ Why not?
 
 ### License?
 
-[It's GPLv3](http://choosealicense.com/licenses/gpl-3.0/)
+[It's MIT](https://choosealicense.com/licenses/mit/)
