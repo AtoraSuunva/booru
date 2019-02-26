@@ -1,0 +1,35 @@
+version: 2
+machine:
+  environment:
+    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/${booru}/node_modules/.bin:${PATH}"
+    NODE_ENV: test
+  node:
+    version: 11
+  npm:
+    version: 6
+jobs:
+  build:
+    docker:
+      - image: circleci/node:11
+    working_directory: ~/booru
+    steps:
+      - checkout
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Update APT
+          command: sudo apt-get update && sudo apt-get upgrade -y
+      - run:
+          name: Install booru dependencies
+          command: npm install
+      - save_cache:
+          name: Save Package Cache
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Run Lint and Tests
+          command: npm run lint && npm test

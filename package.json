@@ -1,15 +1,27 @@
 {
   "name": "booru",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Search (and do other things) on a bunch of different boorus!",
+  "author": "AtlasTheBot",
+  "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "runkitExampleFilename": "./dist/example.js",
+  "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/AtlasTheBot/booru.git"
+    "url": "git+https://github.com/AtlasTheBot/booru.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AtlasTheBot/booru/issues"
+  },
+  "scripts": {
+    "test": "jest --no-cache",
+    "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
+    "clean": "rimraf ./dist",
+    "prebuild": "npm run clean && npm run lint && npm test",
+    "build": "tsc",
+    "postbuild": "terser-folder ./dist -eo ./dist -x .js && copyfiles ./example.js ./dist"
   },
   "keywords": [
     "booru",
@@ -29,18 +41,34 @@
     "lolibooru",
     "derpibooru"
   ],
-  "author": "AtlasTheBot",
-  "license": "GPL-3",
-  "bugs": {
-    "url": "https://github.com/AtlasTheBot/booru/issues"
+  "engines": {
+    "node": ">=10.0.0"
   },
-  "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "dependencies": {
-    "node-fetch": "^2.2.0",
-    "xml2js": "^0.4.17"
+    "fast-xml-parser": "^3.12.13",
+    "node-fetch": "^2.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.6",
     "@types/node": "^11.9.4",
-    "@types/node-fetch": "^2.1.6"
+    "@types/node-fetch": "^2.1.6",
+    "copyfiles": "^2.1.0",
+    "jest": "^24.1.0",
+    "rimraf": "^2.6.3",
+    "terser-folder": "^2.0.0",
+    "tslint": "^5.13.0",
+    "typescript": "^3.3.3333"
+  },
+  "files": [
+    "dist/"
+  ],
+  "directories": {
+    "doc": "./docs",
+    "lib": "./src",
+    "test": "./test"
   }
 }

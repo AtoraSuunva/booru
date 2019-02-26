@@ -1,45 +1,56 @@
-// cli example
+const Booru = require('booru')
+const {search, BooruError, sites} = require('booru')
+// for ES6:
+// import Booru, { search, BooruError, sites } from 'booru'
 
-// Run with
-// node example.js [site] [tag1] [tag2] [tagn]
+const site = 'safebooru';
+const tags = ['glaceon'];
 
-// You can use any site in sites.json (or their aliases)
+// Search with promises, plus some demo error-checking
+Booru.search(site, [tag1, tag2], {limit: 1, random: false})
+  .then(posts => {
+    //Log the direct link to each image
+    for (let post of posts) {
+      console.log(post.fileUrl);
+    }
+  })
+  .catch(err => {
+    if (err instanceof BooruError) {
+      //It's a custom error thrown by the package
+      console.error(err.message);
+    } else {
+      //This means I messed up. Whoops.
+      console.error(err);
+    }
+  });
 
-const Booru = require('./dist/index.js')
+// Search with async/await
+async function booruSearch(site, tags, limit = 1, random = true) {
+  const posts = await Booru.search(site, tags, {limit, random});
 
-Booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
-.then(posts => {
-  if (posts.length === 0) {
-    console.log('No posts with those tags found.')
-  }
-
-  // Log the direct file link & post view to each post
-  for (let i = 0; i < posts.length; i++) {
-    console.log(`Result #${i}`, posts[i].fileUrl, posts[i].postView)
-  }
-})
-.catch(err => {
-  if (err instanceof Booru.BooruError) {
-    // It's a custom error thrown by the package
-    console.log(err)
-  } else {
-    // This means I messed up. Whoops.
-    console.log(err)
-  }
-})
-
-// Another example, where we instantiate a booru and then use it
-// instantiating a booru allows for you to do more complex things,
-// like favoriting a post (if you provide an api token) or posting/viewing comments, etc.
-async function example() {
-  const e9 = new Booru('e9', {token: 'goes here'})
-  let imgs
-
-  imgs = await e9.search(['cat', 'cute'], {limit: 1, random: true})
-
-  // Log the post url to the first image
-  console.log(imgs[0].postView)
-
-  // In the future, things like `e9.favorite(Post)` or `e9.fetchComments(Post)`
-  // Will be available (and <Post>.favorite())
+  return console.log(posts[0].fileUrl);
 }
+
+// Create class then search (not recommended!)
+async function booruClassSearch(site, tags, limit = 1, random = true) {
+  const siteData = Object.values(sites).filter(entry => entry.domain.includes(site))[0]
+  const booruClass = new BooruClass(siteData);
+
+  const posts = await booruClass.search(tags, {limit, random});
+
+  return console.log(posts[0].fileUrl);
+}
+
+// Search with minimal setup and async/await (a.k.a. the fancy pants way)
+async function booruDirectSearch(site, tags, limit = 1, random = true) {
+  const posts = await search(site, tags, {limit, random});
+
+  return console.log(posts[0].fileUrl);
+}
+
+console.log(Booru.sites); // you can also check the sites and the options for each
+console.log(Object.keys(sites)); // or just the site URLs
+
+console.log(booruSearch(site, tags));
+console.log(booruClassSearch(site, tags));
+console.log(booruDirectSearch(site, tags));
