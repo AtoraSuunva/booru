@@ -1,7 +1,7 @@
-import Booru from '../boorus/Booru';
-import Post from '../structures/Post';
-import * as Utils from '../Utils';
-import SearchParameters from './SearchParameters';
+import Booru from '../boorus/Booru'
+import Post from '../structures/Post'
+import * as Utils from '../Utils'
+import SearchParameters from './SearchParameters'
 
 /**
  * Represents a page of search results, works like an array of {@link Post}
@@ -21,13 +21,13 @@ import SearchParameters from './SearchParameters';
  */
 export default class SearchResults extends Array {
   /** The booru used for this search */
-  public booru: Booru;
+  public booru: Booru
   /** The page of this search */
-  public page: number;
+  public page: number
   /** The tags used for this search @private */
-  private readonly tags: string[];
+  private readonly tags: string[]
   /** The options used for this search @private */
-  private readonly options: SearchParameters;
+  private readonly options: SearchParameters
 
   /** @private */
   constructor (posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
@@ -37,16 +37,16 @@ export default class SearchResults extends Array {
      * So `super(...posts)` is (incorrectly) interpreted as an error
      * Thank you TypeScript, very cool!
      */
-    super(posts.length);
+    super(posts.length)
 
     for (let i: number = 0; i < posts.length; i++) {
-      this[i] = posts[i];
+      this[i] = posts[i]
     }
 
-    this.tags = tags;
-    this.options = options;
-    this.booru = booru;
-    this.page = options.page || 0;
+    this.tags = tags
+    this.options = options
+    this.booru = booru
+    this.page = options.page || 0
   }
 
   /**
@@ -54,7 +54,7 @@ export default class SearchResults extends Array {
    * @return {Post}
    */
   get first (): Post {
-    return this[0];
+    return this[0]
   }
 
   /**
@@ -62,7 +62,7 @@ export default class SearchResults extends Array {
    * @return {Post}
    */
   get last (): Post {
-    return this[this.length - 1];
+    return this[this.length - 1]
   }
 
   /**
@@ -71,10 +71,10 @@ export default class SearchResults extends Array {
    * @return {Promise<SearchResults>}
    */
   public nextPage (): Promise<SearchResults> {
-    const opts: SearchParameters = this.options;
-    opts.page = this.page + 1;
+    const opts: SearchParameters = this.options
+    opts.page = this.page + 1
 
-    return this.booru.search(this.tags, opts);
+    return this.booru.search(this.tags, opts)
   }
 
   /**
@@ -82,24 +82,25 @@ export default class SearchResults extends Array {
    *
    * @param {String[]|String} tags The tags (or tag) to search for
    * @param {Object} options The extra options for the search
-   * @param {Boolean} [options.invert=false] If the results should be inverted and return images *not* tagged
+   * @param {Boolean} [options.invert=false] If the results should be inverted and
+   *                                         return images *not* tagged
    * @return {SearchResults}
    */
   public tagged (tags: string[] | string, {invert = false} = {}): SearchResults {
     if (!Array.isArray(tags)) {
-      tags = [tags];
+      tags = [tags]
     }
 
-    const posts: Post[] = [];
+    const posts: Post[] = []
 
     for (const p of this) {
-      const m: number = Utils.compareArrays(tags, p.tags).length;
+      const m: number = Utils.compareArrays(tags, p.tags).length
       if ((!invert && m > 0) || (invert && m === 0)) {
-        posts.push(p);
+        posts.push(p)
       }
     }
 
-    return new SearchResults(posts, this.tags, this.options, this.booru);
+    return new SearchResults(posts, this.tags, this.options, this.booru)
   }
 
   /**
@@ -108,6 +109,6 @@ export default class SearchResults extends Array {
    * @return {SearchResults} The results without any images with the specified tags
    */
   public blacklist (tags: string[] | string): SearchResults {
-    return this.tagged(tags, {invert: true});
+    return this.tagged(tags, {invert: true})
   }
 }

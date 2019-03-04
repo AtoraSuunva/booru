@@ -1,10 +1,10 @@
-import { RequestInit } from 'node-fetch';
-import siteJson from './sites.json';
-import Site from './structures/Site';
-import SiteInfo from './structures/SiteInfo';
+import { RequestInit } from 'node-fetch'
+import siteJson from './sites.json'
+import Site from './structures/Site'
+import SiteInfo from './structures/SiteInfo'
 
 export interface SMap<V> {
-  [key: string]: V;
+  [key: string]: V
 }
 
 type gelTags = {
@@ -13,18 +13,18 @@ type gelTags = {
   'rating:s': 'rating:safe',
 
   [key: string]: string;
-};
+}
 
 const expandedTags: gelTags = {
   'rating:e': 'rating:explicit',
   'rating:q': 'rating:questionable',
   'rating:s': 'rating:safe',
-};
+}
 
 /**
  * A map of site url/{@link SiteInfo}
  */
-export const sites: SMap<SiteInfo> = siteJson as any;
+export const sites: SMap<SiteInfo> = siteJson as any
 
 /**
  * Custom error type for when the boorus error or for user-side error, not my code (probably)
@@ -33,15 +33,15 @@ export const sites: SMap<SiteInfo> = siteJson as any;
  */
 export class BooruError extends Error {
   constructor (...args: any) {
-    super(...(args[0] instanceof Error ? [args[0].message] : args));
+    super(...(args[0] instanceof Error ? [args[0].message] : args))
 
     if (args[0] instanceof Error) {
-      this.stack = args[0].stack;
+      this.stack = args[0].stack
     } else {
-      Error.captureStackTrace(this, BooruError);
+      Error.captureStackTrace(this, BooruError)
     }
 
-    this.name = 'BooruError';
+    this.name = 'BooruError'
   }
 }
 
@@ -49,7 +49,7 @@ export class BooruError extends Error {
  * The user-agent to use for searches
  * @private
  */
-export const userAgent: string = `booru (https://github.com/AtlasTheBot/booru)`;
+export const userAgent: string = `booru (https://github.com/AtlasTheBot/booru)`
 
 /**
  * Expands tags based on a simple map, used for gelbooru/safebooru/etc compat :(
@@ -59,13 +59,13 @@ export const userAgent: string = `booru (https://github.com/AtlasTheBot/booru)`;
  */
 function expandTags (tags: string[]): string[] {
   for (let i = 0; i < tags.length; i++) {
-    const ex: string = expandedTags[tags[i].toLowerCase()];
+    const ex: string = expandedTags[tags[i].toLowerCase()]
     if (ex) {
-      tags[i] = ex;
+      tags[i] = ex
     }
   }
 
-  return tags;
+  return tags
 }
 
 /**
@@ -78,11 +78,12 @@ function expandTags (tags: string[]): string[] {
  * @param {number} [limit=100] The limit for images to return
  * @param {number} [page=0] The page to get
  */
-export function searchURI (site: Site, tags: string[] = [], limit: number = 100, page: number = 0): string {
+export function searchURI (site: Site, tags: string[] = [], limit: number = 100, page: number = 0)
+                        : string {
   // tslint:disable-next-line:prefer-template
   return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}`
     + (site.tagQuery ? site.tagQuery : 'tags')
-    + `=${expandTags(tags).join('+')}&limit=${limit}&${site.paginate}=${page}`;
+    + `=${expandTags(tags).join('+')}&limit=${limit}&${site.paginate}=${page}`
 }
 
 /**
@@ -96,4 +97,4 @@ export const defaultOptions: RequestInit = {
     Accept: 'application/json, application/xml;q=0.9, */*;q=0.8',
     'User-Agent': userAgent,
   },
-};
+}

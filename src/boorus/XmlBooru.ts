@@ -1,5 +1,5 @@
-import Site from '../structures/Site';
-import Booru from './Booru';
+import Site from '../structures/Site'
+import Booru from './Booru'
 
 /**
  * A class designed for Xml-returning boorus
@@ -14,6 +14,6 @@ export default class XmlBooru extends Booru {
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
   constructor (site: Site, credentials?: any) {
-    super(site, credentials);
+    super(site, credentials)
   }
 }

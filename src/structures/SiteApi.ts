@@ -4,7 +4,7 @@
  */
 export default interface SiteApi {
   /** The path to search for posts */
-  search?: string;
+  search?: string
   /** The path to view a post by ID */
-  postView?: string;
+  postView?: string
 }

@@ -18,7 +18,7 @@
   "scripts": {
     "test": "jest --no-cache",
     "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
-    "clean": "rimraf ./dist",
+    "clean": "npx rimraf ./dist",
     "prebuild": "npm run clean && npm run lint && npm test",
     "build": "tsc",
     "postbuild": "terser-folder ./dist -eo ./dist -x .js && copyfiles ./example.js ./dist"
