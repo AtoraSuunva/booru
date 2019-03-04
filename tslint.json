@@ -24,7 +24,7 @@
         "label-position": true,
         "linebreak-style": [true, "LF"],
         "max-classes-per-file": [true, 1],
-        "max-line-length": [true, 200],
+        "max-line-length": [true, 100],
         "member-ordering": [true, {
             "order": "fields-first"
         }],
@@ -82,7 +82,7 @@
         "promise-function-async": false,
         "quotemark": [true, "single", "jsx-single"],
         "radix": true,
-        "semicolon": [true, "always"],
+        "semicolon": [true, "never"],
         "space-before-function-paren": [true, "always"],
         "space-within-parens": [true, 0],
         "switch-default": true,

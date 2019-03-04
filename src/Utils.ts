@@ -1,13 +1,5 @@
-/*
- - Utils
- => .resolveSite(site/alias)
- => .jsonfy([images])
- => .shuffle([arr])
- => .randInt(min, max)
- */
-
-import { parse as xml2json } from 'fast-xml-parser';
-import { BooruError, sites } from './Constants';
+import { parse as xml2json } from 'fast-xml-parser'
+import { BooruError, sites } from './Constants'
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
@@ -17,18 +9,18 @@ import { BooruError, sites } from './Constants';
  */
 export function resolveSite (domain: string): string | null {
   if (typeof domain !== 'string') {
-    return null;
+    return null
   }
 
-  domain = domain.toLowerCase();
+  domain = domain.toLowerCase()
 
   for (const site in sites) {
     if (site === domain || sites[site].aliases.includes(domain)) {
-      return site;
+      return site
     }
   }
 
-  return null;
+  return null
 }
 
 /**
@@ -39,11 +31,11 @@ export function resolveSite (domain: string): string | null {
  * @return {Promise<Object[]>} A Promise with an array of objects created from the xml
  */
 export async function jsonfy (xml: string): Promise<object[]> {
-  if (typeof xml === 'object') return xml;
+  if (typeof xml === 'object') return xml
 
-  const jsond = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''});
-  if (jsond.posts.post) return jsond.posts.post;
-  return [];
+  const jsond = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''})
+  if (jsond.posts.post) return jsond.posts.post
+  return []
 }
 
 
@@ -56,20 +48,20 @@ export async function jsonfy (xml: string): Promise<object[]> {
  * @return {Array}       Shuffled array of something
  */
 export function shuffle<T> (array: T[]): T[] {
-  let currentIndex: number = array.length;
-  let temporaryValue: T;
-  let randomIndex: number;
+  let currentIndex: number = array.length
+  let temporaryValue: T
+  let randomIndex: number
 
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
 
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
   }
 
-  return array;
+  return array
 }
 
 // Thanks mdn and damnit derpibooru
@@ -81,9 +73,9 @@ export function shuffle<T> (array: T[]): T[] {
  * @param {Number} max The maximum (inclusive)
  */
 export function randInt (min: number, max: number): number {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 /**
@@ -93,22 +85,23 @@ export function randInt (min: number, max: number): number {
  * @param {String} site The site to resolve
  * @param {Number|String} limit The limit for the amount of images to fetch
  */
-export function validateSearchParams (site: string, limit: number | string): { site: string, limit: number } {
-  const resolvedSite = resolveSite(site);
+export function validateSearchParams (site: string, limit: number | string)
+                                   : { site: string, limit: number } {
+  const resolvedSite = resolveSite(site)
 
   if (typeof limit !== 'number') {
-    limit = parseInt(limit, 10);
+    limit = parseInt(limit, 10)
   }
 
   if (resolvedSite === null) {
-    throw new BooruError('Site not supported');
+    throw new BooruError('Site not supported')
   }
 
   if (typeof limit !== 'number' || Number.isNaN(limit)) {
-    throw new BooruError('`limit` should be an int');
+    throw new BooruError('`limit` should be an int')
   }
 
-  return {site: resolvedSite, limit};
+  return {site: resolvedSite, limit}
 }
 
 /**
@@ -120,14 +113,14 @@ export function validateSearchParams (site: string, limit: number | string): { s
  * @return {String[]} The shared strings between the arrays
  */
 export function compareArrays (arr1: string[], arr2: string[]): string[] {
-  const matches: string[] = [];
+  const matches: string[] = []
   arr1.forEach(ele1 => {
     arr2.forEach(ele2 => {
       if (ele1.toLowerCase() === ele2.toLowerCase()) {
-        matches.push(ele1);
+        matches.push(ele1)
       }
-    });
-  });
+    })
+  })
 
-  return matches;
+  return matches
 }
