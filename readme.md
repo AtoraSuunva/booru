@@ -4,7 +4,7 @@
 
 ## Features
 
-- Able to search 17 different boorus (check [sites.json](./sites.json))
+- Able to search 17 different boorus (check [sites.json](./src/sites.json))
 - Also alias support so you can be lazy (`sb` for `safebooru.org`)
 - Promises because they're magical
 - Choose the amount of images to get
@@ -16,8 +16,9 @@
 ## Installation
 
 ```sh
-npm i --save booru
-# Replace "npm i --save" with "yarn add" when using yarn
+npm add booru
+# or
+yarn add booru
 ```
 
 ---
@@ -25,50 +26,16 @@ npm i --save booru
 ## Usage
 
 ```js
-const Booru = require('booru');
-/**
- * or for Babel / TypeScript:
- * import Booru from 'booru'
- * Note: Requires --esmoduleinterop for TypeScript
- * use "import * as Booru" with --allowsyntheticdefaultimport
- * or "import booru = require('booru')" with neither
- */
+const Booru = require('booru')
 
-// Instantiate a booru and search it
-const e9 = new Booru('e9')
-let imgs = await e9.search(['cute', 'cat'], {limit: 3})
-
-// Log the url to first post found
-console.log(imgs[0].postView)
-
-// Don't instantiate, plus some demo error-checking
-Booru.search(site, [tag1, tag2], {limit: 1, random: false})
-.then(images => {
-  //Log the direct link to each image
-  for (let image of images) {
-    console.log(image.common.file_url)
-  }
-})
-.catch(err => {
-  if (err.name === 'BooruError') {
-    //It's a custom error thrown by the package
-    console.log(err.message)
-  } else {
-    //This means I messed up. Whoops.
-    console.log(err)
-  }
-});
-
-// or with async/await and ES6 Arrow Functions:
-const booruSearch = async (site, tags, limit = 0, random = true) => {
-    const images = await Booru.search(site, tags, {limit, random});
-
-    console.log(images[0].common.file_url);
-}
-
-console.log(booru.sites); // you can also check the sites and the options for each
-console.log(Object.keys(booru.sites)); // or just the site URLs
+Booru.search('safebooru', ['glaceon'], {limit: 3, random: true})
+  .then(posts => {
+    for (let post of posts)
+      console.log(post.fileUrl, post.postView)
+  })
 ```
+
+See [example.js](./example.js) for more examples
 
 ---
 
@@ -88,7 +55,9 @@ Available here: [https://booru.js.org](https://booru.js.org)
 > Various Derpibooru fixes https://github.com/AtlasTheBot/booru/pull/19
 
 [Favna](https://github.com/favna/)
-> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21 (and other things)
+> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21  
+> Improve TypeScript port  
+> Various other small fixes
 ---
 
 ## FAQ
@@ -99,14 +68,15 @@ The basic structure of a `Post` object looks like:
 
 ```js
 Post {
-  _data: {/*...*/},                     // The raw data from the booru
-  file_url: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
-  id: '124125',                         // The image ID, as a string
-  tags: ['cat', 'cute'],                // The tags, split into an Array
-  score: 5,                             // The score as a Number
-  source: 'https://ex.com/aaa.png',     // Source of the image, if supplied
-  rating: 's',                          // Rating of the image
-  createdAt: Date,                      // The `Date` this image was created at
+  _data: {/*...*/},                       // The raw data from the booru
+  fileUrl: 'https://aaaa.com/img.jpg',    // The direct link to the image, ready to post
+  id: '124125',                           // The image ID, as a string
+  tags: ['cat', 'cute'],                  // The tags, split into an Array
+  score: 5,                               // The score as a Number
+  source: 'https://ex.com/aaa.png',       // Source of the image, if supplied
+  rating: 's',                            // Rating of the image
+  createdAt: Date,                        // The `Date` this image was created at
+  postView: 'https://booru.ex/show/12345' // A URL to the post
 }
 ```
 
@@ -127,10 +97,6 @@ I'll accept PR based on what they do and code style (Not super strict about it, 
 
 Why not?
 
-### This is terrible code
-
-:)
-
 ### License?
 
-[It's GPLv3](http://choosealicense.com/licenses/gpl-3.0/)
+[It's MIT](https://choosealicense.com/licenses/mit/)
