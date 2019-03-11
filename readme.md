@@ -16,8 +16,9 @@
 ## Installation
 
 ```sh
-npm i --save booru
-# Replace "npm i --save" with "yarn add" when using yarn
+npm add booru
+# or
+yarn add booru
 ```
 
 ---
@@ -26,62 +27,15 @@ npm i --save booru
 
 ```js
 const Booru = require('booru')
-const {search, BooruError, sites} = require('booru')
-// for ES6:
-// import Booru, { search, BooruError, sites } from 'booru'
 
-const site = 'safebooru';
-const tags = ['glaceon'];
-
-// Search with promises, plus some demo error-checking
-Booru.search(site, [tag1, tag2], {limit: 1, random: false})
+Booru.search('safebooru', ['glaceon'], {limit: 3, random: true})
   .then(posts => {
-    //Log the direct link to each image
-    for (let post of posts) {
-      console.log(post.fileUrl);
-    }
+    for (let post of posts)
+      console.log(post.fileUrl, post.postView)
   })
-  .catch(err => {
-    if (err instanceof BooruError) {
-      //It's a custom error thrown by the package
-      console.error(err.message);
-    } else {
-      //This means I messed up. Whoops.
-      console.error(err);
-    }
-  });
-
-// Search with async/await
-async function booruSearch(site, tags, limit = 1, random = true) {
-  const posts = await Booru.search(site, tags, {limit, random});
-
-  return console.log(posts[0].fileUrl);
-}
-
-// Create class then search (not recommended!)
-async function booruClassSearch(site, tags, limit = 1, random = true) {
-  const siteData = Object.values(sites).filter(entry => entry.domain.includes(site))[0]
-  const booruClass = new BooruClass(siteData);
-
-  const posts = await booruClass.search(tags, {limit, random});
-
-  return console.log(posts[0].fileUrl);
-}
-
-// Search with minimal setup and async/await (a.k.a. the fancy pants way)
-async function booruDirectSearch(site, tags, limit = 1, random = true) {
-  const posts = await search(site, tags, {limit, random});
-
-  return console.log(posts[0].fileUrl);
-}
-
-console.log(Booru.sites); // you can also check the sites and the options for each
-console.log(Object.keys(sites)); // or just the site URLs
-
-console.log(booruSearch(site, tags));
-console.log(booruClassSearch(site, tags));
-console.log(booruDirectSearch(site, tags));
 ```
+
+See [example.js](./example.js) for more examples
 
 ---
 
@@ -114,14 +68,15 @@ The basic structure of a `Post` object looks like:
 
 ```js
 Post {
-  _data: {/*...*/},                     // The raw data from the booru
-  fileUrl: 'https://aaaa.com/img.jpg', // The direct link to the image, ready to post
-  id: '124125',                         // The image ID, as a string
-  tags: ['cat', 'cute'],                // The tags, split into an Array
-  score: 5,                             // The score as a Number
-  source: 'https://ex.com/aaa.png',     // Source of the image, if supplied
-  rating: 's',                          // Rating of the image
-  createdAt: Date,                      // The `Date` this image was created at
+  _data: {/*...*/},                       // The raw data from the booru
+  fileUrl: 'https://aaaa.com/img.jpg',    // The direct link to the image, ready to post
+  id: '124125',                           // The image ID, as a string
+  tags: ['cat', 'cute'],                  // The tags, split into an Array
+  score: 5,                               // The score as a Number
+  source: 'https://ex.com/aaa.png',       // Source of the image, if supplied
+  rating: 's',                            // Rating of the image
+  createdAt: Date,                        // The `Date` this image was created at
+  postView: 'https://booru.ex/show/12345' // A URL to the post
 }
 ```
 
@@ -141,10 +96,6 @@ I'll accept PR based on what they do and code style (Not super strict about it, 
 ### Why?
 
 Why not?
-
-### This is terrible code
-
-:)
 
 ### License?
 
