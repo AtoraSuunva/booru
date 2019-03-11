@@ -1,2 +1,16 @@
+# Filter IDE settings
 .vs/*
+.vscode/
+.idea/
+
+# Filter node modules
 node_modules/*
+
+# Filter build
+dist/*
+
+# Only publish one type of lockfile
+yarn.lock
+
+# For those pesky MacOS users
+.DS_Store

@@ -1,45 +1,49 @@
-// cli example
+const Booru = require('booru')
+const {BooruError, sites} = require('booru')
+// for ES6:
+// import Booru, { search, BooruError, sites } from 'booru'
 
-// Run with
-// node example.js [site] [tag1] [tag2] [tagn]
+const site = 'safebooru'
+const tags = ['glaceon']
 
-// You can use any site in sites.json (or their aliases)
+// Search with promises
+Booru.search(site, tags, {limit: 1, random: false})
+  .then(posts => {
+    //Log the direct link to each image
+    for (let post of posts) {
+      console.log(post.fileUrl)
+    }
+  })
+  .catch(err => {
+    if (err instanceof BooruError) {
+      // It's a custom error thrown by the package
+      // Typically results from errors the boorus returns, eg. "too many tags"
+      console.error(err.message)
+    } else {
+      // This means something pretty bad happened
+      console.error(err)
+    }
+  })
 
-const Booru = require('./index.js')
+// Search with async/await
+async function booruSearch(site, tags, limit = 1, random = true) {
+  const posts = await Booru.search(site, tags, {limit, random})
 
-Booru.search(process.argv[2], process.argv.slice(3), { limit: 1, random: true })
-.then(images => {
-  if (images.length === 0) {
-    console.log('No images with those tags found.')
-  }
-
-  // Log the direct link to each image
-  for (let image of images) {
-    console.log(image.common.file_url)
-  }
-})
-.catch(err => {
-  if (err.name === 'BooruError') {
-    // It's a custom error thrown by the package
-    console.log(err)
-  } else {
-    // This means I messed up. Whoops.
-    console.log(err)
-  }
-})
-
-// Another example, where we instantiate a booru and then use it
-// instantiating a booru allows for you to do more complex things,
-// like favoriting a post (if you provide an api token) or posting/viewing comments, etc.
-async function example() {
-  const e9 = new Booru('e9', {token: 'goes here'})
-  let imgs
-
-  imgs = await e9.search(['cat', 'cute'], {limit: 1, random: true})
-
-  // Log the post url to the first image
-  console.log(imgs[0].postView)
-
-  // In the future, things like `e9.favorite(BooruImage)` or `e9.fetchComments(BooruImage)`
-  // Will be available (and maybe even <BooruImage>.favorite())
+  return console.log(posts[0].fileUrl)
 }
+
+// Create an instance of a booru to use yourself
+// This allows you to create a booru with certain credentials/settings and reuse it
+// Internally, `Booru.search` just creates boorus and caches them
+// Ex: `Booru('safebooru')`
+async function booruClassSearch(site, tags, limit = 1, random = true) {
+  const myBooru = Booru(site)
+  const posts = await myBooru.search(tags, {limit, random})
+
+  return console.log(posts[0].fileUrl)
+}
+
+// You can also check the sites and the options for each
+//   console.log(Booru.sites)
+// Or just the site URLs
+//   console.log(Object.keys(sites))
