@@ -46,23 +46,23 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^3.12.13",
-    "node-fetch": "^2.2.0"
+    "fast-xml-parser": "^3.12.16",
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/core": "^7.4.0",
+    "@babel/polyfill": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
     "@babel/preset-typescript": "^7.3.3",
-    "@types/jest": "^24.0.6",
-    "@types/node": "^11.9.4",
-    "@types/node-fetch": "^2.1.6",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.6",
+    "@types/node-fetch": "^2.1.7",
     "copyfiles": "^2.1.0",
-    "jest": "^24.1.0",
+    "jest": "^24.5.0",
     "rimraf": "^2.6.3",
     "terser-folder": "^2.0.0",
-    "tslint": "^5.13.0",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
   },
   "files": [
     "dist/"
