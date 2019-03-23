@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "runkitExampleFilename": "./example.js",
+  "runkitExampleFilename": "./dist/example.js",
   "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "repository": {
     "type": "git",
@@ -16,12 +16,13 @@
     "url": "https://github.com/AtlasTheBot/booru/issues"
   },
   "scripts": {
-    "test": "jest --no-cache",
-    "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
+    "test": "npx jest --no-cache",
+    "lint": "npx tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
     "clean": "npx rimraf ./dist",
-    "prebuild": "npm run clean && npm run lint && npm test",
-    "build": "tsc",
-    "postbuild": "terser-folder ./dist -eo ./dist -x .js && copyfiles ./example.js ./dist"
+    "prebuild": "npm run-script clean && npm run-script lint && npm run-script test",
+    "build": "npx tsc",
+    "postbuild": "npx terser-folder ./dist -eo ./dist -x .js && npx copyfiles ./example.js ./dist",
+    "prepublishOnly": "npm run-script build"
   },
   "keywords": [
     "booru",
@@ -67,8 +68,7 @@
     "dist/"
   ],
   "directories": {
-    "doc": "./docs",
-    "lib": "./src",
-    "test": "./test"
+    "lib": "src/",
+    "test": "test/"
   }
 }
