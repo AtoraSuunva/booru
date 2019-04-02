@@ -1,12 +1,12 @@
 {
   "name": "booru",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtlasTheBot",
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "runkitExampleFilename": "./example.js",
+  "runkitExampleFilename": "./dist/example.js",
   "homepage": "https://github.com/AtlasTheBot/booru#readme",
   "repository": {
     "type": "git",
@@ -16,12 +16,13 @@
     "url": "https://github.com/AtlasTheBot/booru/issues"
   },
   "scripts": {
-    "test": "jest --no-cache",
-    "lint": "tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
+    "test": "npx jest --no-cache",
+    "lint": "npx tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
     "clean": "npx rimraf ./dist",
-    "prebuild": "npm run clean && npm run lint && npm test",
-    "build": "tsc",
-    "postbuild": "terser-folder ./dist -eo ./dist -x .js && copyfiles ./example.js ./dist"
+    "prebuild": "npm run-script clean && npm run-script lint && npm run-script test",
+    "build": "npx tsc",
+    "postbuild": "npx terser-folder ./dist -eo ./dist -x .js && npx copyfiles ./example.js ./dist",
+    "prepublishOnly": "npm run-script build"
   },
   "keywords": [
     "booru",
@@ -45,30 +46,29 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^3.12.13",
-    "node-fetch": "^2.2.0"
+    "fast-xml-parser": "^3.12.16",
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/core": "^7.4.0",
+    "@babel/polyfill": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
     "@babel/preset-typescript": "^7.3.3",
-    "@types/jest": "^24.0.6",
-    "@types/node": "^11.9.4",
-    "@types/node-fetch": "^2.1.6",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.6",
+    "@types/node-fetch": "^2.1.7",
     "copyfiles": "^2.1.0",
-    "jest": "^24.1.0",
+    "jest": "^24.5.0",
     "rimraf": "^2.6.3",
     "terser-folder": "^2.0.0",
-    "tslint": "^5.13.0",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
   },
   "files": [
     "dist/"
   ],
   "directories": {
-    "doc": "./docs",
-    "lib": "./src",
-    "test": "./test"
+    "lib": "src/",
+    "test": "test/"
   }
 }
