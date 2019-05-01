@@ -19,7 +19,7 @@ import SearchParameters from './SearchParameters'
  * const imgs2 = await imgs.nextPage()
  * imgs2.forEach(i => console.log(i.postView))
  */
-export default class SearchResults extends Array {
+export default class SearchResults extends Array<Post> {
   /** The booru used for this search */
   public booru: Booru
   /** The page of this search */
