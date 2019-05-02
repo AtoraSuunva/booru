@@ -1,6 +1,6 @@
-# booru
+# `booru`
 
->*A node package to do stuff on various boorus, like search 'em*
+> *A node package to search boorus*
 
 ## Features
 
@@ -9,7 +9,7 @@
 - Promises because they're magical
 - Choose the amount of images to get
 - Random support for all sites, using `order:random` on sites that support it and using a bit of magic on sites that don't
-- Coming soon: Support for more than just searching
+- Coming soon(-ish): Support for more than just searching
 
 ---
 
@@ -42,23 +42,6 @@ See [example.js](./example.js) for more examples
 ## Docs
 
 Available here: [https://booru.js.org](https://booru.js.org)
-
----
-
-## Contributors
-
-[BobbyWibowo](https://github.com/BobbyWibowo/booru)
-> Change from request-promise-native to snek-fetch https://github.com/AtlasTheBot/booru/pull/9
-
-[rubikscraft](https://github.com/rubikscraft/booru)
-> Add 2 new boorus (furry.booru.org/realbooru.com) https://github.com/AtlasTheBot/booru/pull/17  
-> Various Derpibooru fixes https://github.com/AtlasTheBot/booru/pull/19
-
-[Favna](https://github.com/favna/)
-> Add TypeScript declarations https://github.com/AtlasTheBot/booru/pull/21  
-> Improve TypeScript port  
-> Various other small fixes
----
 
 ## FAQ
 
@@ -100,3 +83,24 @@ Why not?
 ### License?
 
 [It's MIT](https://choosealicense.com/licenses/mit/)
+
+---
+
+## Contributors
+
+[BobbyWibowo](https://github.com/BobbyWibowo/booru)
+> [Change from request-promise-native to snek-fetch](https://github.com/AtlasTheBot/booru/pull/9)
+
+[rubikscraft](https://github.com/rubikscraft/booru)
+> [Add 2 new boorus (furry.booru.org/realbooru.com)](https://github.com/AtlasTheBot/booru/pull/17)  
+> [Various Derpibooru fixes](https://github.com/AtlasTheBot/booru/pull/19)
+
+[Favna](https://github.com/favna/)
+> [Add TypeScript declarations](https://github.com/AtlasTheBot/booru/pull/21)  
+> Improve TypeScript port  
+> Various other small fixes
+
+[negezor](https://github.com/negezor)
+> [Add missing type information](https://github.com/AtlasTheBot/booru/pull/31)
+
+---
