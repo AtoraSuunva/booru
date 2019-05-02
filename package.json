@@ -1,8 +1,8 @@
 {
   "name": "booru",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Search (and do other things) on a bunch of different boorus!",
-  "author": "AtlasTheBot",
+  "author": "AtlasTheBot (https://github.com/AtlasTheBot/)",
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -36,8 +36,6 @@
     "safebooru",
     "tbib",
     "xbooru",
-    "youhateus",
-    "dollbooru",
     "paheal",
     "lolibooru",
     "derpibooru"
@@ -70,5 +68,23 @@
   "directories": {
     "lib": "src/",
     "test": "test/"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Vladlen",
+      "url": "https://github.com/negezor"
+    },
+    {
+      "name": "Favna",
+      "url": "https://github.com/Favna"
+    },
+    {
+      "name": "Bobby Wibowo",
+      "url": "https://github.com/BobbyWibowo"
+    },
+    {
+      "name": "AtlasTheBot",
+      "url": "https://github.com/AtlasTheBot"
+    }
+  ]
 }
