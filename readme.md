@@ -2,6 +2,8 @@
 
 > *A node package to search boorus*
 
+[![CircleCI](https://img.shields.io/circleci/project/github/AtlasTheBot/booru.svg)](https://circleci.com/gh/AtlasTheBot/booru) ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtlasTheBot/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
+
 ## Features
 
 - Able to search 17 different boorus (check [sites.json](./src/sites.json))
