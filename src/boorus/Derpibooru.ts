@@ -17,12 +17,12 @@ export default class Derpibooru extends Booru {
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
-  constructor (site: Site, credentials?: any) {
+  constructor(site: Site, credentials?: any) {
     super(site, credentials)
   }
 
   /** @inheritDoc */
-  public search (tags: string[] | string, {limit = 1, random = false, page = 0}
+  public search(tags: string[] | string, {limit = 1, random = false, page = 0}
                  : SearchParameters = {}): Promise<SearchResults> {
     if (!Array.isArray(tags)) {
       tags = [tags]
