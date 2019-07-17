@@ -63,7 +63,6 @@
         "no-trailing-whitespace": [true, "ignore-jsdoc"],
         "no-unsafe-finally": true,
         "no-unused-expression": true,
-        "no-use-before-declare": true,
         "no-var-keyword": true,
         "no-var-requires": true,
         "number-literal-format": true,
@@ -83,7 +82,7 @@
         "quotemark": [true, "single", "jsx-single"],
         "radix": true,
         "semicolon": [true, "never"],
-        "space-before-function-paren": [true, "always"],
+        "space-before-function-paren": [true, "never"],
         "space-within-parens": [true, 0],
         "switch-default": true,
         "trailing-comma": [true, {

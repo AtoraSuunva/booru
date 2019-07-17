@@ -1,11 +1,12 @@
 import fetch, { FetchError, Response } from 'node-fetch'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
+import { jsonfy, resolveSite, shuffle } from '../Utils'
+
 import InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
 import SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import Site from '../structures/Site'
-import { jsonfy, resolveSite, shuffle } from '../Utils'
 
 /*
  - new Booru
@@ -46,7 +47,7 @@ export class Booru {
    * @param {Site} site The site to use
    * @param {Object?} credentials Credentials for the API (Currently not used)
    */
-  constructor (site: Site, credentials: object | null = null) {
+  constructor(site: Site, credentials: object | null = null) {
     const domain = resolveSite(site.domain)
 
     if (domain === null) {
@@ -67,7 +68,7 @@ export class Booru {
    * @param {Number} [searchArgs.page=0] The page to search
    * @return {Promise<SearchResults>} The results as an array of Posts
    */
-  public async search (tags: string | string[], {limit = 1, random = false, page = 0}
+  public async search(tags: string | string[], {limit = 1, random = false, page = 0}
                        : SearchParameters = {}): Promise<SearchResults> {
 
     const fakeLimit: number = random && !this.site.random ? 100 : 0
@@ -86,7 +87,7 @@ export class Booru {
    * @param {String} id The id to get the postView for
    * @return {String} The url to the post
    */
-  public postView (id: string | number): string {
+  public postView(id: string | number): string {
     if (typeof id === 'string' && Number.isNaN(parseInt(id, 10))) {
       throw new BooruError(`Not a valid id for postView: ${id}`)
     }
@@ -106,8 +107,8 @@ export class Booru {
    * @param {String?} [searchArgs.uri=null] If the uri should be overwritten
    * @return {Promise<Object>}
    */
-  protected async doSearchRequest (tags: string[] | string,
-                                   {uri = null, limit = 1, random = false, page = 0}
+  protected async doSearchRequest(tags: string[] | string,
+                                  {uri = null, limit = 1, random = false, page = 0}
                                    : InternalSearchParameters = {}): Promise<any> {
     if (!Array.isArray(tags)) tags = [tags]
 
@@ -127,9 +128,20 @@ export class Booru {
     const xml = this.site.type === 'xml'
 
     try {
-      const siteData = await fetch(fetchuri, options)
-      const response: Response = xml ? await siteData.text() : await siteData.json()
-      return xml ? await jsonfy(response as unknown as string) : response
+      const response = await fetch(fetchuri, options)
+      const data: Response = xml ? await response.text() : await response.json()
+      const posts = xml ? await jsonfy(data as unknown as string) : data
+
+      if (!response.ok) {
+        throw new BooruError(`Received HTTP ${response.status} `
+                            + `from booru: '${
+                              (posts as any).error ||
+                              (posts as any).message ||
+                              JSON.stringify(posts)}'`)
+      } else {
+        return posts
+      }
+
     } catch (err) {
       if ((err as FetchError).type === 'invalid-json') return ''
       throw err
@@ -149,7 +161,7 @@ export class Booru {
    * @param {Number} [searchArgs.page] The page number searched
    * @return {SearchResults} The results of this search
    */
-  protected parseSearchResult (result: any, {fakeLimit, tags, limit, random, page}
+  protected parseSearchResult(result: any, {fakeLimit, tags, limit, random, page}
                                : InternalSearchParameters) {
 
     if (result.success === false) {

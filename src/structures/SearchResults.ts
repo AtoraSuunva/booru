@@ -30,7 +30,7 @@ export default class SearchResults extends Array<Post> {
   private readonly options: SearchParameters
 
   /** @private */
-  constructor (posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
+  constructor(posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
     /**
      * TypeScript seems to fail to recongnize that i can pass an array by spreading it, which
      * creates a new array from the parameters passed
@@ -53,7 +53,7 @@ export default class SearchResults extends Array<Post> {
    * Get the first post in this result set
    * @return {Post}
    */
-  get first (): Post {
+  get first(): Post {
     return this[0]
   }
 
@@ -61,7 +61,7 @@ export default class SearchResults extends Array<Post> {
    * Get the last post in this result set
    * @return {Post}
    */
-  get last (): Post {
+  get last(): Post {
     return this[this.length - 1]
   }
 
@@ -70,7 +70,7 @@ export default class SearchResults extends Array<Post> {
    * <p>Works like <code>sb.search('cat', {page: 1}); sb.search('cat', {page: 2})</code>
    * @return {Promise<SearchResults>}
    */
-  public nextPage (): Promise<SearchResults> {
+  public nextPage(): Promise<SearchResults> {
     const opts: SearchParameters = this.options
     opts.page = this.page + 1
 
@@ -86,7 +86,7 @@ export default class SearchResults extends Array<Post> {
    *                                         return images *not* tagged
    * @return {SearchResults}
    */
-  public tagged (tags: string[] | string, {invert = false} = {}): SearchResults {
+  public tagged(tags: string[] | string, {invert = false} = {}): SearchResults {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -108,7 +108,7 @@ export default class SearchResults extends Array<Post> {
    * @param {String[]|String} tags The tags (or tag) to blacklist
    * @return {SearchResults} The results without any images with the specified tags
    */
-  public blacklist (tags: string[] | string): SearchResults {
+  public blacklist(tags: string[] | string): SearchResults {
     return this.tagged(tags, {invert: true})
   }
 }

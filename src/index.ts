@@ -1,12 +1,13 @@
-import { deprecate } from 'util'
+import { BooruError, SMap, sites } from './Constants'
+
 import Booru from './boorus/Booru'
 import Derpibooru from './boorus/Derpibooru'
-import XmlBooru from './boorus/XmlBooru'
-import { BooruError, sites, SMap } from './Constants'
 import Post from './structures/Post'
 import SearchParameters from './structures/SearchParameters'
 import SearchResults from './structures/SearchResults'
 import Site from './structures/Site'
+import XmlBooru from './boorus/XmlBooru'
+import { deprecate } from 'util'
 import { resolveSite } from './Utils'
 
 const BooruTypes: any = {
@@ -23,7 +24,7 @@ const booruCache: SMap<Booru> = {}
  * @param {*} credentials The credentials to use, if any
  * @return {Booru} A new booru
  */
-function booruFrom (booruSite: Site, credentials?: any): Booru {
+function booruFrom(booruSite: Site, credentials?: any): Booru {
   return new (booruSite.type !== undefined && BooruTypes[booruSite.type]
     ? BooruTypes[booruSite.type]
     : Booru)(booruSite, credentials)
@@ -37,7 +38,7 @@ function booruFrom (booruSite: Site, credentials?: any): Booru {
  * @param {*} credentials The credentials to use on this booru
  * @return {Booru} A booru to use
  */
-export default function (site: string, credentials: any = null): Booru {
+export default function(site: string, credentials: any = null): Booru {
   const rSite = resolveSite(site)
 
   if (!rSite) throw new BooruError('Site not supported')
@@ -64,8 +65,8 @@ export default function (site: string, credentials: any = null): Booru {
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
  */
-export function search (site: string, tags: string[] | string = [],
-                        {limit = 1, random = false, page = 0, credentials = null}
+export function search(site: string, tags: string[] | string = [],
+                       {limit = 1, random = false, page = 0, credentials = null}
                         : SearchParameters = {}): Promise<SearchResults> {
 
   const rSite: string | null = resolveSite(site)
@@ -108,7 +109,7 @@ const deprecatedCommonfy = deprecate(() => { },
  * @param  {Post[]} images   Array of {@link Post} objects
  * @return {Promise<Post[]>} Array of {@link Post} objects
  */
-export function commonfy (images: Post[]): Promise<Post[]> {
+export function commonfy(images: Post[]): Promise<Post[]> {
   deprecatedCommonfy()
   return Promise.resolve(images)
 }
