@@ -1,11 +1,12 @@
 import fetch, { FetchError, Response } from 'node-fetch'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
+import { jsonfy, resolveSite, shuffle } from '../Utils'
+
 import InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
 import SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import Site from '../structures/Site'
-import { jsonfy, resolveSite, shuffle } from '../Utils'
 
 /*
  - new Booru
@@ -127,9 +128,20 @@ export class Booru {
     const xml = this.site.type === 'xml'
 
     try {
-      const siteData = await fetch(fetchuri, options)
-      const response: Response = xml ? await siteData.text() : await siteData.json()
-      return xml ? await jsonfy(response as unknown as string) : response
+      const response = await fetch(fetchuri, options)
+      const data: Response = xml ? await response.text() : await response.json()
+      const posts = xml ? await jsonfy(data as unknown as string) : data
+
+      if (!response.ok) {
+        throw new BooruError(`Received HTTP ${response.status} `
+                            + `from booru: '${
+                              (posts as any).error ||
+                              (posts as any).message ||
+                              JSON.stringify(posts)}'`)
+      } else {
+        return posts
+      }
+
     } catch (err) {
       if ((err as FetchError).type === 'invalid-json') return ''
       throw err

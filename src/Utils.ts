@@ -34,8 +34,24 @@ export function resolveSite(domain: string): string | null {
 export async function jsonfy(xml: string): Promise<object[]> {
   if (typeof xml === 'object') return xml
 
-  const jsond = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''})
-  if (jsond.posts.post) return jsond.posts.post
+  const data = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''})
+
+  if (data.html) {
+    // Damn it
+    // Try our best to scrape an error off this then
+    const message = []
+    if (data.html.body.h1) {
+      message.push(data.html.body.h1)
+    }
+
+    if (data.html.body.p) {
+      message.push(data.html.body.p['#text'])
+    }
+
+    throw new BooruError(`The Booru sent back an error: '${message.join(': ')}'`, data.html)
+  }
+
+  if (data.posts.post) return data.posts.post
   return []
 }
 
