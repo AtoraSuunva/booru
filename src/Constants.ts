@@ -1,7 +1,7 @@
 import { RequestInit } from 'node-fetch'
-import siteJson from './sites.json'
 import Site from './structures/Site'
 import SiteInfo from './structures/SiteInfo'
+import siteJson from './sites.json'
 
 export interface SMap<V> {
   [key: string]: V
@@ -32,7 +32,7 @@ export const sites: SMap<SiteInfo> = siteJson as any
  * @type {Error}
  */
 export class BooruError extends Error {
-  constructor (...args: any) {
+  constructor(...args: any) {
     super(...(args[0] instanceof Error ? [args[0].message] : args))
 
     if (args[0] instanceof Error) {
@@ -57,9 +57,9 @@ export const userAgent: string = `booru (https://github.com/AtlasTheBot/booru)`
  * @private
  * @param {String[]} tags The tags to expand
  */
-function expandTags (tags: string[]): string[] {
+function expandTags(tags: string[]): string[] {
   for (let i = 0; i < tags.length; i++) {
-    const ex: string = expandedTags[tags[i].toLowerCase()]
+    const ex: string = expandedTags[tags[i].toString().toLowerCase()]
     if (ex) {
       tags[i] = ex
     }
@@ -78,7 +78,7 @@ function expandTags (tags: string[]): string[] {
  * @param {number} [limit=100] The limit for images to return
  * @param {number} [page=0] The page to get
  */
-export function searchURI (site: Site, tags: string[] = [], limit: number = 100, page: number = 0)
+export function searchURI(site: Site, tags: string[] = [], limit: number = 100, page: number = 0)
                         : string {
   // tslint:disable-next-line:prefer-template
   return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}`

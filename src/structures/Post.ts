@@ -12,7 +12,7 @@ const common = deprecate(() => {
  * @param {*}      data  boorus
  * @param {Booru}  booru so hard
  */
-function parseImageUrl (url: string, data: any, booru: Booru): string | null {
+function parseImageUrl(url: string, data: any, booru: Booru): string | null {
   // If the image's file_url is *still* undefined or the source is empty or it's deleted
   // Thanks danbooru *grumble grumble*
   if (!url || url.trim() === '' || data.is_deleted) {
@@ -111,7 +111,7 @@ export default class Post {
    * @param {Object} data The raw data from the Booru
    * @param {Booru} booru The booru that created the image
    */
-  constructor (data: any, booru: Booru) {
+  constructor(data: any, booru: Booru) {
     this.data = data
     this.booru = booru
 
@@ -167,7 +167,7 @@ export default class Post {
    * The direct link to the file
    * <p>It's prefered to use `.fileUrl` instead because camelCase
    */
-  get file_url (): string | null {
+  get file_url(): string | null {
     return this.fileUrl
   }
 
@@ -175,7 +175,7 @@ export default class Post {
    * The url to the medium-sized image (if available)
    * <p>It's prefered to use `.sampleUrl` instead because camelCase
    */
-  get sample_url (): string | null {
+  get sample_url(): string | null {
     return this.sampleUrl
   }
 
@@ -183,7 +183,7 @@ export default class Post {
    * The height of the medium-sized image (if available)
    * <p>It's prefered to use `.sampleHeight` instead because camelCase
    */
-  get sample_height (): number | null {
+  get sample_height(): number | null {
     return this.sampleHeight
   }
 
@@ -191,7 +191,7 @@ export default class Post {
    * The width of the medium-sized image (if available)
    * <p>It's prefered to use `.sampleWidth` instead because camelCase
    */
-  get sample_width (): number | null {
+  get sample_width(): number | null {
     return this.sampleWidth
   }
 
@@ -199,7 +199,7 @@ export default class Post {
    * The url to the smallest image (if available)
    * <p>It's prefered to use `.previewUrl` instead because camelCase
    */
-  get preview_url (): string | null {
+  get preview_url(): string | null {
     return this.previewUrl
   }
 
@@ -207,7 +207,7 @@ export default class Post {
    * The height of the smallest image (if available)
    * <p>It's prefered to use `.previewHeight` instead because camelCase
    */
-  get preview_height (): number | null {
+  get preview_height(): number | null {
     return this.previewHeight
   }
 
@@ -215,7 +215,7 @@ export default class Post {
    * The width of the smallest image (if available)
    * <p>It's prefered to use `.previewWidth` instead because camelCase
    */
-  get preview_width (): number | null {
+  get preview_width(): number | null {
     return this.previewWidth
   }
 
@@ -231,7 +231,7 @@ export default class Post {
    * // Log the post url of the first image
    * console.log(imgs[0].postView)
    */
-  get postView (): string {
+  get postView(): string {
     return this.booru.postView(this.id)
   }
 
@@ -249,7 +249,7 @@ export default class Post {
    * // To access the post's raw data from the booru, do
    * image._data.id
    */
-  get common (): this {
+  get common(): this {
     common()
     return this
   }
