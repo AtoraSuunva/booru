@@ -27,7 +27,7 @@ export default class Site {
   /** If this site supports only http:// */
   public insecure?: boolean
 
-  constructor (data: SiteInfo) {
+  constructor(data: SiteInfo) {
     this.domain = data.domain
     this.type = data.type || 'json'
     this.aliases = data.aliases || []
