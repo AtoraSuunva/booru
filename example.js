@@ -1,5 +1,5 @@
 const Booru = require('booru')
-const {BooruError, sites} = require('booru')
+const { BooruError, sites } = require('booru')
 // for ES6:
 // import Booru, { search, BooruError, sites } from 'booru'
 
@@ -7,7 +7,7 @@ const site = 'safebooru'
 const tags = ['glaceon']
 
 // Search with promises
-Booru.search(site, tags, {limit: 1, random: false})
+Booru.search(site, tags, { limit: 1, random: false })
   .then(posts => {
     //Log the direct link to each image
     for (let post of posts) {

@@ -19,34 +19,31 @@ import SearchParameters from './SearchParameters'
  * const imgs2 = await imgs.nextPage()
  * imgs2.forEach(i => console.log(i.postView))
  */
-export default class SearchResults extends Array<Post> {
+class SearchResults extends Array<Post> {
   /** The booru used for this search */
   public booru: Booru
   /** The page of this search */
   public page: number
-  /** The tags used for this search @private */
-  private readonly tags: string[]
-  /** The options used for this search @private */
-  private readonly options: SearchParameters
+  /** The tags used for this search */
+  public readonly tags: string[]
+  /** The options used for this search */
+  public readonly options: SearchParameters
+  /** The posts from this search result */
+  public readonly posts: Post[]
 
   /** @private */
   constructor(posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
-    /**
-     * TypeScript seems to fail to recongnize that i can pass an array by spreading it, which
-     * creates a new array from the parameters passed
-     * So `super(...posts)` is (incorrectly) interpreted as an error
-     * Thank you TypeScript, very cool!
-     */
     super(posts.length)
 
     for (let i: number = 0; i < posts.length; i++) {
       this[i] = posts[i]
     }
 
+    this.posts = posts
     this.tags = tags
     this.options = options
     this.booru = booru
-    this.page = options.page || 0
+    this.page = options ? options.page || 0 : 0
   }
 
   /**
@@ -112,3 +109,25 @@ export default class SearchResults extends Array<Post> {
     return this.tagged(tags, {invert: true})
   }
 }
+
+// Workaround for the odd behavior as it extends Array
+// Calling an array function on the result will cause it to call the constructor for SearchResults
+// With the incorrect params (ie. new SearchResults(0)) thinking it's an array
+
+const prototypeKeys: string[] = Reflect
+    .ownKeys(Array.prototype)
+    .filter(k => typeof k === 'string' && k !== 'constructor') as unknown as string[]
+
+// Are you ready for hell of a workaround?
+for (const p of prototypeKeys) {
+  if (typeof Array.prototype[p as any] === 'function') {
+    const proxy = function(this: SearchResults, ...args: any[]) {
+      // tslint:disable-next-line: ban-types
+      return (this.posts[p as any] as unknown as Function)(...args)
+    }
+
+    SearchResults.prototype[p as any] = proxy as unknown as Post
+  }
+}
+
+export default SearchResults
