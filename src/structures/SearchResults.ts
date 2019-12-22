@@ -113,7 +113,6 @@ class SearchResults extends Array<Post> {
 // Workaround for the odd behavior as it extends Array
 // Calling an array function on the result will cause it to call the constructor for SearchResults
 // With the incorrect params (ie. new SearchResults(0)) thinking it's an array
-
 const prototypeKeys: string[] = Reflect
     .ownKeys(Array.prototype)
     .filter(k => typeof k === 'string' && k !== 'constructor') as unknown as string[]
@@ -126,7 +125,8 @@ for (const p of prototypeKeys) {
       return (this.posts[p as any] as unknown as Function)(...args)
     }
 
-    SearchResults.prototype[p as any] = proxy as unknown as Post
+    // See https://github.com/AtlasTheBot/booru/issues/38
+    Object.defineProperty(SearchResults.prototype, p, { value: proxy })
   }
 }
 
