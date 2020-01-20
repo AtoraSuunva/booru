@@ -2,6 +2,7 @@ import Booru from '../boorus/Booru'
 import Post from '../structures/Post'
 import * as Utils from '../Utils'
 import SearchParameters from './SearchParameters'
+import { BooruError } from '../Constants'
 
 /**
  * Represents a page of search results, works like an array of {@link Post}
@@ -61,6 +62,27 @@ class SearchResults extends Array<Post> {
   get last(): Post {
     return this[this.length - 1]
   }
+
+  /**
+   * Takes an array of posts and sifts through them, only returning those which don't include any of the tags provided.
+   * @param {String[]} siftedtags Tags to filter out.
+   * 
+   * @return {Promise<SearchResults>}
+   * 
+   * @example
+   * const Booru = require('booru')
+   * // Returns a promise with the latest wolf picture, making sure there's no dragon's involved.
+   * Booru.search('e926', ['wolf']).then((res) => res.sift(["dragons"]))
+   */
+  sift(siftedtags: string[]) {
+
+    if (!siftedtags || !siftedtags[0]) throw new BooruError("Must specify at least one tag to sift.")
+
+    let siftedposts = this.posts.filter((post) => post.tags.some((tag) => !siftedtags.includes(tag)))
+    return new SearchResults(siftedposts, this.tags, this.options, this.booru)
+    
+  }
+
 
   /**
    * Get the next page
