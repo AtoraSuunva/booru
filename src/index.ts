@@ -38,7 +38,7 @@ function booruFrom(booruSite: Site, credentials?: any): Booru {
  * @param {*} credentials The credentials to use on this booru
  * @return {Booru} A booru to use
  */
-export default function(site: string, credentials: any = null): Booru {
+function booruForSite(site: string, credentials: any = null): Booru {
   const rSite = resolveSite(site)
 
   if (!rSite) throw new BooruError('Site not supported')
@@ -48,6 +48,9 @@ export default function(site: string, credentials: any = null): Booru {
   // If special type, use that booru, else use default Booru
   return booruFrom(booruSite, credentials)
 }
+
+export { booruForSite as forSite }
+export default booruForSite
 
 /**
  * Searches a site for images with tags and returns the results
