@@ -35,9 +35,9 @@ async function booruSearch(site, tags, limit = 1, random = true) {
 // Create an instance of a booru to use yourself
 // This allows you to create a booru with certain credentials/settings and reuse it
 // Internally, `Booru.search` just creates boorus and caches them
-// Ex: `Booru('safebooru')`
+// Ex: `Booru.forSite('safebooru')`
 async function booruClassSearch(site, tags, limit = 1, random = true) {
-  const myBooru = Booru(site)
+  const myBooru = Booru.forSite(site)
   const posts = await myBooru.search(tags, {limit, random})
 
   return console.log(posts[0].fileUrl)
