@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module !Index
+ */
+
 import { BooruError, SMap, sites } from './Constants'
 
 import Booru from './boorus/Booru'
@@ -64,9 +69,11 @@ export default booruForSite
  * @return {Promise<SearchResults>} A promise with the images as an array of objects
  *
  * @example
+ * ```
  * const Booru = require('booru')
  * // Returns a promise with the latest cute glace pic from e926
  * Booru.search('e926', ['glaceon', 'cute'])
+ * ```
  */
 export function search(site: string, tags: string[] | string = [],
                        {limit = 1, random = false, page = 0, credentials = null}

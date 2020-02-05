@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Boorus
+ */
+
 import fetch, { FetchError, Response } from 'node-fetch'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
 import { jsonfy, resolveSite, shuffle } from '../Utils'
@@ -19,6 +24,7 @@ import Site from '../structures/Site'
 /**
  * A basic, JSON booru
  * @example
+ * ```
  * const Booru = require('booru')
  * // Aliases are supported
  * const e9 = Booru('e9')
@@ -31,6 +37,7 @@ import Site from '../structures/Site'
  *
  * // Or access other methods on the Booru
  * e9.postView(imgs[0].id)
+ * ```
  */
 export class Booru {
   /** The domain of the booru */

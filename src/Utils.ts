@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Utils
+ */
+
 import { BooruError, sites } from './Constants'
 
 import { parse as xml2json } from 'fast-xml-parser'

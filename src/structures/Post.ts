@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Structures
+ */
+
 import { deprecate } from 'util'
 import Booru from '../boorus/Booru'
 
@@ -56,6 +61,7 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
  * An image from a booru with a few common props
  *
  * @example
+ * ```
  * Post {
  *  fileUrl: 'https://aaaa.com/image.jpg',
  *  id: '124125',
@@ -64,6 +70,7 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
  *  source: 'https://giraffeduck.com/aaaa.png',
  *  rating: 's'
  * }
+ * ```
  */
 export default class Post {
 
@@ -224,12 +231,13 @@ export default class Post {
    *
    * @type {String}
    * @example
-   *
+   * ```
    * const e9 = Booru('e9')
    * const imgs = e9.search(['cat', 'dog'])
    *
    * // Log the post url of the first image
    * console.log(imgs[0].postView)
+   * ```
    */
   get postView(): string {
     return this.booru.postView(this.id)
@@ -242,12 +250,14 @@ export default class Post {
    * @type {Object}
    *
    * @example
+   * ```
    * image.id
    * // deprecated, use this instead
    * image.id
    *
    * // To access the post's raw data from the booru, do
    * image._data.id
+   * ```
    */
   get common(): this {
     common()

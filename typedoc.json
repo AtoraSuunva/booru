@@ -1,0 +1,9 @@
+{
+  "inputFiles": ["./src"],
+  "mode": "modules",
+  "out": "doc",
+  "name": "booru",
+  "readme": "readme.md",
+  "includeVersion": true,
+  "categoryOrder": ["Main", "Boorus", "Structures", "Constants", "Utils", "*"]
+}

@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Structures
+ */
+
 import SiteApi from './SiteApi'
 import SiteInfo from './SiteInfo'
 

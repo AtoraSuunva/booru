@@ -1,4 +1,9 @@
 /**
+ * @packageDocumentation
+ * @module Structures
+ */
+
+/**
  * Just an interface for {@link Booru}'s search params :)
  */
 export default interface SearchParameters {
