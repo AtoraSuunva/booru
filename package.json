@@ -60,6 +60,8 @@
     "terser": "^4.6.3",
     "terser-folder": "^2.0.0",
     "tslint": "^6.0.0",
+    "typedoc": "^0.16.9",
+    "typedoc-plugin-external-module-name": "^3.0.0",
     "typescript": "^3.7.5"
   },
   "files": [

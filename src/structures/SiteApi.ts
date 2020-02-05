@@ -1,4 +1,9 @@
 /**
+ * @packageDocumentation
+ * @module Structures
+ */
+
+/**
  * Represents the api of a {@link Site}
  * <p>Each property is a path on the {@link Site}
  */

@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Structures
+ */
+
 import Booru from '../boorus/Booru'
 import Post from '../structures/Post'
 import * as Utils from '../Utils'
@@ -8,6 +13,7 @@ import SearchParameters from './SearchParameters'
  * <p> Usable like an array and allows to easily get the next page
  *
  * @example
+ * ```
  * const Booru = require('booru')
  * // Safebooru
  * const sb = new Booru('sb')
@@ -18,6 +24,7 @@ import SearchParameters from './SearchParameters'
  * imgs.forEach(i => console.log(i.postView))
  * const imgs2 = await imgs.nextPage()
  * imgs2.forEach(i => console.log(i.postView))
+ * ```
  */
 class SearchResults extends Array<Post> {
   /** The booru used for this search */

@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Boorus
+ */
+
 import Site from '../structures/Site'
 import Booru from './Booru'
 

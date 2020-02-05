@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module Boorus
+ */
+
 import { BooruError, searchURI } from '../Constants'
 import SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
