@@ -6,11 +6,14 @@
 
 ## Features
 
-- Able to search 17 different boorus (check [sites.json](./src/sites.json))
-- Also alias support so you can be lazy (`sb` for `safebooru.org`)
-- Promises because they're magical
+- Search 17 different boorus (check [sites.json](./src/sites.json))
+- Normalizes all received data into `Post` objects that are consistent no matter which booru you use
+- Access to the raw data received from the booru as well (transformed from XML to JSON, if applicable)
+- Alias support for boorus (`sb` for `safebooru.org`)
+- Promises
+- Types (using Typescript)
 - Choose the amount of images to get
-- Random support for all sites, using `order:random` on sites that support it and using a bit of magic on sites that don't
+- Random support for all sites, using `order:random` on sites that support it and using custom code on those that don't
 - Coming soon(-ish): Support for more than just searching
 
 ---
@@ -30,11 +33,16 @@ yarn add booru
 ```js
 const Booru = require('booru')
 
-Booru.search('safebooru', ['glaceon'], {limit: 3, random: true})
+Booru.search('safebooru', ['glaceon'], { limit: 3, random: true })
   .then(posts => {
     for (let post of posts)
       console.log(post.fileUrl, post.postView)
   })
+
+// or (using alias support and creating boorus)
+const sb = Booru.forSite('sb')
+
+sb.search(['cat', 'dog'], { limit: 2 })
 ```
 
 See [example.js](./example.js) for more examples
