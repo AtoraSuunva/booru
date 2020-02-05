@@ -63,120 +63,29 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#codeboorucode" id="codeboorucode" style="color: inherit; text-decoration: none;">
-					<h1><code>booru</code></h1>
-				</a>
-				<blockquote>
-					<p><em>A node package to search boorus</em></p>
-				</blockquote>
-				<p><a href="https://circleci.com/gh/AtlasTheBot/booru"><img src="https://img.shields.io/circleci/project/github/AtlasTheBot/booru.svg" alt="CircleCI"></a> <img src="https://img.shields.io/npm/v/booru.svg" alt="npm"> <img src="https://img.shields.io/github/license/AtlasTheBot/booru.svg" alt="GitHub"> <img src="https://img.shields.io/badge/Typings-Typescript-informational.svg" alt="Typescript typings"></p>
-				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
-					<h2>Features</h2>
-				</a>
-				<ul>
-					<li>Search 17 different boorus (check <a href="./src/sites.json">sites.json</a>)</li>
-					<li>Normalizes all received data into <code>Post</code> objects that are consistent no matter which booru you use</li>
-					<li>Access to the raw data received from the booru as well (transformed from XML to JSON, if applicable)</li>
-					<li>Alias support for boorus (<code>sb</code> for <code>safebooru.org</code>)</li>
-					<li>Promises</li>
-					<li>Types (using Typescript)</li>
-					<li>Choose the amount of images to get</li>
-					<li>Random support for all sites, using <code>order:random</code> on sites that support it and using custom code on those that don&#39;t</li>
-					<li>Coming soon(-ish): Support for more than just searching</li>
-				</ul>
-				<hr>
-				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h2>Installation</h2>
-				</a>
-				<pre><code class="language-sh">npm add booru
-<span class="hljs-comment"># or</span>
-yarn add booru</code></pre>
-				<hr>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
-				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> Booru = <span class="hljs-built_in">require</span>(<span class="hljs-string">'booru'</span>)
-
-Booru.search(<span class="hljs-string">'safebooru'</span>, [<span class="hljs-string">'glaceon'</span>], { <span class="hljs-attr">limit</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">random</span>: <span class="hljs-literal">true</span> })
-  .then(<span class="hljs-function"><span class="hljs-params">posts</span> =&gt;</span> {
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> post <span class="hljs-keyword">of</span> posts)
-      <span class="hljs-built_in">console</span>.log(post.fileUrl, post.postView)
-  })
-
-<span class="hljs-comment">// or (using alias support and creating boorus)</span>
-<span class="hljs-keyword">const</span> sb = Booru.forSite(<span class="hljs-string">'sb'</span>)
-
-sb.search([<span class="hljs-string">'cat'</span>, <span class="hljs-string">'dog'</span>], { <span class="hljs-attr">limit</span>: <span class="hljs-number">2</span> })</code></pre>
-				<p>See <a href="./example.js">example.js</a> for more examples</p>
-				<hr>
-				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
-					<h2>Docs</h2>
-				</a>
-				<p>Available here: <a href="https://booru.js.org">https://booru.js.org</a></p>
-				<a href="#faq" id="faq" style="color: inherit; text-decoration: none;">
-					<h2>FAQ</h2>
-				</a>
-				<a href="#what-are-the-properties-of-a-codepostcode" id="what-are-the-properties-of-a-codepostcode" style="color: inherit; text-decoration: none;">
-					<h3>What are the properties of a <code>Post</code>?</h3>
-				</a>
-				<p>The basic structure of a <code>Post</code> object looks like:</p>
-				<pre><code class="language-js">Post {
-  <span class="hljs-attr">_data</span>: {<span class="hljs-comment">/*...*/</span>},                       <span class="hljs-comment">// The raw data from the booru</span>
-  <span class="hljs-attr">fileUrl</span>: <span class="hljs-string">'https://aaaa.com/img.jpg'</span>,    <span class="hljs-comment">// The direct link to the image, ready to post</span>
-  <span class="hljs-attr">id</span>: <span class="hljs-string">'124125'</span>,                           <span class="hljs-comment">// The image ID, as a string</span>
-  <span class="hljs-attr">tags</span>: [<span class="hljs-string">'cat'</span>, <span class="hljs-string">'cute'</span>],                  <span class="hljs-comment">// The tags, split into an Array</span>
-  <span class="hljs-attr">score</span>: <span class="hljs-number">5</span>,                               <span class="hljs-comment">// The score as a Number</span>
-  <span class="hljs-attr">source</span>: <span class="hljs-string">'https://ex.com/aaa.png'</span>,       <span class="hljs-comment">// Source of the image, if supplied</span>
-  <span class="hljs-attr">rating</span>: <span class="hljs-string">'s'</span>,                            <span class="hljs-comment">// Rating of the image</span>
-  <span class="hljs-attr">createdAt</span>: <span class="hljs-built_in">Date</span>,                        <span class="hljs-comment">// The `Date` this image was created at</span>
-  <span class="hljs-attr">postView</span>: <span class="hljs-string">'https://booru.ex/show/12345'</span> <span class="hljs-comment">// A URL to the post</span>
-}</code></pre>
-				<p><code>s</code>: &#39;Safe&#39;
-					<code>q</code>: &#39;Questionable&#39;
-					<code>e</code>: &#39;Explicit&#39;
-				<code>u</code>: &#39;Unrated&#39;</p>
-				<p>Derpibooru has <code>Safe, Suggestive, Questionable, Explicit</code>, although <code>Suggestive</code> will be shown as <code>q</code> in <code>&lt;Post&gt;.rating</code></p>
-				<a href="#can-i-contribute" id="can-i-contribute" style="color: inherit; text-decoration: none;">
-					<h3>Can I contribute?</h3>
-				</a>
-				<p>Sure! Just fork this repo, push your changes, and then make a PR.</p>
-				<p>I&#39;ll accept PR based on what they do and code style (Not super strict about it, but it&#39;s best if it roughly follows the rest of the code)</p>
-				<a href="#why" id="why" style="color: inherit; text-decoration: none;">
-					<h3>Why?</h3>
-				</a>
-				<p>Why not?</p>
-				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-					<h3>License?</h3>
-				</a>
-				<p><a href="https://choosealicense.com/licenses/mit/">It&#39;s MIT</a></p>
-				<hr>
-				<a href="#contributors" id="contributors" style="color: inherit; text-decoration: none;">
-					<h2>Contributors</h2>
-				</a>
-				<p><a href="https://github.com/BobbyWibowo/booru">BobbyWibowo</a></p>
-				<blockquote>
-					<p><a href="https://github.com/AtlasTheBot/booru/pull/9">Change from request-promise-native to snek-fetch</a></p>
-				</blockquote>
-				<p><a href="https://github.com/rubikscraft/booru">rubikscraft</a></p>
-				<blockquote>
-					<p><a href="https://github.com/AtlasTheBot/booru/pull/17">Add 2 new boorus (furry.booru.org/realbooru.com)</a><br><a href="https://github.com/AtlasTheBot/booru/pull/19">Various Derpibooru fixes</a></p>
-				</blockquote>
-				<p><a href="https://github.com/favna/">Favna</a></p>
-				<blockquote>
-					<p><a href="https://github.com/AtlasTheBot/booru/pull/21">Add TypeScript declarations</a><br>Improve TypeScript port<br>Various other small fixes</p>
-				</blockquote>
-				<p><a href="https://github.com/negezor">negezor</a></p>
-				<blockquote>
-					<p><a href="https://github.com/AtlasTheBot/booru/pull/31">Add missing type information</a></p>
-				</blockquote>
-				<hr>
-			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>External modules</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-external-module"><a href="modules/_index_.html" class="tsd-kind-icon">&quot;index&quot;</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_sites_.html" class="tsd-kind-icon">&quot;sites&quot;</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/boorus.html" class="tsd-kind-icon">Boorus</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/constants.html" class="tsd-kind-icon">Constants</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/structures.html" class="tsd-kind-icon">Structures</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/utils.html" class="tsd-kind-icon">Utils</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
+					<li class="globals current ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
