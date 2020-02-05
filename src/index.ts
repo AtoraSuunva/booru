@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module !Index
+ * @module Index
  */
 
 import { BooruError, SMap, sites } from './Constants'
