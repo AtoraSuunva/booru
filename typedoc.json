@@ -1,5 +1,7 @@
 {
   "inputFiles": ["./src"],
+  "exclude": "*.json",
+  "toc": [],
   "mode": "modules",
   "out": "doc",
   "name": "booru",
