@@ -66,7 +66,7 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
 function getTags(data: any): string[] {
   let tags = []
 
-  if (data.tags?.general) {
+  if (data.tags && data.tags.general) {
     // Here, v needs to be "unknown" or tsc complains
     tags = Object.values(data.tags)
             .reduce((acc: string[], v: unknown): string[] => acc = acc.concat(v as string[]), [])
@@ -149,24 +149,26 @@ export default class Post {
     this.booru = booru
 
     this.fileUrl = parseImageUrl(
-      data.file_url || data.image || data.source || data.file?.url, data, booru)
+      data.file_url || data.image || data.source || (data.file && data.file.url), data, booru)
 
-    this.height = parseInt(data.height || data.image_height || data.file?.height, 10)
-    this.width = parseInt(data.width || data.image_width || data.file?.width, 10)
+    this.height = parseInt(data.height || data.image_height || (data.file && data.file.height), 10)
+    this.width = parseInt(data.width || data.image_width || (data.file && data.file.width), 10)
 
     this.sampleUrl = parseImageUrl(
-      data.sample_url || data.large_file_url || data.representations?.large ||
-      data.sample?.url, data, booru)
+      data.sample_url || data.large_file_url ||
+      (data.representations && data.representations.large) || (data.sample && data.sample.url),
+      data, booru)
 
-    this.sampleHeight = parseInt(data.sample_height || data.sample?.height, 10)
-    this.sampleWidth = parseInt(data.sample_width || data.sample?.width, 10)
+    this.sampleHeight = parseInt(data.sample_height || (data.sample && data.sample.height), 10)
+    this.sampleWidth = parseInt(data.sample_width || (data.sample && data.sample.width), 10)
 
     this.previewUrl = parseImageUrl(
       data.preview_url || data.preview_file_url ||
-      data.representations?.small || data.preview?.url, data, booru)
+      (data.representations && data.representations.small) ||
+      (data.preview && data.preview.url), data, booru)
 
-    this.previewHeight = parseInt(data.preview_height || data.preview?.height, 10)
-    this.previewWidth = parseInt(data.preview_width || data.preview?.width, 10)
+    this.previewHeight = parseInt(data.preview_height || (data.preview && data.preview.height), 10)
+    this.previewWidth = parseInt(data.preview_width || (data.preview && data.preview.width), 10)
 
     this.id = data.id.toString()
     this.tags = getTags(data)
