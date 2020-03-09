@@ -58,6 +58,30 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
 }
 
 /**
+ * Takes and transforms tags from the booru's api into a common format
+ * (which is an array of strings)
+ * @param {any} data The data from the booru
+ * @returns {string[]} The tags as a string array, and not just a string or an object
+ */
+function getTags(data: any): string[] {
+  let tags = []
+
+  if (data.tags?.general) {
+    // Here, v needs to be "unknown" or tsc complains
+    tags = Object.values(data.tags)
+            .reduce((acc: string[], v: unknown): string[] => acc = acc.concat(v as string[]), [])
+  } else if (data.tags) {
+    tags = data.tags.split(' ')
+  } else {
+    tags = data.tag_string
+            .split(' ')
+            .map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
+  }
+
+  return tags.filter((v: string) => v !== '')
+}
+
+/**
  * An image from a booru with a few common props
  *
  * @example
@@ -119,30 +143,33 @@ export default class Post {
    * @param {Booru} booru The booru that created the image
    */
   constructor(data: any, booru: Booru) {
+    // tslint:disable-next-line: cyclomatic-complexity
+    // Damn wild mix of boorus
     this.data = data
     this.booru = booru
 
-    this.fileUrl = parseImageUrl(data.file_url || data.image || data.source, data, booru)
+    this.fileUrl = parseImageUrl(
+      data.file_url || data.image || data.source || data.file?.url, data, booru)
 
-    this.height = parseInt(data.height || data.image_height, 10)
-    this.width = parseInt(data.width || data.image_width, 10)
+    this.height = parseInt(data.height || data.image_height || data.file?.height, 10)
+    this.width = parseInt(data.width || data.image_width || data.file?.width, 10)
 
-    this.sampleUrl = parseImageUrl(data.sample_url || data.large_file_url ||
-      (data.representations ? data.representations.large : undefined), data, booru)
-    this.sampleHeight = parseInt(data.sample_height, 10)
-    this.sampleWidth = parseInt(data.sample_width, 10)
+    this.sampleUrl = parseImageUrl(
+      data.sample_url || data.large_file_url || data.representations?.large ||
+      data.sample?.url, data, booru)
 
-    this.previewUrl = parseImageUrl(data.preview_url || data.preview_file_url ||
-      (data.representations ? data.representations.small : undefined), data, booru)
-    this.previewHeight = parseInt(data.preview_height, 10)
-    this.previewWidth = parseInt(data.preview_width, 10)
+    this.sampleHeight = parseInt(data.sample_height || data.sample?.height, 10)
+    this.sampleWidth = parseInt(data.sample_width || data.sample?.width, 10)
+
+    this.previewUrl = parseImageUrl(
+      data.preview_url || data.preview_file_url ||
+      data.representations?.small || data.preview?.url, data, booru)
+
+    this.previewHeight = parseInt(data.preview_height || data.preview?.height, 10)
+    this.previewWidth = parseInt(data.preview_width || data.preview?.width, 10)
 
     this.id = data.id.toString()
-    this.tags = ((data.tags)
-        ? data.tags.split(' ')
-        : data.tag_string.split(' ')
-                         .map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
-    ).filter((v: string) => v !== '')
+    this.tags = getTags(data)
 
     this.score = parseInt(data.score, 10)
     this.source = data.source

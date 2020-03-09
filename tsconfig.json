@@ -18,7 +18,8 @@
     "emitBOM": true,
     "declaration": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "sourceMap": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

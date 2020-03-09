@@ -29,4 +29,6 @@ export default interface SiteInfo {
   tagQuery?: string
   /** If this site supports only http:// */
   insecure?: boolean
+  /** Tags to add to every request, if not included */
+  defaultTags?: string[]
 }
