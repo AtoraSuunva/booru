@@ -130,6 +130,10 @@ export class Booru {
       }
     }
 
+    if (this.site.defaultTags) {
+      tags = tags.concat(this.site.defaultTags.filter(v => !tags.includes(v)))
+    }
+
     const fetchuri = uri || searchURI(this.site, tags, fakeLimit || limit, page)
     const options = defaultOptions
     const xml = this.site.type === 'xml'
