@@ -20,7 +20,7 @@
     "lint": "npx tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
     "clean": "npx rimraf ./dist",
     "prebuild": "npm run-script clean && npm run-script lint",
-    "build": "npx tsc --sourceMap=false",
+    "build": "npx tsc --sourceMap false",
     "build-dev": "npx tsc --sourceMap",
     "postbuild": "npx terser-folder ./dist -eo ./dist -x .js && node ./minifyJson.js ./src/sites.json ./dist/sites.json",
     "prepublishOnly": "npm run-script build"
