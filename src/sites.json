@@ -7,7 +7,7 @@
     ],
     "nsfw": true,
     "api": {
-      "search": "/post/index.json?",
+      "search": "/posts.json?",
       "postView": "/post/show/"
     },
     "random": true
@@ -20,10 +20,11 @@
     ],
     "nsfw": false,
     "api": {
-      "search": "/post/index.json?",
+      "search": "/posts.json?",
       "postView": "/post/show/"
     },
-    "random": true
+    "random": true,
+    "defaultTags": ["rating:safe"]
   },
   "hypnohub.net": {
     "domain": "hypnohub.net",
