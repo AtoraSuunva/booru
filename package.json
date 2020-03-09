@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtlasTheBot (https://github.com/AtlasTheBot/)",
   "license": "MIT",
@@ -49,21 +49,21 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/polyfill": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
     "@babel/preset-typescript": "^7.8.3",
-    "@types/jest": "^25.1.1",
-    "@types/node": "^13.7.0",
-    "@types/node-fetch": "^2.5.4",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.0",
+    "@types/node-fetch": "^2.5.5",
     "jest": "^25.1.0",
-    "rimraf": "^3.0.1",
-    "terser": "^4.6.3",
+    "rimraf": "^3.0.2",
+    "terser": "^4.6.6",
     "terser-folder": "^2.0.0",
     "tslint": "^6.0.0",
-    "typedoc": "^0.16.9",
+    "typedoc": "^0.16.11",
     "typedoc-plugin-external-module-name": "^3.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "files": [
     "dist/"
