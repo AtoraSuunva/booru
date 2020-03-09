@@ -84,7 +84,7 @@ export class Booru {
       const searchResult = await this.doSearchRequest(tags, {limit, random, page})
       return this.parseSearchResult(searchResult, {fakeLimit, tags, limit, random, page})
     } catch (err) {
-      throw new BooruError(err.message)
+      throw new BooruError(err)
     }
   }
 
