@@ -175,6 +175,10 @@ export class Booru {
       throw new BooruError(result.message || result.reason)
     }
 
+    if (result.posts) {
+      result = result.posts
+    }
+
     let r: string[] | undefined
     // If gelbooru/other booru decides to return *nothing* instead of an empty array
     if (result === '') {
