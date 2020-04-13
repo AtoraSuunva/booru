@@ -173,8 +173,15 @@ export default class Post {
     this.id = data.id.toString()
     this.tags = getTags(data)
 
-    this.score = parseInt(data.score, 10)
-    this.source = data.source
+    // Too long for conditional
+    // tslint:disable-next-line: prefer-conditional-expression
+    if (data.score && data.score.total) {
+      this.score = data.score.total
+    } else {
+      this.score = data.score ? parseInt(data.score, 10) : data.score
+    }
+
+    this.source = data.source || data.sources
     this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags) || 'u'
 
     if (Array.isArray(this.rating)) {
@@ -194,6 +201,8 @@ export default class Post {
       this.createdAt = new Date((data.created_at.s * 1000) + (data.created_at.n / 1000000000))
     } else if (typeof data.created_at === 'number') {
       this.createdAt = new Date(data.created_at * 1000)
+    } else if (typeof data.change === 'number') {
+      this.createdAt = new Date(data.change * 1000)
     } else {
       this.createdAt = new Date(data.created_at || data.date)
     }
