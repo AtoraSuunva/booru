@@ -66,7 +66,9 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
 function getTags(data: any): string[] {
   let tags = []
 
-  if (data.tags && data.tags.general) {
+  if (Array.isArray(data.tags)) {
+    return data.tags
+  } else if (data.tags && data.tags.general) {
     // Here, v needs to be "unknown" or tsc complains
     tags = Object.values(data.tags)
             .reduce((acc: string[], v: unknown): string[] => acc = acc.concat(v as string[]), [])
@@ -125,7 +127,7 @@ export default class Post {
   /** The score of this post */
   public score: number
   /** The source of this post, if available */
-  public source?: string
+  public source?: string | string[]
   /**
    * The rating of the image, as just the first letter
    * (s/q/e/u) => safe/questionable/explicit/unrated
@@ -149,7 +151,10 @@ export default class Post {
     this.booru = booru
 
     this.fileUrl = parseImageUrl(
-      data.file_url || data.image || data.source || (data.file && data.file.url), data, booru)
+      data.file_url || data.image || data.source
+      || (data.file && data.file.url)
+      || (data.representations && data.representations.full),
+      data, booru)
 
     this.height = parseInt(data.height || data.image_height || (data.file && data.file.height), 10)
     this.width = parseInt(data.width || data.image_width || (data.file && data.file.width), 10)
@@ -181,7 +186,7 @@ export default class Post {
       this.score = data.score ? parseInt(data.score, 10) : data.score
     }
 
-    this.source = data.source || data.sources
+    this.source = data.source || data.sources || data.source_url
     this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags) || 'u'
 
     if (Array.isArray(this.rating)) {

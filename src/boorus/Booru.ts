@@ -183,6 +183,10 @@ export class Booru {
       result = result.posts
     }
 
+    if (result.images) {
+      result = result.images
+    }
+
     let r: string[] | undefined
     // If gelbooru/other booru decides to return *nothing* instead of an empty array
     if (result === '') {
