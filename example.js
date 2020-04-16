@@ -3,8 +3,8 @@ const { BooruError, sites } = require('./dist')
 // for ES6:
 // import Booru, { search, BooruError, sites } from 'booru'
 
-const site = 'e621'
-const tags = ['glaceon']
+const site = 'sb'
+const tags = ['cat']
 
 // Search with promises
 Booru.search(site, tags, { limit: 1, random: false })
