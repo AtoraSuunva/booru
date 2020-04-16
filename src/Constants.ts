@@ -83,12 +83,11 @@ function expandTags(tags: string[]): string[] {
  * @param {number} [limit=100] The limit for images to return
  * @param {number} [page=0] The page to get
  */
-export function searchURI(site: Site, tags: string[] = [], limit: number = 100, page: number = 0)
+export function searchURI(site: Site, tags: string[] = [], limit: number = 100, page: number)
                         : string {
   // tslint:disable-next-line:prefer-template
   return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}`
-    + (site.tagQuery ? site.tagQuery : 'tags')
-    + `=${expandTags(tags).join('+')}&limit=${limit}&${site.paginate}=${page}`
+    + `${site.tagQuery}=${expandTags(tags).join('+')}&limit=${limit}&${site.paginate}=${page}`
 }
 
 /**

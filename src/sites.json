@@ -209,7 +209,7 @@
     ],
     "nsfw": true,
     "api": {
-      "search": "/search.json?",
+      "search": "/api/v1/json/search/images?",
       "postView": "/images/"
     },
     "tagQuery": "q",

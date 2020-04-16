@@ -1,9 +1,9 @@
-const Booru = require('booru')
-const { BooruError, sites } = require('booru')
+const Booru = require('./dist')
+const { BooruError, sites } = require('./dist')
 // for ES6:
 // import Booru, { search, BooruError, sites } from 'booru'
 
-const site = 'safebooru'
+const site = 'e621'
 const tags = ['glaceon']
 
 // Search with promises
