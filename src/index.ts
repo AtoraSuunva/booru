@@ -55,7 +55,6 @@ function booruForSite(site: string, credentials: any = null): Booru {
 }
 
 export { booruForSite as forSite }
-export default booruForSite
 
 /**
  * Searches a site for images with tags and returns the results
