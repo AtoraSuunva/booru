@@ -63,14 +63,10 @@ export const userAgent: string = `booru (https://github.com/AtlasTheBot/booru)`
  * @param {String[]} tags The tags to expand
  */
 function expandTags(tags: string[]): string[] {
-  for (let i = 0; i < tags.length; i++) {
-    const ex: string = expandedTags[tags[i].toString().toLowerCase()]
-    if (ex) {
-      tags[i] = ex
-    }
-  }
-
-  return tags
+  return tags.map(v => {
+    const ex = expandedTags[v.toLowerCase()]
+    return encodeURI(ex ? ex : v)
+  })
 }
 
 /**
