@@ -15,8 +15,7 @@ import Site from '../structures/Site'
 
 // Shut up the compiler
 declare const window: any
-// tslint:disable-next-line: no-invalid-this
-const resolvedFetch = 'window' in (this || {}) ? window.fetch.bind(window) : fetch
+const resolvedFetch = typeof window !== 'undefined' ? window.fetch.bind(window) : fetch
 
 /*
  - new Booru
