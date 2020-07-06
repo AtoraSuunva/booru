@@ -169,21 +169,6 @@
     "paginate": "pid",
     "random": false
   },
-  "lolibooru.moe": {
-    "domain": "lolibooru.moe",
-    "aliases": [
-      "lb",
-      "lol",
-      "loli",
-      "lolibooru"
-    ],
-    "nsfw": true,
-    "api": {
-      "search": "/post/index.json?",
-      "postView": "/post/show/"
-    },
-    "random": true
-  },
   "rule34.paheal.net": {
     "domain": "rule34.paheal.net",
     "type": "xml",
