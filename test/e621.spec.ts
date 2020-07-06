@@ -33,7 +33,6 @@ describe('Using fancy pants method', () => {
     const image: Post = searchResult[0]
     expect(searchResult.booru.domain).toBe('e621.net')
     expect(searchResult.booru.site).toMatchObject(sites[searchResult.booru.domain])
-    console.log(image)
     expect(typeof image.fileUrl).toBe('string')
   })
 })

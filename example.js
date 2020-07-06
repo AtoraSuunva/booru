@@ -3,13 +3,17 @@ const { BooruError, sites } = require('./dist')
 // for ES6:
 // import Booru, { search, BooruError, sites } from 'booru'
 
-const site = 'sb'
-const tags = ['cat']
+const argTags = process.argv.slice(3)
+const site = process.argv[2] || 'sb'
+const tags = argTags.length > 0 ? argTags : ['cat']
 
 // Search with promises
 Booru.search(site, tags, { limit: 1, random: false })
   .then(posts => {
-    //Log the direct link to each image
+    if (posts.length === 0) {
+      console.log('No images found.')
+    }
+
     for (let post of posts) {
       console.log(post.fileUrl)
     }
