@@ -13,6 +13,10 @@ import SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import Site from '../structures/Site'
 
+// Shut up the compiler
+declare const window: any
+const resolvedFetch = typeof window !== 'undefined' ? window.fetch.bind(window) : fetch
+
 /*
  - new Booru
  => Constructor, params {name, {nsfw, {search, postView, ...}, random}, {apiTokens...}}
@@ -139,7 +143,7 @@ export class Booru {
     const xml = this.site.type === 'xml'
 
     try {
-      const response = await fetch(fetchuri, options)
+      const response = await resolvedFetch(fetchuri, options)
       const data: Response = xml ? await response.text() : await response.json()
       const posts = xml ? await jsonfy(data as unknown as string) : data
 
