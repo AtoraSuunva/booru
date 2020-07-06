@@ -6,7 +6,7 @@
 
 ## Features
 
-- Search 17 different boorus (check [sites.json](./src/sites.json))
+- Search 16 different boorus (check [sites.json](./src/sites.json))
 - Normalizes all received data into `Post` objects that are consistent no matter which booru you use
 - Access to the raw data received from the booru as well (transformed from XML to JSON, if applicable)
 - Alias support for boorus (`sb` for `safebooru.org`)
@@ -52,6 +52,12 @@ See [example.js](./example.js) for more examples
 ## Docs
 
 Available here: [https://booru.js.org](https://booru.js.org)
+
+## Web support
+
+booru was built for Node.js, and is only officially supported for Node.js. Issues relating to web are fine, although support might be limited.
+
+It's possible to use booru on the web using webpack (or similar), although your experience may vary. Some websites don't have the proper CORS headers, meaning that API requests to those sites from a browser will fail! This is not an issue I can fix in the package, and requires either that booru to add proper support themselves or for you to find a workaround for CORS.
 
 ## FAQ
 
