@@ -73,20 +73,22 @@ export class Booru {
   /**
    * Search for images on this booru
    * @param {String|String[]} tags The tag(s) to search for
-   * @param {Object} searchArgs The arguments for the search
-   * @param {Number} [searchArgs.limit=1] The number of images to return
-   * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
-   * @param {Number} [searchArgs.page=0] The page to search
+   * @param {SearchParameters} searchArgs The arguments for the search
    * @return {Promise<SearchResults>} The results as an array of Posts
    */
-  public async search(tags: string | string[], {limit = 1, random = false, page = 0}
-                       : SearchParameters = {}): Promise<SearchResults> {
+  public async search(tags: string | string[], {
+    limit = 1, random = false,
+    page = 0, showUnavailable = false } : SearchParameters = {}): Promise<SearchResults> {
 
     const fakeLimit: number = random && !this.site.random ? 100 : 0
 
     try {
-      const searchResult = await this.doSearchRequest(tags, {limit, random, page})
-      return this.parseSearchResult(searchResult, {fakeLimit, tags, limit, random, page})
+      const searchResult = await this.doSearchRequest(tags,
+        { limit, random, page, showUnavailable }
+      )
+      return this.parseSearchResult(searchResult,
+        { fakeLimit, tags, limit, random, page, showUnavailable }
+      )
     } catch (err) {
       throw new BooruError(err)
     }
@@ -111,16 +113,12 @@ export class Booru {
    *
    * @protected
    * @param {String[]|String} tags The tags to search with
-   * @param {Object} searchArgs The arguments for the search
-   * @param {Number} [searchArgs.limit=1] The number of images to return
-   * @param {Boolean} [searchArgs.random=false] If it should randomly grab results
-   * @param {Number} [searchArgs.page=0] The page number to search
-   * @param {String?} [searchArgs.uri=null] If the uri should be overwritten
+   * @param {InternalSearchParameters} searchArgs The arguments for the search
    * @return {Promise<Object>}
    */
-  protected async doSearchRequest(tags: string[] | string,
-                                  {uri = null, limit = 1, random = false, page = 0}
-                                   : InternalSearchParameters = {}): Promise<any> {
+  protected async doSearchRequest(tags: string[] | string, {
+    uri = null, limit = 1, random = false, page = 0,
+  } : InternalSearchParameters = {}): Promise<any> {
     if (!Array.isArray(tags)) tags = [tags]
 
     // Used for random on sites without order:random
@@ -168,16 +166,12 @@ export class Booru {
    *
    * @protected
    * @param {Object} result The response of the booru
-   * @param {Object} searchArgs The arguments used for the search
-   * @param {Number?} [searchArgs.fakeLimit] If the `order:random` should be faked
-   * @param {String[]|String} [searchArgs.tags] The tags used on the search
-   * @param {Number} [searchArgs.limit] The number of images to return
-   * @param {Boolean} [searchArgs.random] If it should randomly grab results
-   * @param {Number} [searchArgs.page] The page number searched
+   * @param {InternalSearchParameters} searchArgs The arguments used for the search
    * @return {SearchResults} The results of this search
    */
-  protected parseSearchResult(result: any, {fakeLimit, tags, limit, random, page}
-                               : InternalSearchParameters) {
+  protected parseSearchResult(result: any, {
+    fakeLimit, tags, limit, random, page, showUnavailable,
+  } : InternalSearchParameters) {
 
     if (result.success === false) {
       throw new BooruError(result.message || result.reason)
@@ -202,8 +196,8 @@ export class Booru {
     }
 
     const results = r || result
-    const posts = results.slice(0, limit).map((v: any) => new Post(v, this))
-    const options = {limit, random, page}
+    let posts: Post[] = results.slice(0, limit).map((v: any) => new Post(v, this))
+    const options = { limit, random, page, showUnavailable }
 
     if (tags === undefined) {
       tags = []
@@ -211,6 +205,10 @@ export class Booru {
 
     if (!Array.isArray(tags)) {
       tags = [tags]
+    }
+
+    if (!showUnavailable) {
+      posts = posts.filter(p => p.available)
     }
 
     return new SearchResults(posts, tags, options, this)

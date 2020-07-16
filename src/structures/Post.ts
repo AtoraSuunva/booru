@@ -49,11 +49,6 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
     url = `https:${url}`
   }
 
-  // Lolibooru likes to shove all the tags into its urls, despite the fact you don't need the tags
-  if (url.match(/https?:\/\/lolibooru.moe/)) {
-    url = data.sample_url.replace(/(.*booru \d+ ).*(\..*)/, '$1sample$2')
-  }
-
   return encodeURI(url)
 }
 
@@ -122,6 +117,8 @@ export default class Post {
   public previewWidth: number | null
   /** The id of this post */
   public id: string
+  /** If this post is available (ie. not deleted, not banned, has file url) */
+  public available: boolean
   /** The tags of this post */
   public tags: string[]
   /** The score of this post */
@@ -150,11 +147,16 @@ export default class Post {
     this.data = data
     this.booru = booru
 
+    // Again, thanks danbooru
+    const deletedOrBanned = data.is_deleted || data.is_banned
+
     this.fileUrl = parseImageUrl(
-      data.file_url || data.image || data.source
+      data.file_url || data.image || (deletedOrBanned ? data.source : undefined)
       || (data.file && data.file.url)
       || (data.representations && data.representations.full),
       data, booru)
+
+    this.available = !deletedOrBanned && this.fileUrl !== null
 
     this.height = parseInt(data.height || data.image_height || (data.file && data.file.height), 10)
     this.width = parseInt(data.width || data.image_width || (data.file && data.file.width), 10)
@@ -175,7 +177,7 @@ export default class Post {
     this.previewHeight = parseInt(data.preview_height || (data.preview && data.preview.height), 10)
     this.previewWidth = parseInt(data.preview_width || (data.preview && data.preview.width), 10)
 
-    this.id = data.id.toString()
+    this.id = data.id ? data.id.toString() : 'No ID available'
     this.tags = getTags(data)
 
     // Too long for conditional
