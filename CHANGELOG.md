@@ -1,6 +1,15 @@
 # booru Changelog
 
-## 2.3.0 [Latest]
+## 2.3.2 [Latest]
+
+- Added `Post#available`, to check if a post isn't deleted/banned
+- By default, unavailable posts aren't returned in search results
+  - You can use `SearchParameters#showUnavailable` to still get them
+  - `Booru.search('db', ['cat'], { showUnavailable: true })`
+- Fix for danbooru occasionally having invalid `fileUrl` or missing IDs
+  - You can use `Post#available` to check for this
+
+## 2.3.0
 
 - Fix for illegal invocation errors when using booru on the web
   - Some of the APIs don't have the required CORS headers however

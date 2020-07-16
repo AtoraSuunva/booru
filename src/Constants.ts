@@ -4,9 +4,9 @@
  */
 
 import { RequestInit } from 'node-fetch'
+import siteJson from './sites.json'
 import Site from './structures/Site'
 import SiteInfo from './structures/SiteInfo'
-import siteJson from './sites.json'
 
 export interface SMap<V> {
   [key: string]: V

@@ -40,8 +40,8 @@ describe('check BooruClass', () => {
 });
 
 describe('check sites', () => {
-  it('should support 17 sites', () => {
+  it('should support 16 sites', () => {
     const map = sites;
-    expect(Object.keys(map)).toHaveLength(17);
+    expect(Object.keys(map)).toHaveLength(16);
   });
 });
