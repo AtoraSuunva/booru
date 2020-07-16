@@ -3,16 +3,16 @@
  * @module Index
  */
 
-import { BooruError, SMap, sites } from './Constants'
+import { BooruError, sites, SMap } from './Constants'
 
+import { deprecate } from 'util'
 import Booru from './boorus/Booru'
 import Derpibooru from './boorus/Derpibooru'
+import XmlBooru from './boorus/XmlBooru'
 import Post from './structures/Post'
 import SearchParameters from './structures/SearchParameters'
 import SearchResults from './structures/SearchResults'
 import Site from './structures/Site'
-import XmlBooru from './boorus/XmlBooru'
-import { deprecate } from 'util'
 import { resolveSite } from './Utils'
 
 const BooruTypes: any = {
@@ -61,10 +61,7 @@ export default booruForSite
  * Searches a site for images with tags and returns the results
  * @param {String} site The site to search
  * @param {String[]|String} [tags=[]] Tags to search with
- * @param {Object} [searchOptions={}] The options for searching
- * @param {Number|String} [searchOptions.limit=1] The limit of images to return
- * @param {Boolean} [searchOptions.random=false] If it should grab randomly sorted results
- * @param {Object?} [searchOptions.credentials=null] Credentials to use to search the booru,
+ * @param {SearchParameters} [searchOptions={}] The options for searching
  *  if provided (Unused)
  * @return {Promise<SearchResults>} A promise with the images as an array of objects
  *
@@ -75,9 +72,9 @@ export default booruForSite
  * Booru.search('e926', ['glaceon', 'cute'])
  * ```
  */
-export function search(site: string, tags: string[] | string = [],
-                       {limit = 1, random = false, page = 0, credentials = null}
-                        : SearchParameters = {}): Promise<SearchResults> {
+export function search(site: string, tags: string[] | string = [], {
+  limit = 1, random = false, page = 0, credentials = null, showUnavailable = false,
+} : SearchParameters = {}): Promise<SearchResults> {
 
   const rSite: string | null = resolveSite(site)
 
