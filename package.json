@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtlasTheBot (https://github.com/AtlasTheBot/)",
   "license": "MIT",
@@ -22,7 +22,7 @@
     "prebuild": "npm run-script clean && npm run-script lint",
     "build": "npx tsc --sourceMap false",
     "build-dev": "npx tsc --sourceMap",
-    "postbuild": "npx terser-folder ./dist -eo ./dist -x .js && node ./minifyJson.js ./src/sites.json ./dist/sites.json",
+    "postbuild": "node ./minify.js",
     "prepublishOnly": "npm run-script build"
   },
   "keywords": [
@@ -45,24 +45,23 @@
   },
   "dependencies": {
     "fast-xml-parser": "^3.17.4",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/polyfill": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/preset-typescript": "^7.10.4",
-    "@types/jest": "^26.0.4",
-    "@types/node": "^14.0.18",
+    "@babel/core": "^7.12.1",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.8",
     "@types/node-fetch": "^2.5.7",
-    "jest": "^26.1.0",
+    "jest": "^26.5.3",
     "rimraf": "^3.0.2",
-    "terser": "^4.8.0",
-    "terser-folder": "^2.0.0",
+    "terser": "^5.3.5",
     "tslint": "^6.1.2",
-    "typedoc": "^0.17.8",
+    "typedoc": "^0.19.2",
     "typedoc-plugin-external-module-name": "^4.0.3",
-    "typescript": "^3.9.6"
+    "typescript": "^4.0.3"
   },
   "files": [
     "dist/"
