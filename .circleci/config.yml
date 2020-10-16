@@ -4,13 +4,13 @@ machine:
     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/${booru}/node_modules/.bin:${PATH}"
     NODE_ENV: test
   node:
-    version: 11
+    version: 14
   npm:
     version: 6
 jobs:
   build:
     docker:
-      - image: circleci/node:11
+      - image: circleci/node:14
     working_directory: ~/booru
     steps:
       - checkout
