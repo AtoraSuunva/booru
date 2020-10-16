@@ -1,6 +1,16 @@
 # booru Changelog
 
-## 2.3.2 [Latest]
+## 2.3.3 [Latest]
+
+- Fix Paheal failing to provide a useful error message.
+  - Details: Paheal was returning an HTML error page instead of a JSON response. The previous way
+  of scraping an error message off HTML pages failed on the page Paheal returned.
+- Move from `terser-folder` to a custom `minify.js`, which handles both .js and .json minifying
+  - `terser-folder` also hasn't been updated in 2 years
+- Update circle ci to use node 14 instead of 11
+- Update dependencies, no more security vulnerabilities!
+
+## 2.3.2
 
 - Added `Post#available`, to check if a post isn't deleted/banned
 - By default, unavailable posts aren't returned in search results

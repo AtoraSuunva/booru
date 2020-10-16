@@ -41,16 +41,17 @@ export async function jsonfy(xml: string): Promise<object[]> {
 
   const data = xml2json(xml, {ignoreAttributes: false, attributeNamePrefix: ''})
 
-  if (data.html) {
-    // Damn it
-    // Try our best to scrape an error off this then
+  if (data.html || data['!doctype']) {
+    // Some boorus return HTML error pages instead of JSON responses on errors
+    // So try scraping off what we can in that case
+    const page = data.html || data['!doctype'].html
     const message = []
-    if (data.html.body.h1) {
-      message.push(data.html.body.h1)
+    if (page.body.h1) {
+      message.push(page.body.h1)
     }
 
-    if (data.html.body.p) {
-      message.push(data.html.body.p['#text'])
+    if (page.body.p) {
+      message.push(page.body.p['#text'])
     }
 
     throw new BooruError(`The Booru sent back an error: '${message.join(': ')}'`, data.html)
@@ -135,14 +136,5 @@ export function validateSearchParams(site: string, limit: number | string)
  * @return {String[]} The shared strings between the arrays
  */
 export function compareArrays(arr1: string[], arr2: string[]): string[] {
-  const matches: string[] = []
-  arr1.forEach(ele1 => {
-    arr2.forEach(ele2 => {
-      if (ele1.toLowerCase() === ele2.toLowerCase()) {
-        matches.push(ele1)
-      }
-    })
-  })
-
-  return matches
+  return arr1.filter(e1 => arr2.some(e2 => e1.toLowerCase() === e2.toLowerCase()))
 }
