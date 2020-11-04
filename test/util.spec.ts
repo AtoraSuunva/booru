@@ -1,26 +1,26 @@
-import path from 'path';
-import { BooruClass, BooruError, resolveSite, sites } from '../src';
-import Site from '../src/structures/Site';
+import path from 'path'
+import { BooruClass, BooruError, resolveSite, sites } from '../src'
+import Site from '../src/structures/Site'
 
-let site: string;
+let site: string
 
 beforeEach(() => {
-  site = 'db';
-});
+  site = 'db'
+})
 
 describe('Check resolveSite', () => {
   it('should resolve alias to host', () => {
-    expect(resolveSite(site)).toBe('danbooru.donmai.us');
-  });
-});
+    expect(resolveSite(site)).toBe('danbooru.donmai.us')
+  })
+})
 
 describe('check BooruError', () => {
   it('should resolve to a BooruError', () => {
-    const booruError = new BooruError();
-    expect(booruError.name).toBe('BooruError');
-    expect(booruError.stack).toContain(path.basename(__filename));
-  });
-});
+    const booruError = new BooruError()
+    expect(booruError.name).toBe('BooruError')
+    expect(booruError.stack).toContain(path.basename(__filename))
+  })
+})
 
 describe('check BooruClass', () => {
   it('should resolve to a BooruClass', () => {
@@ -31,17 +31,17 @@ describe('check BooruClass', () => {
       nsfw: false,
       random: false,
       paginate: 'pid',
-    };
-    const booruClass = new BooruClass(SiteData);
+    }
+    const booruClass = new BooruClass(SiteData)
 
-    expect(booruClass.domain).toBe('safebooru.org');
-    expect(booruClass.site).toMatchObject(SiteData);
-  });
-});
+    expect(booruClass.domain).toBe('safebooru.org')
+    expect(booruClass.site).toMatchObject(SiteData)
+  })
+})
 
 describe('check sites', () => {
-  it('should support 16 sites', () => {
-    const map = sites;
-    expect(Object.keys(map)).toHaveLength(16);
-  });
-});
+  it('should support 15 sites', () => {
+    const map = sites
+    expect(Object.keys(map)).toHaveLength(15)
+  })
+})

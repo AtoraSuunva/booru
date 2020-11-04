@@ -14,8 +14,11 @@ import SearchResults from '../structures/SearchResults'
 import Site from '../structures/Site'
 
 // Shut up the compiler
+// This attempts to find and use the native browser fetch, if possible
+// Fixes https://github.com/AtlasTheBot/booru/issues/51
 declare const window: any
-const resolvedFetch = typeof window !== 'undefined' ? window.fetch.bind(window) : fetch
+const resolvedFetch: typeof fetch =
+  typeof window !== 'undefined' ? window.fetch.bind(window) : fetch
 
 /*
  - new Booru
@@ -142,6 +145,17 @@ export class Booru {
 
     try {
       const response = await resolvedFetch(fetchuri, options)
+
+      // Check for CloudFlare ratelimiting
+      if (response.status === 503) {
+        const body = await response.clone().text()
+        if (body.includes('cf-browser-verification')) {
+          throw new BooruError(
+            'Received a CloudFlare browser verification request. Can\'t proceed.'
+          )
+        }
+      }
+
       const data: Response = xml ? await response.text() : await response.json()
       const posts = xml ? await jsonfy(data as unknown as string) : data
 
