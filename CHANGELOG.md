@@ -1,6 +1,16 @@
 # booru Changelog
 
-## 2.3.3 [Latest]
+## 2.4.0
+
+- Removed furry.booru.org since they have CloudFlare browser verification enabled.
+  - As far as I know, there's no (intended) way to bypass this if you're not a browser.
+  - Added CloudFlare-specific error message if this happens in the future
+- Add fix for Paheal changing their API response format
+- Make example.js only specify the "cat" default tag if you don't specify a site
+- Change from `tsc` -> `typescript` for package.json scripts, since `tsc` is deprecated.
+- Update dependencies
+
+## 2.3.3
 
 - Fix Paheal failing to provide a useful error message.
   - Details: Paheal was returning an HTML error page instead of a JSON response. The previous way
