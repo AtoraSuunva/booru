@@ -58,6 +58,7 @@ export async function jsonfy(xml: string): Promise<object[]> {
   }
 
   if (data.posts.post) return data.posts.post
+  if (data.posts.tag) return Array.isArray(data.posts.tag) ? data.posts.tag : [data.posts.tag]
   return []
 }
 

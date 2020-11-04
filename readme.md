@@ -6,7 +6,7 @@
 
 ## Features
 
-- Search 16 different boorus (check [sites.json](./src/sites.json))
+- Search 15 different boorus (check [sites.json](./src/sites.json))
 - Normalizes all received data into `Post` objects that are consistent no matter which booru you use
 - Access to the raw data received from the booru as well (transformed from XML to JSON, if applicable)
 - Alias support for boorus (`sb` for `safebooru.org`)
