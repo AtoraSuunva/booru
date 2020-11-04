@@ -5,7 +5,7 @@ const { BooruError, sites } = require('./dist')
 
 const argTags = process.argv.slice(3)
 const site = process.argv[2] || 'sb'
-const tags = argTags.length > 0 ? argTags : ['cat']
+const tags = process.argv[2] ? argTags : ['cat']
 
 // Search with promises
 Booru.search(site, tags, { limit: 1, random: false })
