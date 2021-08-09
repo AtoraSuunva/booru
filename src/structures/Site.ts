@@ -13,7 +13,7 @@ export default class Site {
   /** The domain of the Site (the "google.com" part of "https://google.com/foo") */
   public domain: string
   /** The type of this site (json/xml/derpi) */
-  public type?: string
+  public type: string
   /** The aliases of this site */
   public aliases: string[]
   /** If this site serves NSFW posts or not */
@@ -28,11 +28,11 @@ export default class Site {
    */
   public random: boolean | string
   /** The url query param for tags */
-  public tagQuery?: string
+  public tagQuery: string
   /** If this site supports only http:// */
-  public insecure?: boolean
+  public insecure: boolean
   /** Tags to add to every request, if not included */
-  public defaultTags?: string[]
+  public defaultTags: string[]
 
   constructor(data: SiteInfo) {
     this.domain = data.domain
