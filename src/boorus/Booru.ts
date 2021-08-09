@@ -15,10 +15,15 @@ import Site from '../structures/Site'
 
 // Shut up the compiler
 // This attempts to find and use the native browser fetch, if possible
-// Fixes https://github.com/AtlasTheBot/booru/issues/51
+// Fixes https://github.com/AtoraSuunva/booru/issues/51
 declare const window: any
 const resolvedFetch: typeof fetch =
   typeof window !== 'undefined' ? window.fetch.bind(window) : fetch
+
+// WIP, will use implement later
+export interface BooruCredentials {
+  token: string
+}
 
 /*
  - new Booru
@@ -52,16 +57,16 @@ export class Booru {
   /** The site object representing this booru */
   public site: Site
   /** The credentials to use for this booru */
-  public credentials: any
+  public credentials?: BooruCredentials
 
   /**
    * Create a new booru from a site
    *
    * @private
-   * @param {Site} site The site to use
-   * @param {Object?} credentials Credentials for the API (Currently not used)
+   * @param site The site to use
+   * @param credentials Credentials for the API (Currently not used)
    */
-  constructor(site: Site, credentials: object | null = null) {
+  constructor(site: Site, credentials?: BooruCredentials) {
     const domain = resolveSite(site.domain)
 
     if (domain === null) {
@@ -79,19 +84,32 @@ export class Booru {
    * @param {SearchParameters} searchArgs The arguments for the search
    * @return {Promise<SearchResults>} The results as an array of Posts
    */
-  public async search(tags: string | string[], {
-    limit = 1, random = false,
-    page = 0, showUnavailable = false } : SearchParameters = {}): Promise<SearchResults> {
-
+  public async search(
+    tags: string | string[],
+    {
+      limit = 1,
+      random = false,
+      page = 0,
+      showUnavailable = false,
+    }: SearchParameters = {},
+  ): Promise<SearchResults> {
     const fakeLimit: number = random && !this.site.random ? 100 : 0
 
     try {
-      const searchResult = await this.doSearchRequest(tags,
-        { limit, random, page, showUnavailable }
-      )
-      return this.parseSearchResult(searchResult,
-        { fakeLimit, tags, limit, random, page, showUnavailable }
-      )
+      const searchResult = await this.doSearchRequest(tags, {
+        limit,
+        random,
+        page,
+        showUnavailable,
+      })
+      return this.parseSearchResult(searchResult, {
+        fakeLimit,
+        tags,
+        limit,
+        random,
+        page,
+        showUnavailable,
+      })
     } catch (err) {
       throw new BooruError(err)
     }
@@ -108,7 +126,9 @@ export class Booru {
       throw new BooruError(`Not a valid id for postView: ${id}`)
     }
 
-    return `http${this.site.insecure ? '' : 's'}://${this.domain}${this.site.api.postView}${id}`
+    return `http${this.site.insecure ? '' : 's'}://${this.domain}${
+      this.site.api.postView
+    }${id}`
   }
 
   /**
@@ -119,9 +139,15 @@ export class Booru {
    * @param {InternalSearchParameters} searchArgs The arguments for the search
    * @return {Promise<Object>}
    */
-  protected async doSearchRequest(tags: string[] | string, {
-    uri = null, limit = 1, random = false, page = 0,
-  } : InternalSearchParameters = {}): Promise<any> {
+  protected async doSearchRequest(
+    tags: string[] | string,
+    {
+      uri = null,
+      limit = 1,
+      random = false,
+      page = 0,
+    }: InternalSearchParameters = {},
+  ): Promise<any> {
     if (!Array.isArray(tags)) tags = [tags]
 
     // Used for random on sites without order:random
@@ -151,24 +177,26 @@ export class Booru {
         const body = await response.clone().text()
         if (body.includes('cf-browser-verification')) {
           throw new BooruError(
-            'Received a CloudFlare browser verification request. Can\'t proceed.'
+            "Received a CloudFlare browser verification request. Can't proceed.",
           )
         }
       }
 
       const data: Response = xml ? await response.text() : await response.json()
-      const posts = xml ? await jsonfy(data as unknown as string) : data
+      const posts = xml ? jsonfy(data as unknown as string) : data
 
       if (!response.ok) {
-        throw new BooruError(`Received HTTP ${response.status} `
-                            + `from booru: '${
-                              (posts as any).error ||
-                              (posts as any).message ||
-                              JSON.stringify(posts)}'`)
+        throw new BooruError(
+          `Received HTTP ${response.status} ` +
+            `from booru: '${
+              (posts as any).error ||
+              (posts as any).message ||
+              JSON.stringify(posts)
+            }'`,
+        )
       } else {
         return posts
       }
-
     } catch (err) {
       if ((err as FetchError).type === 'invalid-json') return ''
       throw err
@@ -183,10 +211,17 @@ export class Booru {
    * @param {InternalSearchParameters} searchArgs The arguments used for the search
    * @return {SearchResults} The results of this search
    */
-  protected parseSearchResult(result: any, {
-    fakeLimit, tags, limit, random, page, showUnavailable,
-  } : InternalSearchParameters) {
-
+  protected parseSearchResult(
+    result: any,
+    {
+      fakeLimit,
+      tags,
+      limit,
+      random,
+      page,
+      showUnavailable,
+    }: InternalSearchParameters,
+  ) {
     if (result.success === false) {
       throw new BooruError(result.message || result.reason)
     }
@@ -205,12 +240,15 @@ export class Booru {
       r = []
     } else if (fakeLimit) {
       r = shuffle(result)
-    } else if (result.constructor === Object) { // For XML based sites
+    } else if (result.constructor === Object) {
+      // For XML based sites
       r = [result]
     }
 
     const results = r || result
-    let posts: Post[] = results.slice(0, limit).map((v: any) => new Post(v, this))
+    let posts: Post[] = results
+      .slice(0, limit)
+      .map((v: any) => new Post(v, this))
     const options = { limit, random, page, showUnavailable }
 
     if (tags === undefined) {

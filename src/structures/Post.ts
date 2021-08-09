@@ -6,7 +6,7 @@
 import { deprecate } from 'util'
 import Booru from '../boorus/Booru'
 
-// tslint:disable-next-line:no-empty
+// eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
 const common = deprecate(() => {
 }, 'Common is now deprecated, just access the properties directly')
 
@@ -142,7 +142,7 @@ export default class Post {
    * @param {Booru} booru The booru that created the image
    */
   constructor(data: any, booru: Booru) {
-    // tslint:disable-next-line: cyclomatic-complexity
+    // eslint-disable-next-line complexity
     // Damn wild mix of boorus
     this.data = data
     this.booru = booru
@@ -181,7 +181,7 @@ export default class Post {
     this.tags = getTags(data)
 
     // Too long for conditional
-    // tslint:disable-next-line: prefer-conditional-expression
+    // eslint-disable-next-line 
     if (data.score && data.score.total) {
       this.score = data.score.total
     } else {
@@ -203,7 +203,7 @@ export default class Post {
     this.rating = this.rating.charAt(0)
 
     this.createdAt = null
-    // tslint:disable-next-line:prefer-conditional-expression
+    // eslint-disable-next-line 
     if (typeof data.created_at === 'object') {
       this.createdAt = new Date((data.created_at.s * 1000) + (data.created_at.n / 1000000000))
     } else if (typeof data.created_at === 'number') {
