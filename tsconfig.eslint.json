@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "types": ["@types/node"]
+  },
+  "extends": "./tsconfig.json",
+  "include": ["test/**/*.ts", ".eslintrc.js"]
+}

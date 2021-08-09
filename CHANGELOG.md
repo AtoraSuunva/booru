@@ -1,5 +1,12 @@
 # booru Changelog
 
+## 2.4.1
+
+- Moved from tslint (deprecated) -> eslint
+- Moved tslint style rules -> prettier for formatting
+- Updated dependencies
+- Moved from my old username to new username
+
 ## 2.4.0
 
 - Removed furry.booru.org since they have CloudFlare browser verification enabled.
@@ -14,7 +21,7 @@
 
 - Fix Paheal failing to provide a useful error message.
   - Details: Paheal was returning an HTML error page instead of a JSON response. The previous way
-  of scraping an error message off HTML pages failed on the page Paheal returned.
+    of scraping an error message off HTML pages failed on the page Paheal returned.
 - Move from `terser-folder` to a custom `minify.js`, which handles both .js and .json minifying
   - `terser-folder` also hasn't been updated in 2 years
 - Update circle ci to use node 14 instead of 11

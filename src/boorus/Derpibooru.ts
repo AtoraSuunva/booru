@@ -7,7 +7,7 @@ import { BooruError, searchURI } from '../Constants'
 import SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import Site from '../structures/Site'
-import Booru from './Booru'
+import Booru, { BooruCredentials } from './Booru'
 
 /**
  * A class designed for Derpibooru
@@ -19,16 +19,18 @@ import Booru from './Booru'
 export default class Derpibooru extends Booru {
   /**
    * Create a new booru for Derpibooru from a site
-   * @param {Site} site The site to use
-   * @param {Object?} credentials Credentials for the API (Currently not used)
+   * @param site The site to use
+   * @param credentials Credentials for the API (Currently not used)
    */
-  constructor(site: Site, credentials?: any) {
+  constructor(site: Site, credentials?: BooruCredentials) {
     super(site, credentials)
   }
 
   /** @inheritDoc */
-  public search(tags: string[] | string, { limit = 1, random = false, page = 0 }
-                 : SearchParameters = {}): Promise<SearchResults> {
+  public search(
+    tags: string[] | string,
+    { limit = 1, random = false, page = 0 }: SearchParameters = {},
+  ): Promise<SearchResults> {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -41,12 +43,16 @@ export default class Derpibooru extends Booru {
     // Derpibooru offsets the pages by 1
     page += 1
 
-    const uri = searchURI(this.site, tags, limit, page)
-      + (random ? `&${this.site.random}` : '')
-      + (this.credentials ? `&key=${this.credentials}` : '')
+    const uri =
+      searchURI(this.site, tags, limit, page) +
+      (random && this.site.random === 'string' ? `&${this.site.random}` : '') +
+      (this.credentials ? `&key=${this.credentials.token}` : '')
 
-    return super.doSearchRequest(tags, { limit, random, page, uri })
-      .then(r => super.parseSearchResult(r, { fakeLimit: 0, tags, limit, random, page }))
+    return super
+      .doSearchRequest(tags, { limit, random, page, uri })
+      .then(r =>
+        super.parseSearchResult(r, { fakeLimit: 0, tags, limit, random, page }),
+      )
       .catch(e => Promise.reject(new BooruError(e)))
   }
 }

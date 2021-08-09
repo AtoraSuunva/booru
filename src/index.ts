@@ -6,7 +6,7 @@
 import { BooruError, sites, SMap } from './Constants'
 
 import { deprecate } from 'util'
-import Booru from './boorus/Booru'
+import Booru, { BooruCredentials } from './boorus/Booru'
 import Derpibooru from './boorus/Derpibooru'
 import XmlBooru from './boorus/XmlBooru'
 import Post from './structures/Post'
@@ -15,7 +15,7 @@ import SearchResults from './structures/SearchResults'
 import Site from './structures/Site'
 import { resolveSite } from './Utils'
 
-const BooruTypes: any = {
+const BooruTypes: Record<string, typeof Booru> = {
   derpi: Derpibooru,
   xml: XmlBooru,
 }
@@ -25,14 +25,16 @@ const booruCache: SMap<Booru> = {}
 /**
  * Create a new booru, if special type, use that booru, else use default Booru
  *
- * @param {SiteInfo} booruSite The site to use
- * @param {*} credentials The credentials to use, if any
- * @return {Booru} A new booru
+ * @param booruSite The site to use
+ * @param credentials The credentials to use, if any
+ * @return A new booru
  */
-function booruFrom(booruSite: Site, credentials?: any): Booru {
-  return new (booruSite.type !== undefined && BooruTypes[booruSite.type]
-    ? BooruTypes[booruSite.type]
-    : Booru)(booruSite, credentials)
+function booruFrom(booruSite: Site, credentials?: BooruCredentials): Booru {
+  return new (
+    booruSite.type !== undefined && BooruTypes[booruSite.type]
+      ? BooruTypes[booruSite.type]
+      : Booru
+  )(booruSite, credentials)
 }
 
 /**
@@ -72,10 +74,11 @@ export default booruForSite
  * Booru.search('e926', ['glaceon', 'cute'])
  * ```
  */
-export function search(site: string, tags: string[] | string = [], {
-  limit = 1, random = false, page = 0, credentials = null, showUnavailable = false,
-} : SearchParameters = {}): Promise<SearchResults> {
-
+export function search(
+  site: string,
+  tags: string[] | string = [],
+  { limit = 1, random = false, page = 0, credentials }: SearchParameters = {},
+): Promise<SearchResults> {
   const rSite: string | null = resolveSite(site)
 
   if (typeof limit === 'string') {
@@ -100,12 +103,12 @@ export function search(site: string, tags: string[] | string = [], {
     booruCache[rSite] = booruFrom(booruSite)
   }
 
-  return booruCache[rSite].search(tags, {limit, random, page, credentials})
+  return booruCache[rSite].search(tags, { limit, random, page, credentials })
 }
 
-// tslint:disable-next-line:no-empty
-const deprecatedCommonfy = deprecate(() => { },
- 'Common is now deprecated, just access the properties directly')
+// eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
+const deprecatedCommonfy = deprecate(() => {},
+'Common is now deprecated, just access the properties directly')
 
 /**
  * Deprecated, now a noop

@@ -26,7 +26,7 @@ import SearchParameters from './SearchParameters'
  * imgs2.forEach(i => console.log(i.postView))
  * ```
  */
-class SearchResults extends Array<Post> {
+export default class SearchResults extends Array<Post> {
   /** The booru used for this search */
   public booru: Booru
   /** The page of this search */
@@ -39,10 +39,15 @@ class SearchResults extends Array<Post> {
   public readonly posts: Post[]
 
   /** @private */
-  constructor(posts: Post[], tags: string[], options: SearchParameters, booru: Booru) {
+  constructor(
+    posts: Post[],
+    tags: string[],
+    options: SearchParameters,
+    booru: Booru,
+  ) {
     super(posts.length)
 
-    for (let i: number = 0; i < posts.length; i++) {
+    for (let i = 0; i < posts.length; i++) {
       this[i] = posts[i]
     }
 
@@ -90,7 +95,10 @@ class SearchResults extends Array<Post> {
    *                                         return images *not* tagged
    * @return {SearchResults}
    */
-  public tagged(tags: string[] | string, {invert = false} = {}): SearchResults {
+  public tagged(
+    tags: string[] | string,
+    { invert = false } = {},
+  ): SearchResults {
     if (!Array.isArray(tags)) {
       tags = [tags]
     }
@@ -113,28 +121,6 @@ class SearchResults extends Array<Post> {
    * @return {SearchResults} The results without any images with the specified tags
    */
   public blacklist(tags: string[] | string): SearchResults {
-    return this.tagged(tags, {invert: true})
+    return this.tagged(tags, { invert: true })
   }
 }
-
-// Workaround for the odd behavior as it extends Array
-// Calling an array function on the result will cause it to call the constructor for SearchResults
-// With the incorrect params (ie. new SearchResults(0)) thinking it's an array
-const prototypeKeys: string[] = Reflect
-    .ownKeys(Array.prototype)
-    .filter(k => typeof k === 'string' && k !== 'constructor') as unknown as string[]
-
-// Are you ready for hell of a workaround?
-for (const p of prototypeKeys) {
-  if (typeof Array.prototype[p as any] === 'function') {
-    const proxy = function(this: SearchResults, ...args: any[]) {
-      // tslint:disable-next-line: ban-types
-      return (this.posts[p as any] as unknown as Function)(...args)
-    }
-
-    // See https://github.com/AtlasTheBot/booru/issues/38
-    Object.defineProperty(SearchResults.prototype, p, { value: proxy })
-  }
-}
-
-export default SearchResults
