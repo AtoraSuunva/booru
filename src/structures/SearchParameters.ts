@@ -3,6 +3,8 @@
  * @module Structures
  */
 
+import { BooruCredentials } from '../boorus/Booru'
+
 /**
  * Just an interface for {@link Booru}'s search params :)
  */
@@ -14,7 +16,7 @@ export default interface SearchParameters {
   /** Which page of results to fetch */
   page?: number
   /** The credentials to use to auth with the booru */
-  credentials?: any
+  credentials?: BooruCredentials
   /** Return unavailable posts (ie. banned/deleted posts) */
   showUnavailable?: boolean
 }

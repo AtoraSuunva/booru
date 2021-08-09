@@ -1,29 +1,29 @@
 {
   "name": "booru",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Search (and do other things) on a bunch of different boorus!",
-  "author": "AtlasTheBot (https://github.com/AtlasTheBot/)",
+  "author": "AtoraSuunva (https://github.com/AtoraSuunva/)",
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "runkitExampleFilename": "./dist/example.js",
-  "homepage": "https://github.com/AtlasTheBot/booru#readme",
+  "homepage": "https://github.com/AtoraSuunva/booru#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AtlasTheBot/booru.git"
+    "url": "git+https://github.com/AtoraSuunva/booru.git"
   },
   "bugs": {
-    "url": "https://github.com/AtlasTheBot/booru/issues"
+    "url": "https://github.com/AtoraSuunva/booru/issues"
   },
   "scripts": {
-    "test": "npx jest --no-cache",
-    "lint": "npx tslint --fix -p . -c ./tslint.json ./src/**/*.ts",
-    "clean": "npx rimraf ./dist",
-    "prebuild": "npm run-script clean && npm run-script lint",
-    "build": "npx typescript --sourceMap false",
-    "build-dev": "npx typescript --sourceMap",
+    "test": "jest",
+    "lint": "eslint -c .eslintrc.js --ext .ts ./src",
+    "clean": "rimraf ./dist",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "tsc --sourceMap",
+    "build-dev": "tsc --sourceMap",
     "postbuild": "node ./minify.js",
-    "prepublishOnly": "npm run-script build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "booru",
@@ -44,24 +44,30 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^3.17.4",
+    "fast-xml-parser": "^3.19.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.15.0",
     "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/preset-typescript": "^7.12.1",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.6",
-    "@types/node-fetch": "^2.5.7",
-    "jest": "^26.6.3",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.13",
+    "@types/node-fetch": "^2.5.12",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-jsdoc": "^36.0.6",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "jest": "^27.0.6",
+    "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
-    "terser": "^5.3.8",
-    "tslint": "^6.1.3",
-    "typedoc": "^0.19.2",
-    "typedoc-plugin-external-module-name": "^4.0.3",
-    "typescript": "^4.0.5"
+    "terser": "^5.7.1",
+    "typescript": "^4.3.5"
   },
   "files": [
     "dist/"
@@ -84,8 +90,8 @@
       "url": "https://github.com/BobbyWibowo"
     },
     {
-      "name": "AtlasTheBot",
-      "url": "https://github.com/AtlasTheBot"
+      "name": "AtoraSuunva",
+      "url": "https://github.com/AtoraSuunva"
     }
   ]
 }
