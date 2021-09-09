@@ -3,7 +3,7 @@
  * @module Boorus
  */
 
-import fetch, { FetchError, Response } from 'node-fetch'
+import fetch, { FetchError } from 'node-fetch'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
 import { jsonfy, resolveSite, shuffle } from '../Utils'
 
@@ -111,7 +111,11 @@ export class Booru {
         showUnavailable,
       })
     } catch (err) {
-      throw new BooruError(err)
+      if (err instanceof Error) {
+        throw new BooruError(err)
+      } else {
+        throw err
+      }
     }
   }
 
@@ -182,16 +186,14 @@ export class Booru {
         }
       }
 
-      const data: Response = xml ? await response.text() : await response.json()
-      const posts = xml ? jsonfy(data as unknown as string) : data
+      const data = xml ? await response.text() : await response.json()
+      const posts = xml ? jsonfy(data as string) : data
 
       if (!response.ok) {
         throw new BooruError(
           `Received HTTP ${response.status} ` +
             `from booru: '${
-              (posts as any).error ||
-              (posts as any).message ||
-              JSON.stringify(posts)
+              posts.error || posts.message || JSON.stringify(posts)
             }'`,
         )
       } else {
