@@ -1,5 +1,11 @@
 # booru Changelog
 
+## 2.4.2
+
+- Update dependencies, notably:
+  - Typescript 4.4.2
+  - Fixes a [`path-parse` vulnerability](https://github.com/advisories/GHSA-hj48-42vr-x3v9)
+
 ## 2.4.1
 
 - Moved from tslint (deprecated) -> eslint
