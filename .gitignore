@@ -8,6 +8,7 @@ node_modules/*
 
 # Filter build
 dist/*
+tsconfig.tsbuildinfo
 
 # Only publish one type of lockfile
 yarn.lock
