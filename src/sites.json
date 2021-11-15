@@ -112,7 +112,7 @@
     "random": false
   },
   "rule34.xxx": {
-    "domain": "rule34.xxx",
+    "domain": "api.rule34.xxx",
     "aliases": [
       "r34",
       "rule34"
