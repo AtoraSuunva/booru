@@ -25,6 +25,12 @@ export interface BooruCredentials {
   token: string
 }
 
+interface SearchUrlParams {
+  tags: string[]
+  limit: number
+  page: number
+}
+
 /*
  - new Booru
  => Constructor, params {name, {nsfw, {search, postView, ...}, random}, {apiTokens...}}
@@ -169,7 +175,8 @@ export class Booru {
       tags = tags.concat(this.site.defaultTags.filter(v => !tags.includes(v)))
     }
 
-    const fetchuri = uri || searchURI(this.site, tags, fakeLimit || limit, page)
+    const fetchuri =
+      uri || this.getSearchUrl({ tags, limit: fakeLimit || limit, page })
     const options = defaultOptions
     const xml = this.site.type === 'xml'
 
@@ -203,6 +210,22 @@ export class Booru {
       if ((err as FetchError).type === 'invalid-json') return ''
       throw err
     }
+  }
+
+  /**
+   * Generates a URL to search the booru with, mostly for debugging purposes
+   * @param opt
+   * @param {string[]} [opt.tags] The tags to search for
+   * @param {number} [opt.limit] The limit of results to return
+   * @param {number} [opt.page] The page of results to return
+   * @returns A URL to search the booru
+   */
+  getSearchUrl({
+    tags = [],
+    limit = 100,
+    page = 1,
+  }: Partial<SearchUrlParams>): string {
+    return searchURI(this.site, tags, limit, page)
   }
 
   /**
