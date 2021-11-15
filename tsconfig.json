@@ -2,6 +2,10 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "rootDir": "./src",
+    "declaration": true,
+    "composite": true,
+    "incremental": true,
+    "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["esnext"],
     "target": "esnext",
@@ -16,11 +20,9 @@
     "alwaysStrict": true,
     "strict": true,
     "emitBOM": true,
-    "declaration": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "sourceMap": true
+    "esModuleInterop": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": ["node_modules", "dist"]
 }

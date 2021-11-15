@@ -3,5 +3,5 @@
     "types": ["@types/node"]
   },
   "extends": "./tsconfig.json",
-  "include": ["test/**/*.ts", ".eslintrc.js"]
+  "include": ["src/**/*.ts", "src/**/*.json", ".eslintrc.js"]
 }
