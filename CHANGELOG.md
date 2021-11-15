@@ -1,5 +1,13 @@
 # booru Changelog
 
+## 2.5.0
+
+- Update API endpoint for r34.xxx, see https://github.com/AtoraSuunva/booru/pull/75
+- Add `Booru#getSearchUrl`, meant for aiding in debugging
+  - You can use this to get the URL that booru would use to search, to inspect the response yourself
+- Minor changes to allow VS code's Run & Debug to work, kinda
+  - Still needs some setup, and some refactoring to get working nicely
+
 ## 2.4.2
 
 - Update dependencies, notably:
