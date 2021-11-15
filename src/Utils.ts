@@ -21,7 +21,11 @@ export function resolveSite(domain: string): string | null {
   domain = domain.toLowerCase()
 
   for (const site in sites) {
-    if (site === domain || sites[site].aliases.includes(domain)) {
+    if (
+      site === domain ||
+      sites[site].domain === domain ||
+      sites[site].aliases.includes(domain)
+    ) {
       return site
     }
   }
