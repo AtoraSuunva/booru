@@ -3,7 +3,7 @@
  * @module Boorus
  */
 
-import { BooruError, searchURI } from '../Constants'
+import { BooruError } from '../Constants'
 import SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import Site from '../structures/Site'
@@ -44,7 +44,7 @@ export default class Derpibooru extends Booru {
     page += 1
 
     const uri =
-      searchURI(this.site, tags, limit, page) +
+      this.getSearchUrl({ tags, limit, page }) +
       (random && this.site.random === 'string' ? `&${this.site.random}` : '') +
       (this.credentials ? `&key=${this.credentials.token}` : '')
 
