@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "2.4.3",
+  "version": "2.5.2",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtoraSuunva (https://github.com/AtoraSuunva/)",
   "license": "MIT",
@@ -18,7 +18,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint -c .eslintrc.js --ext .ts ./src",
-    "clean": "rimraf ./dist",
+    "clean": "rimraf ./dist && rm tsconfig.tsbuildinfo",
     "prebuild": "npm run clean && npm run lint",
     "build": "tsc --sourceMap",
     "build-dev": "tsc --sourceMap",

@@ -251,6 +251,18 @@ export class Booru {
       throw new BooruError(result.message || result.reason)
     }
 
+    if (result['@attributes']) {
+      const attributes = result['@attributes']
+
+      if (attributes.count === '0' || !result.post) {
+        result = []
+      } else if (Array.isArray(result.post)) {
+        result = result.post
+      } else {
+        result = [result.post]
+      }
+    }
+
     if (result.posts) {
       result = result.posts
     }
