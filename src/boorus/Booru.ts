@@ -172,7 +172,7 @@ export class Booru {
     }
 
     if (this.site.defaultTags) {
-      tags = tags.concat(this.site.defaultTags.filter(v => !tags.includes(v)))
+      tags = tags.concat(this.site.defaultTags.filter((v) => !tags.includes(v)))
     }
 
     const fetchuri =
@@ -246,9 +246,23 @@ export class Booru {
       page,
       showUnavailable,
     }: InternalSearchParameters,
-  ) {
+  ): SearchResults {
     if (result.success === false) {
       throw new BooruError(result.message || result.reason)
+    }
+
+    // What the fuck gelbooru
+    if (result['@attributes']) {
+      const attributes = result['@attributes']
+      if (attributes.count === '0' || !result.post) {
+        result = []
+      } else {
+        if (Array.isArray(result.post)) {
+          result = result.post
+        } else {
+          result = [result.post]
+        }
+      }
     }
 
     if (result.posts) {
@@ -285,7 +299,7 @@ export class Booru {
     }
 
     if (!showUnavailable) {
-      posts = posts.filter(p => p.available)
+      posts = posts.filter((p) => p.available)
     }
 
     return new SearchResults(posts, tags, options, this)
