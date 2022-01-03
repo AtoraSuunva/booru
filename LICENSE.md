@@ -1,7 +1,6 @@
-The MIT License (MIT)
-=====================
+# The MIT License (MIT)
 
-Copyright © `2020` `D. "AtlasTheBot" Plaza`
+Copyright © `2022` `Atora Suunva`
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
