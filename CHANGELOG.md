@@ -1,5 +1,9 @@
 # booru Changelog
 
+## 2.5.1
+
+- Fixed parsing of gelbooru's API response
+
 ## 2.5.0
 
 - Update API endpoint for r34.xxx, see https://github.com/AtoraSuunva/booru/pull/75
