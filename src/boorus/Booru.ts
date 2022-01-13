@@ -251,17 +251,16 @@ export class Booru {
       throw new BooruError(result.message || result.reason)
     }
 
-    // What the fuck gelbooru
+    // Gelbooru
     if (result['@attributes']) {
       const attributes = result['@attributes']
+
       if (attributes.count === '0' || !result.post) {
         result = []
+      } else if (Array.isArray(result.post)) {
+        result = result.post
       } else {
-        if (Array.isArray(result.post)) {
-          result = result.post
-        } else {
-          result = [result.post]
-        }
+        result = [result.post]
       }
     }
 

@@ -1,8 +1,8 @@
 # `booru`
 
-> *A node package to search boorus*
+> _A node package to search boorus_
 
-[![CircleCI](https://img.shields.io/circleci/project/github/AtlasTheBot/booru.svg)](https://circleci.com/gh/AtlasTheBot/booru) ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtlasTheBot/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
+[![CircleCI](https://img.shields.io/circleci/project/github/AtoraSuunva/booru.svg)](https://circleci.com/gh/AtoraSuunva/booru) ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
 
 ## Features
 
@@ -33,11 +33,11 @@ yarn add booru
 ```js
 const Booru = require('booru')
 
-Booru.search('safebooru', ['glaceon'], { limit: 3, random: true })
-  .then(posts => {
-    for (let post of posts)
-      console.log(post.fileUrl, post.postView)
-  })
+Booru.search('safebooru', ['glaceon'], { limit: 3, random: true }).then(
+  posts => {
+    for (let post of posts) console.log(post.fileUrl, post.postView)
+  },
+)
 
 // or (using alias support and creating boorus)
 const sb = Booru.forSite('sb')
@@ -105,18 +105,22 @@ Why not?
 ## Contributors
 
 [BobbyWibowo](https://github.com/BobbyWibowo/booru)
-> [Change from request-promise-native to snek-fetch](https://github.com/AtlasTheBot/booru/pull/9)
+
+> [Change from request-promise-native to snek-fetch](https://github.com/AtoraSuunva/booru/pull/9)
 
 [rubikscraft](https://github.com/rubikscraft/booru)
-> [Add 2 new boorus (furry.booru.org/realbooru.com)](https://github.com/AtlasTheBot/booru/pull/17)  
-> [Various Derpibooru fixes](https://github.com/AtlasTheBot/booru/pull/19)
+
+> [Add 2 new boorus (furry.booru.org/realbooru.com)](https://github.com/AtoraSuunva/booru/pull/17)  
+> [Various Derpibooru fixes](https://github.com/AtoraSuunva/booru/pull/19)
 
 [Favna](https://github.com/favna/)
-> [Add TypeScript declarations](https://github.com/AtlasTheBot/booru/pull/21)  
+
+> [Add TypeScript declarations](https://github.com/AtoraSuunva/booru/pull/21)  
 > Improve TypeScript port  
 > Various other small fixes
 
 [negezor](https://github.com/negezor)
-> [Add missing type information](https://github.com/AtlasTheBot/booru/pull/31)
+
+> [Add missing type information](https://github.com/AtoraSuunva/booru/pull/31)
 
 ---
