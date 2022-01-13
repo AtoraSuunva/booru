@@ -1,8 +1,17 @@
 # booru Changelog
 
-## 2.5.1
+## 2.5.3
+
+- Use `encodeURIComponent` instead of `encodeURI` for tags to properly encode them
+- Update some project files for more consistent development
+
+## 2.5.2
 
 - Fixed parsing of gelbooru's API response
+
+## 2.5.1
+
+- Broken version, deprecated and removed
 
 ## 2.5.0
 
