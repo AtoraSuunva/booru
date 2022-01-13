@@ -8,10 +8,7 @@ node_modules/*
 
 # Filter build
 dist/*
-tsconfig.tsbuildinfo
+.tsbuildinfo
 
-# Only publish one type of lockfile
-yarn.lock
-
-# For those pesky MacOS users
+# MacOS
 .DS_Store

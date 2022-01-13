@@ -1,12 +1,11 @@
 {
   "name": "booru",
-  "version": "2.5.1",
+  "version": "2.5.3",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtoraSuunva (https://github.com/AtoraSuunva/)",
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "runkitExampleFilename": "./dist/example.js",
   "homepage": "https://github.com/AtoraSuunva/booru#readme",
   "repository": {
     "type": "git",
@@ -16,12 +15,11 @@
     "url": "https://github.com/AtoraSuunva/booru/issues"
   },
   "scripts": {
+    "file": "node --loader ts-node/esm",
     "test": "jest",
     "lint": "eslint -c .eslintrc.js --ext .ts ./src",
-    "clean": "rimraf ./dist",
-    "prebuild": "npm run clean && npm run lint",
-    "build": "tsc --sourceMap",
-    "build-dev": "tsc --sourceMap",
+    "prebuild": "npm run lint",
+    "build": "tsc",
     "postbuild": "node ./minify.js",
     "prepublishOnly": "npm run build"
   },
@@ -52,6 +50,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.15.4",
     "@babel/preset-typescript": "^7.15.0",
+    "@swc/core": "^1.2.128",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.0",
     "@types/node-fetch": "^2.5.12",
@@ -61,12 +60,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsdoc": "^36.1.0",
-    "eslint-plugin-no-null": "^1.0.2",
-    "eslint-plugin-prefer-arrow": "^1.2.3",
     "jest": "^27.1.1",
     "prettier": "^2.3.2",
-    "rimraf": "^3.0.2",
     "terser": "^5.7.2",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.2"
   },
   "files": [
