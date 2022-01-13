@@ -1,28 +1,47 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "rootDir": "./src",
-    "declaration": true,
-    "composite": true,
-    "incremental": true,
-    "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["esnext"],
-    "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "newLine": "lf",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noErrorTruncation": true,
-    "removeComments": true,
-    "alwaysStrict": true,
-    "strict": true,
-    "emitBOM": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+  "include": ["./src/**/*", "test/test.ts"],
+  "ts-node": {
+    "transpileOnly": true,
+    "transpiler": "ts-node/transpilers/swc-experimental",
+    "files": true
   },
-  "include": ["src/**/*.ts", "src/**/*.json"],
-  "exclude": ["node_modules", "dist"]
+  "compilerOptions": {
+    /* Projects */
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+
+    /* Language and Environment */
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "types": ["node"],
+
+    /* Modules */
+    "module": "commonjs",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    /* Emit */
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "newLine": "lf",
+
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "useUnknownInCatchVariables": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    // "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    /* Completeness */
+    "skipLibCheck": true
+  }
 }

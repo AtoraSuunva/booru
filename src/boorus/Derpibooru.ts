@@ -27,7 +27,7 @@ export default class Derpibooru extends Booru {
   }
 
   /** @inheritDoc */
-  public search(
+  public override search(
     tags: string[] | string,
     { limit = 1, random = false, page = 0 }: SearchParameters = {},
   ): Promise<SearchResults> {
@@ -50,9 +50,9 @@ export default class Derpibooru extends Booru {
 
     return super
       .doSearchRequest(tags, { limit, random, page, uri })
-      .then(r =>
+      .then((r) =>
         super.parseSearchResult(r, { fakeLimit: 0, tags, limit, random, page }),
       )
-      .catch(e => Promise.reject(new BooruError(e)))
+      .catch((e) => Promise.reject(new BooruError(e)))
   }
 }

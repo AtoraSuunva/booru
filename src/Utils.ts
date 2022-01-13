@@ -168,7 +168,7 @@ export function validateSearchParams(
  * @return {String[]} The shared strings between the arrays
  */
 export function compareArrays(arr1: string[], arr2: string[]): string[] {
-  return arr1.filter(e1 =>
-    arr2.some(e2 => e1.toLowerCase() === e2.toLowerCase()),
+  return arr1.filter((e1) =>
+    arr2.some((e2) => e1.toLowerCase() === e2.toLowerCase()),
   )
 }
