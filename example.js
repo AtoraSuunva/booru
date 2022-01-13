@@ -7,6 +7,11 @@ const argTags = process.argv.slice(3)
 const site = process.argv[2] || 'sb'
 const tags = process.argv[2] ? argTags : ['cat']
 
+
+const searchUrl = Booru.forSite(site).getSearchUrl({ tags, limit: 1 })
+
+console.log(`Searching with url: ${searchUrl}`)
+
 // Search with promises
 Booru.search(site, tags, { limit: 1, random: false })
   .then(posts => {
