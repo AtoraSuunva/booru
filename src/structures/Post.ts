@@ -20,7 +20,7 @@ const common = deprecate(() => {
 function parseImageUrl(url: string, data: any, booru: Booru): string | null {
   // If the image's file_url is *still* undefined or the source is empty or it's deleted
   // Thanks danbooru *grumble grumble*
-  if (!url || url.trim() === '' || data.is_deleted) {
+  if (!url || url.trim() === '' || data.is_deleted || !data.directory) {
     return null
   }
 
