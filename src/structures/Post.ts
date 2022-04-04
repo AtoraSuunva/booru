@@ -7,8 +7,8 @@ import { deprecate } from 'util'
 import Booru from '../boorus/Booru'
 
 // eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
-const common = deprecate(() => {
-}, 'Common is now deprecated, just access the properties directly')
+const common = deprecate(() => {},
+'Common is now deprecated, just access the properties directly')
 
 /**
  * Tries to figure out what the image url should be
@@ -41,8 +41,16 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
   }
 
   // Why???
-  if (!data.file_url && data.directory) {
-    url = `//${booru.domain}/images/${data.directory}/${data.image}`
+  if (!data.file_url) {
+    // Danbooru-based boorus sometimes sort their files into directories
+    // There's 2 directories, one named after the first 2 characters of the hash
+    // and one named after the next 2 characters of the hash
+    // Sometimes we get it in the API response as `data.directory`, sometimes it's null
+    // for some ungodly reason
+    // I despise the danbooru api honestly
+    const directory =
+      data.directory ?? `${data.hash.substr(0, 2)}/${data.hash.substr(2, 2)}`
+    url = `//${booru.domain}/images/${directory}/${data.image}`
   }
 
   if (!url.startsWith('http')) {
@@ -65,14 +73,17 @@ function getTags(data: any): string[] {
     return data.tags
   } else if (data.tags && data.tags.general) {
     // Here, v needs to be "unknown" or tsc complains
-    tags = Object.values(data.tags)
-            .reduce((acc: string[], v: unknown): string[] => acc = acc.concat(v as string[]), [])
+    tags = Object.values(data.tags).reduce(
+      (acc: string[], v: unknown): string[] =>
+        (acc = acc.concat(v as string[])),
+      [],
+    )
   } else if (data.tags) {
     tags = data.tags.split(' ')
   } else {
     tags = data.tag_string
-            .split(' ')
-            .map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
+      .split(' ')
+      .map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
   }
 
   return tags.filter((v: string) => v !== '')
@@ -94,7 +105,6 @@ function getTags(data: any): string[] {
  * ```
  */
 export default class Post {
-
   /** The {@link Booru} it came from */
   public booru: Booru
   /** The direct link to the file */
@@ -151,37 +161,67 @@ export default class Post {
     const deletedOrBanned = data.is_deleted || data.is_banned
 
     this.fileUrl = parseImageUrl(
-      data.file_url || data.image || (deletedOrBanned ? data.source : undefined)
-      || (data.file && data.file.url)
-      || (data.representations && data.representations.full),
-      data, booru)
+      data.file_url ||
+        data.image ||
+        (deletedOrBanned ? data.source : undefined) ||
+        (data.file && data.file.url) ||
+        (data.representations && data.representations.full),
+      data,
+      booru,
+    )
 
     this.available = !deletedOrBanned && this.fileUrl !== null
 
-    this.height = parseInt(data.height || data.image_height || (data.file && data.file.height), 10)
-    this.width = parseInt(data.width || data.image_width || (data.file && data.file.width), 10)
+    this.height = parseInt(
+      data.height || data.image_height || (data.file && data.file.height),
+      10,
+    )
+    this.width = parseInt(
+      data.width || data.image_width || (data.file && data.file.width),
+      10,
+    )
 
     this.sampleUrl = parseImageUrl(
-      data.sample_url || data.large_file_url ||
-      (data.representations && data.representations.large) || (data.sample && data.sample.url),
-      data, booru)
+      data.sample_url ||
+        data.large_file_url ||
+        (data.representations && data.representations.large) ||
+        (data.sample && data.sample.url),
+      data,
+      booru,
+    )
 
-    this.sampleHeight = parseInt(data.sample_height || (data.sample && data.sample.height), 10)
-    this.sampleWidth = parseInt(data.sample_width || (data.sample && data.sample.width), 10)
+    this.sampleHeight = parseInt(
+      data.sample_height || (data.sample && data.sample.height),
+      10,
+    )
+    this.sampleWidth = parseInt(
+      data.sample_width || (data.sample && data.sample.width),
+      10,
+    )
 
     this.previewUrl = parseImageUrl(
-      data.preview_url || data.preview_file_url ||
-      (data.representations && data.representations.small) ||
-      (data.preview && data.preview.url), data, booru)
+      data.preview_url ||
+        data.preview_file_url ||
+        (data.representations && data.representations.small) ||
+        (data.preview && data.preview.url),
+      data,
+      booru,
+    )
 
-    this.previewHeight = parseInt(data.preview_height || (data.preview && data.preview.height), 10)
-    this.previewWidth = parseInt(data.preview_width || (data.preview && data.preview.width), 10)
+    this.previewHeight = parseInt(
+      data.preview_height || (data.preview && data.preview.height),
+      10,
+    )
+    this.previewWidth = parseInt(
+      data.preview_width || (data.preview && data.preview.width),
+      10,
+    )
 
     this.id = data.id ? data.id.toString() : 'No ID available'
     this.tags = getTags(data)
 
     // Too long for conditional
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
     if (data.score && data.score.total) {
       this.score = data.score.total
     } else {
@@ -189,7 +229,10 @@ export default class Post {
     }
 
     this.source = data.source || data.sources || data.source_url
-    this.rating = data.rating || /(safe|suggestive|questionable|explicit)/i.exec(data.tags) || 'u'
+    this.rating =
+      data.rating ||
+      /(safe|suggestive|questionable|explicit)/i.exec(data.tags) ||
+      'u'
 
     if (Array.isArray(this.rating)) {
       this.rating = this.rating[0]
@@ -203,9 +246,11 @@ export default class Post {
     this.rating = this.rating.charAt(0)
 
     this.createdAt = null
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
     if (typeof data.created_at === 'object') {
-      this.createdAt = new Date((data.created_at.s * 1000) + (data.created_at.n / 1000000000))
+      this.createdAt = new Date(
+        data.created_at.s * 1000 + data.created_at.n / 1000000000,
+      )
     } else if (typeof data.created_at === 'number') {
       this.createdAt = new Date(data.created_at * 1000)
     } else if (typeof data.change === 'number') {
