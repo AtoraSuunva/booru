@@ -7,23 +7,23 @@ const argTags = process.argv.slice(3)
 const site = process.argv[2] || 'sb'
 const tags = process.argv[2] ? argTags : ['cat']
 
-
 const searchUrl = Booru.forSite(site).getSearchUrl({ tags, limit: 1 })
 
 console.log(`Searching with url: ${searchUrl}`)
 
 // Search with promises
 Booru.search(site, tags, { limit: 1, random: false })
-  .then(posts => {
+  .then((posts) => {
     if (posts.length === 0) {
       console.log('No images found.')
     }
 
+    console.log(`Found ${posts.length} image${posts.length === 1 ? '' : 's'}.`)
     for (let post of posts) {
       console.log(post.fileUrl)
     }
   })
-  .catch(err => {
+  .catch((err) => {
     if (err instanceof BooruError) {
       // It's a custom error thrown by the package
       // Typically results from errors the boorus returns, eg. "too many tags"
@@ -36,7 +36,7 @@ Booru.search(site, tags, { limit: 1, random: false })
 
 // Search with async/await
 async function booruSearch(site, tags, limit = 1, random = true) {
-  const posts = await Booru.search(site, tags, {limit, random})
+  const posts = await Booru.search(site, tags, { limit, random })
 
   return console.log(posts[0].fileUrl)
 }
@@ -47,7 +47,7 @@ async function booruSearch(site, tags, limit = 1, random = true) {
 // Ex: `Booru.forSite('safebooru')`
 async function booruClassSearch(site, tags, limit = 1, random = true) {
   const myBooru = Booru.forSite(site)
-  const posts = await myBooru.search(tags, {limit, random})
+  const posts = await myBooru.search(tags, { limit, random })
 
   return console.log(posts[0].fileUrl)
 }
