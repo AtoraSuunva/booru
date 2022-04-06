@@ -1,5 +1,12 @@
 # booru Changelog
 
+## 2.5.6
+
+- Update endpoints for Hypohub
+- Update tag-joining logic for Derpibooru (use `,` to join tags instead of `+`)
+- Fix regression that happened when the previous regression was fixed because programming
+  - Both danbooru-based boorus and non-danbooru boorus should be fine now
+
 ## 2.5.5
 
 - Fix regression where previous fix for Danbooru broke some other boorus
