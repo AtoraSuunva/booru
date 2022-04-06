@@ -35,9 +35,10 @@
     ],
     "nsfw": true,
     "api": {
-      "search": "/post/index.json?",
+      "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/post/show/"
     },
+    "paginate": "pid",
     "random": true
   },
   "danbooru.donmai.us": {
@@ -198,6 +199,7 @@
       "postView": "/images/"
     },
     "tagQuery": "q",
+    "tagJoin": ",",
     "random": "sf=random"
   },
   "realbooru.com": {

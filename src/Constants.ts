@@ -88,7 +88,7 @@ export function searchURI(
   return (
     `http${site.insecure ? '' : 's'}://` +
     `${site.domain}${site.api.search}` +
-    `${site.tagQuery}=${expandTags(tags).join('+')}` +
+    `${site.tagQuery}=${expandTags(tags).join(site.tagJoin)}` +
     `&limit=${limit}` +
     `&${site.paginate}=${page}`
   )
