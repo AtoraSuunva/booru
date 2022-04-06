@@ -29,6 +29,8 @@ export default class Site {
   public random: boolean | string
   /** The url query param for tags */
   public tagQuery: string
+  /** The character to use to join tags when creating the search url */
+  public tagJoin: string
   /** If this site supports only http:// */
   public insecure: boolean
   /** Tags to add to every request, if not included */
@@ -36,14 +38,15 @@ export default class Site {
 
   constructor(data: SiteInfo) {
     this.domain = data.domain
-    this.type = data.type || 'json'
-    this.aliases = data.aliases || []
+    this.type = data.type ?? 'json'
+    this.aliases = data.aliases ?? []
     this.nsfw = data.nsfw
-    this.api = data.api || {}
-    this.paginate = data.paginate || 'page'
-    this.random = data.random || false
-    this.tagQuery = data.tagQuery || 'tags'
-    this.insecure = data.insecure || false
-    this.defaultTags = data.defaultTags || []
+    this.api = data.api ?? {}
+    this.paginate = data.paginate ?? 'page'
+    this.random = data.random ?? false
+    this.tagQuery = data.tagQuery ?? 'tags'
+    this.tagJoin = data.tagJoin ?? '+'
+    this.insecure = data.insecure ?? false
+    this.defaultTags = data.defaultTags ?? []
   }
 }

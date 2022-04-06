@@ -27,6 +27,8 @@ export default interface SiteInfo {
   random: boolean | string
   /** The url query param for tags */
   tagQuery?: string
+  /** The character to use to join tags when creating the search url */
+  tagJoin?: string
   /** If this site supports only http:// */
   insecure?: boolean
   /** Tags to add to every request, if not included */
