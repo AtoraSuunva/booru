@@ -41,7 +41,7 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
   }
 
   // Why???
-  if (!data.file_url && !url) {
+  if (!data.file_url && data.directory !== undefined) {
     // Danbooru-based boorus sometimes sort their files into directories
     // There's 2 directories, one named after the first 2 characters of the hash
     // and one named after the next 2 characters of the hash
