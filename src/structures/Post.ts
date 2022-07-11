@@ -80,10 +80,13 @@ function getTags(data: any): string[] {
     )
   } else if (data.tags) {
     tags = data.tags.split(' ')
-  } else {
+  } else if(data.tag_string){
     tags = data.tag_string
       .split(' ')
       .map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
+  }
+  else{
+    return [];
   }
 
   return tags.filter((v: string) => v !== '')
