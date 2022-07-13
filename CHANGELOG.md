@@ -1,5 +1,11 @@
 # booru Changelog
 
+## 2.5.7
+
+- Fix error when splitting by tags when konachan returned an empty string ([thanks youliao](https://github.com/AtoraSuunva/booru/pull/88))
+- Update dependencies
+  - Use Undici instead of node-fetch
+
 ## 2.5.6
 
 - Update endpoints for Hypohub

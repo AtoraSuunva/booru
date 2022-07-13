@@ -3,7 +3,7 @@
  * @module Boorus
  */
 
-import fetch, { FetchError } from 'node-fetch'
+import { fetch } from 'undici'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
 import { jsonfy, resolveSite, shuffle } from '../Utils'
 
@@ -200,14 +200,16 @@ export class Booru {
         throw new BooruError(
           `Received HTTP ${response.status} ` +
             `from booru: '${
-              posts.error || posts.message || JSON.stringify(posts)
+              (posts as any).error ||
+              (posts as any).message ||
+              JSON.stringify(posts)
             }'`,
         )
       } else {
         return posts
       }
     } catch (err) {
-      if ((err as FetchError).type === 'invalid-json') return ''
+      if ((err as any).type === 'invalid-json') return ''
       throw err
     }
   }
