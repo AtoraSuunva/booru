@@ -70,26 +70,32 @@ function getTags(data: any): string[] {
   let tags = []
 
   if (Array.isArray(data.tags)) {
-    return data.tags
+    tags = data.tags
   } else if (data.tags && data.tags.general) {
-    // Here, v needs to be "unknown" or tsc complains
-    tags = Object.values(data.tags).reduce(
-      (acc: string[], v: unknown): string[] =>
-        (acc = acc.concat(v as string[])),
+    tags = Object.values<string>(data.tags).reduce(
+      (acc: string[], v) => (acc = acc.concat(v)),
       [],
     )
-  } else if (data.tags) {
-    tags = data.tags.split(' ')
-  } else if(data.tag_string){
-    tags = data.tag_string
-      .split(' ')
-      .map((v: string): string => v.replace(/,/g, '').replace(/ /g, '_'))
-  }
-  else{
-    return [];
+  } else if (typeof data.tags === 'string') {
+    tags = fromTagString(data.tags)
+  } else if (typeof data.tag_string === 'string') {
+    tags = fromTagString(data.tag_string)
   }
 
   return tags.filter((v: string) => v !== '')
+}
+
+/**
+ * Parses a string of tags into an array of tags, doing some sanitization
+ *
+ * @example
+ * fromTagString('tag1 tag2 tag3') => ['tag1', 'tag2', 'tag3']
+ * fromTagString('tag1 tag,2 tag3 ') => ['tag1', 'tag2', 'tag3']
+ * @param tags The tags as a string
+ * @returns The string, parsed into an array of tags
+ */
+function fromTagString(tags: string): string[] {
+  return tags.split(' ').map((v) => v.replace(/,/g, ''))
 }
 
 /**
