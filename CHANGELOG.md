@@ -1,5 +1,10 @@
 # booru Changelog
 
+## 2.5.8
+
+- Fix error when searching rule34.xxx with tags that return no results
+  - For some reason, the API literally returns an empty response with HTTP 200 instead of an empty array (or at least a different status code)
+
 ## 2.5.7
 
 - Fix error when splitting by tags when konachan returned an empty string ([thanks youliao](https://github.com/AtoraSuunva/booru/pull/88))

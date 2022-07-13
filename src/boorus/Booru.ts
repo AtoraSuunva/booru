@@ -5,7 +5,7 @@
 
 import { fetch } from 'undici'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
-import { jsonfy, resolveSite, shuffle } from '../Utils'
+import { jsonfy, resolveSite, shuffle, tryParseJSON } from '../Utils'
 
 import InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
@@ -193,8 +193,8 @@ export class Booru {
         }
       }
 
-      const data = xml ? await response.text() : await response.json()
-      const posts = xml ? jsonfy(data as string) : data
+      const data = await response.text()
+      const posts = xml ? jsonfy(data) : tryParseJSON(data)
 
       if (!response.ok) {
         throw new BooruError(

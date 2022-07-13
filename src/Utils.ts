@@ -95,6 +95,21 @@ export function jsonfy(xml: string): object[] {
 }
 
 /**
+ * Try to parse JSON, and then return an empty array if data is an empty string, or the parsed JSON
+ *
+ * Blame rule34.xxx for returning literally an empty response with HTTP 200 for this
+ * @param data The data to try and parse
+ * @returns Either the parsed data, or an empty array
+ */
+export function tryParseJSON(data: string): Record<string, unknown>[] {
+  if (data === '') {
+    return []
+  }
+
+  return JSON.parse(data)
+}
+
+/**
  * Yay fisher-bates
  * Taken from http://stackoverflow.com/a/2450976
  *
