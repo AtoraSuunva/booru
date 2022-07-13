@@ -11,6 +11,19 @@ const searchUrl = Booru.forSite(site).getSearchUrl({ tags, limit: 1 })
 
 console.log(`Searching with url: ${searchUrl}`)
 
+function formatPost(post) {
+  return ({
+    id: post.id,
+    postView: post.postView,
+    fileUrl: post.fileUrl,
+    score: post.score,
+    rating: post.rating,
+    source: post.source,
+    createdAt: post.createdAt,
+    tags: post.tags.slice(0, 5),
+  })
+}
+
 // Search with promises
 Booru.search(site, tags, { limit: 1, random: false })
   .then((posts) => {
@@ -20,7 +33,7 @@ Booru.search(site, tags, { limit: 1, random: false })
 
     console.log(`Found ${posts.length} image${posts.length === 1 ? '' : 's'}.`)
     for (let post of posts) {
-      console.log(post.fileUrl)
+      console.log(formatPost(post))
     }
   })
   .catch((err) => {
