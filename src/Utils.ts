@@ -5,7 +5,7 @@
 
 import { BooruError, sites } from './Constants'
 
-import { parse as xml2json } from 'fast-xml-parser'
+import { XMLParser } from 'fast-xml-parser'
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
@@ -48,6 +48,11 @@ interface BooruXML {
   posts: XMLPosts
 }
 
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '',
+})
+
 /**
  * Parses xml to json, which can be used with js
  *
@@ -58,10 +63,7 @@ interface BooruXML {
 export function jsonfy(xml: string): object[] {
   if (typeof xml === 'object') return xml
 
-  const data = xml2json(xml, {
-    ignoreAttributes: false,
-    attributeNamePrefix: '',
-  }) as BooruXML
+  const data = xmlParser.parse(xml) as BooruXML
 
   if (data.html || data['!doctype']) {
     // Some boorus return HTML error pages instead of JSON responses on errors

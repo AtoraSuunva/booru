@@ -3,7 +3,7 @@
  * @module Constants
  */
 
-import { RequestInit } from 'node-fetch'
+import { RequestInit } from 'undici'
 import siteJson from './sites.json'
 import Site from './structures/Site'
 import SiteInfo from './structures/SiteInfo'
