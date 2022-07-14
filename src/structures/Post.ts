@@ -262,6 +262,8 @@ export default class Post {
       )
     } else if (typeof data.created_at === 'number') {
       this.createdAt = new Date(data.created_at * 1000)
+    } else if (typeof data.created_at === 'string') {
+      this.createdAt = new Date(data.created_at)
     } else if (typeof data.change === 'number') {
       this.createdAt = new Date(data.change * 1000)
     } else {
