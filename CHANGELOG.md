@@ -1,5 +1,9 @@
 # booru Changelog
 
+## 2.5.9
+
+- Fix gelbooru returning wrong creation date ([thanks respektive](https://github.com/AtoraSuunva/booru/pull/89))
+
 ## 2.5.8
 
 - Fix error when searching rule34.xxx with tags that return no results
