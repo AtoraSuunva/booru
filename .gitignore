@@ -7,8 +7,9 @@
 node_modules/*
 
 # Filter build
-dist/*
+dist
 .tsbuildinfo
+.swc
 
 # MacOS
 .DS_Store

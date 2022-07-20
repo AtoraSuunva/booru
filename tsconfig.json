@@ -1,5 +1,5 @@
 {
-  "include": ["./src/**/*", "test/test.ts"],
+  "include": ["./src/**/*"],
   "ts-node": {
     "transpileOnly": true,
     "transpiler": "ts-node/transpilers/swc-experimental",
@@ -8,23 +8,23 @@
   "compilerOptions": {
     /* Projects */
     "incremental": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "tsBuildInfoFile": ".tsbuildinfo",
 
     /* Language and Environment */
-    "target": "ESNext",
-    "lib": ["ESNext"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "types": ["node"],
 
     /* Modules */
     "module": "commonjs",
-    "rootDir": "./src",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
 
     /* Emit */
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist",
     "newLine": "lf",
 
     /* Interop Constraints */
@@ -33,15 +33,11 @@
 
     /* Type Checking */
     "strict": true,
-    "useUnknownInCatchVariables": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    // "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-
-    /* Completeness */
-    "skipLibCheck": true
   }
 }
