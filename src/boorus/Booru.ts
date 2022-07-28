@@ -20,10 +20,7 @@ declare const window: any
 const resolvedFetch: typeof fetch =
   typeof window !== 'undefined' ? window.fetch.bind(window) : fetch
 
-// WIP, will use implement later
-export interface BooruCredentials {
-  token: string
-}
+export type BooruCredentials = Record<string, string>
 
 interface SearchUrlParams {
   tags: string[]
@@ -226,8 +223,8 @@ export class Booru {
     tags = [],
     limit = 100,
     page = 1,
-  }: Partial<SearchUrlParams>): string {
-    return searchURI(this.site, tags, limit, page)
+  }: Partial<SearchUrlParams> = {}): string {
+    return searchURI(this.site, tags, limit, page, this.credentials)
   }
 
   /**

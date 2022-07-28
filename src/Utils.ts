@@ -3,7 +3,7 @@
  * @module Utils
  */
 
-import { BooruError, sites } from './Constants'
+import { AnySite, BooruError, sites } from './Constants'
 
 import { XMLParser } from 'fast-xml-parser'
 
@@ -13,20 +13,20 @@ import { XMLParser } from 'fast-xml-parser'
  * @param  {String} domain The site to resolveSite
  * @return {String?} null if site is not supported, the site otherwise
  */
-export function resolveSite(domain: string): string | null {
+export function resolveSite(domain: string): AnySite | null {
   if (typeof domain !== 'string') {
     return null
   }
 
   domain = domain.toLowerCase()
 
-  for (const site in sites) {
+  for (const [site, info] of Object.entries(sites)) {
     if (
       site === domain ||
-      sites[site].domain === domain ||
-      sites[site].aliases.includes(domain)
+      info.domain === domain ||
+      info.aliases.includes(domain)
     ) {
-      return site
+      return site as AnySite
     }
   }
 
@@ -188,4 +188,41 @@ export function compareArrays(arr1: string[], arr2: string[]): string[] {
   return arr1.filter((e1) =>
     arr2.some((e2) => e1.toLowerCase() === e2.toLowerCase()),
   )
+}
+
+type URIEncodable = string | number | boolean
+type QueryValue = URIEncodable | URIEncodable[]
+
+/**
+ * Turns an object into a query string, correctly encoding uri components
+ *
+ * @example
+ * const options = { page: 10, limit: 100 }
+ * const query = querystring(options) // 'page=10&limit=100'
+ * console.log(`https://example.com?${query}`)
+ *
+ * @param query An object with key/value pairs that will be turned into a string
+ * @returns A string that can be appended to a url (after `?`)
+ */
+export function querystring(query: Record<string, QueryValue>): string {
+  return Object.entries(query)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIQueryValue(value)}`,
+    )
+    .join('&')
+}
+
+/**
+ * Encodes a single value or an array of values to be usable in as a URI component,
+ * joining array elements with '+'
+ * @param value The value to encode
+ * @returns An encoded value that can be passed to a querystring
+ */
+export function encodeURIQueryValue(value: QueryValue): string {
+  if (Array.isArray(value)) {
+    return value.map(encodeURIComponent).join('+')
+  } else {
+    return encodeURIComponent(value)
+  }
 }
