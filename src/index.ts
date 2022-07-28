@@ -3,7 +3,7 @@
  * @module Index
  */
 
-import { BooruError, sites, SMap } from './Constants'
+import { AnySite, BooruError, sites } from './Constants'
 
 import { deprecate } from 'util'
 import Booru, { BooruCredentials } from './boorus/Booru'
@@ -20,7 +20,7 @@ const BooruTypes: Record<string, typeof Booru> = {
   xml: XmlBooru,
 }
 
-const booruCache: SMap<Booru> = {}
+const booruCache: Partial<Record<AnySite, Booru>> = {}
 
 /**
  * Create a new booru, if special type, use that booru, else use default Booru
@@ -42,10 +42,10 @@ function booruFrom(booruSite: Site, credentials?: BooruCredentials): Booru {
  *
  * @constructor
  * @param {String} site The {@link Site} domain (or alias of it) to create a booru from
- * @param {*} credentials The credentials to use on this booru
+ * @param {BooruCredentials} credentials The credentials to use on this booru
  * @return {Booru} A booru to use
  */
-function booruForSite(site: string, credentials: any = null): Booru {
+function booruForSite(site: string, credentials?: BooruCredentials): Booru {
   const rSite = resolveSite(site)
 
   if (!rSite) throw new BooruError('Site not supported')
@@ -58,6 +58,10 @@ function booruForSite(site: string, credentials: any = null): Booru {
 
 export { booruForSite as forSite }
 export default booruForSite
+
+export interface BooruSearch extends SearchParameters {
+  credentials?: BooruCredentials
+}
 
 /**
  * Searches a site for images with tags and returns the results
@@ -77,9 +81,9 @@ export default booruForSite
 export function search(
   site: string,
   tags: string[] | string = [],
-  { limit = 1, random = false, page = 0, credentials }: SearchParameters = {},
+  { limit = 1, random = false, page = 0, credentials = {} }: BooruSearch = {},
 ): Promise<SearchResults> {
-  const rSite: string | null = resolveSite(site)
+  const rSite = resolveSite(site)
 
   if (typeof limit === 'string') {
     limit = parseInt(limit, 10)
@@ -100,10 +104,12 @@ export function search(
   const booruSite = new Site(sites[rSite])
 
   if (!booruCache[rSite]) {
-    booruCache[rSite] = booruFrom(booruSite)
+    booruCache[rSite] = booruFrom(booruSite, credentials)
   }
 
-  return booruCache[rSite].search(tags, { limit, random, page, credentials })
+  // This is ugly and a hack, I know this
+  booruCache[rSite]!.credentials = credentials
+  return booruCache[rSite]!.search(tags, { limit, random, page })
 }
 
 // eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function

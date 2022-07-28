@@ -4,13 +4,28 @@
  */
 
 import { RequestInit } from 'undici'
+import { BooruCredentials } from './boorus/Booru'
 import siteJson from './sites.json'
 import Site from './structures/Site'
 import SiteInfo from './structures/SiteInfo'
+import { querystring } from './Utils'
 
-export interface SMap<V> {
-  [key: string]: V
-}
+export type AnySite =
+  | 'e621.net'
+  | 'e926.net'
+  | 'hypnohub.net'
+  | 'danbooru.donmai.us'
+  | 'konachan.com'
+  | 'konachan.net'
+  | 'yande.re'
+  | 'gelbooru.com'
+  | 'rule34.xxx'
+  | 'safebooru.org'
+  | 'tbib.org'
+  | 'xbooru.com'
+  | 'rule34.paheal.net'
+  | 'derpibooru.org'
+  | 'realbooru.com'
 
 type gelTags = {
   'rating:e': 'rating:explicit'
@@ -29,7 +44,7 @@ const expandedTags: gelTags = {
 /**
  * A map of site url/{@link SiteInfo}
  */
-export const sites = siteJson as unknown as SMap<SiteInfo>
+export const sites = siteJson as Record<AnySite, SiteInfo>
 
 /**
  * Custom error type for when the boorus error or for user-side error, not my code (probably)
@@ -78,19 +93,26 @@ function expandTags(tags: string[]): string[] {
  * @param {string[]} [tags=[]] The tags to search for
  * @param {number} [limit=100] The limit for images to return
  * @param {number} [page=0] The page to get
+ * @param {BooryCredentials} [credentials] The credentials to use for the search, appended to the querystring
  */
 export function searchURI(
   site: Site,
   tags: string[] = [],
   limit = 100,
-  page: number,
+  page = 0,
+  credentials: BooruCredentials = {},
 ): string {
+  const query = querystring({
+    [site.tagQuery]: expandTags(tags).join(site.tagJoin),
+    limit,
+    [site.paginate]: page,
+    ...credentials,
+  })
+
   return (
     `http${site.insecure ? '' : 's'}://` +
     `${site.domain}${site.api.search}` +
-    `${site.tagQuery}=${expandTags(tags).join(site.tagJoin)}` +
-    `&limit=${limit}` +
-    `&${site.paginate}=${page}`
+    query
   )
 }
 

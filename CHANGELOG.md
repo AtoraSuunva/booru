@@ -1,5 +1,27 @@
 # booru Changelog
 
+## 2.6.0
+
+- Added credential support
+  - Support is fairly basic and only support query param auth
+  - The credential object provided will be serialized into query params
+  - Previously credentials did nothing, now they do something
+- Updated some types to return more useful type unions (like AnySite being a union of all site domains)
+- `Booru#getSearchUrl` now properly accepts no parameters
+
+```js
+const booru = require('booru')
+const gelbooru = booru.forSite('gb', { api_key: 'key', user_id: 'id' })
+gelbooru.getSearchUrl()
+// https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags=&limit=100&pid=1&api_key=key&user_id=id
+
+// or
+booru.search('gb', [], {
+  credentials: { api_key: 'key', user_id: 'id' },
+})
+// Uses the same search URL as above
+```
+
 ## 2.5.9
 
 - Fix gelbooru returning wrong creation date ([thanks respektive](https://github.com/AtoraSuunva/booru/pull/89))
