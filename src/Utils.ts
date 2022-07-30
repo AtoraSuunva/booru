@@ -193,6 +193,14 @@ export function compareArrays(arr1: string[], arr2: string[]): string[] {
 type URIEncodable = string | number | boolean
 type QueryValue = URIEncodable | URIEncodable[]
 
+interface QuerystringOptions {
+  arrayJoin?: string
+}
+
+interface EncodeURIQueryValueOptions {
+  arrayJoin?: string
+}
+
 /**
  * Turns an object into a query string, correctly encoding uri components
  *
@@ -204,11 +212,16 @@ type QueryValue = URIEncodable | URIEncodable[]
  * @param query An object with key/value pairs that will be turned into a string
  * @returns A string that can be appended to a url (after `?`)
  */
-export function querystring(query: Record<string, QueryValue>): string {
+export function querystring(
+  query: Record<string, QueryValue>,
+  { arrayJoin = '+' }: QuerystringOptions = {},
+): string {
   return Object.entries(query)
     .map(
       ([key, value]) =>
-        `${encodeURIComponent(key)}=${encodeURIQueryValue(value)}`,
+        `${encodeURIComponent(key)}=${encodeURIQueryValue(value, {
+          arrayJoin,
+        })}`,
     )
     .join('&')
 }
@@ -219,9 +232,12 @@ export function querystring(query: Record<string, QueryValue>): string {
  * @param value The value to encode
  * @returns An encoded value that can be passed to a querystring
  */
-export function encodeURIQueryValue(value: QueryValue): string {
+export function encodeURIQueryValue(
+  value: QueryValue,
+  { arrayJoin = '+' }: EncodeURIQueryValueOptions = {},
+): string {
   if (Array.isArray(value)) {
-    return value.map(encodeURIComponent).join('+')
+    return value.map(encodeURIComponent).join(arrayJoin)
   } else {
     return encodeURIComponent(value)
   }
