@@ -102,12 +102,17 @@ export function searchURI(
   page = 0,
   credentials: BooruCredentials = {},
 ): string {
-  const query = querystring({
-    [site.tagQuery]: expandTags(tags).join(site.tagJoin),
-    limit,
-    [site.paginate]: page,
-    ...credentials,
-  })
+  const query = querystring(
+    {
+      [site.tagQuery]: expandTags(tags),
+      limit,
+      [site.paginate]: page,
+      ...credentials,
+    },
+    {
+      arrayJoin: site.tagJoin,
+    },
+  )
 
   return (
     `http${site.insecure ? '' : 's'}://` +

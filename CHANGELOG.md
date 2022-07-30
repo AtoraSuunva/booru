@@ -1,5 +1,9 @@
 # booru Changelog
 
+## 2.6.1
+
+- Fixed tags being incorrectly joined with an encoded `+`/`,` (#93)
+
 ## 2.6.0
 
 - Added credential support
