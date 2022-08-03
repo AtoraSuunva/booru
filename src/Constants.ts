@@ -78,10 +78,7 @@ export const USER_AGENT = `booru (https://github.com/AtoraSuunva/booru)`
  * @param {String[]} tags The tags to expand
  */
 function expandTags(tags: string[]): string[] {
-  return tags.map((v) => {
-    const ex = expandedTags[v.toLowerCase()]
-    return encodeURIComponent(ex ? ex : v)
-  })
+  return tags.map((v) => expandedTags[v.toLowerCase()] ?? v)
 }
 
 /**
