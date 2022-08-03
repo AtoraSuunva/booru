@@ -67,22 +67,19 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
  * @returns {string[]} The tags as a string array, and not just a string or an object
  */
 function getTags(data: any): string[] {
-  let tags = []
+  let tags: string[] = []
 
   if (Array.isArray(data.tags)) {
     tags = data.tags
   } else if (data.tags && data.tags.general) {
-    tags = Object.values<string>(data.tags).reduce(
-      (acc: string[], v) => (acc = acc.concat(v)),
-      [],
-    ) as string[]
+    tags = Object.values<string>(data.tags).flat()
   } else if (typeof data.tags === 'string') {
     tags = fromTagString(data.tags)
   } else if (typeof data.tag_string === 'string') {
     tags = fromTagString(data.tag_string)
   }
 
-  return tags.filter((v: string) => v !== '')
+  return tags.filter((v) => v !== '')
 }
 
 /**
