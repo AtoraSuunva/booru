@@ -75,7 +75,7 @@ function getTags(data: any): string[] {
     tags = Object.values<string>(data.tags).reduce(
       (acc: string[], v) => (acc = acc.concat(v)),
       [],
-    )
+    ) as string[]
   } else if (typeof data.tags === 'string') {
     tags = fromTagString(data.tags)
   } else if (typeof data.tag_string === 'string') {
@@ -229,9 +229,7 @@ export default class Post {
     this.id = data.id ? data.id.toString() : 'No ID available'
     this.tags = getTags(data)
 
-    // Too long for conditional
-    // eslint-disable-next-line
-    if (data.score && data.score.total) {
+    if (data.score && data.score.total !== undefined) {
       this.score = data.score.total
     } else {
       this.score = data.score ? parseInt(data.score, 10) : data.score
