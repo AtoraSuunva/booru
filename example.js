@@ -12,7 +12,7 @@ const searchUrl = Booru.forSite(site).getSearchUrl({ tags, limit: 1 })
 console.log(`Searching with url: ${searchUrl}`)
 
 function formatPost(post) {
-  return ({
+  return {
     id: post.id,
     postView: post.postView,
     fileUrl: post.fileUrl,
@@ -20,8 +20,11 @@ function formatPost(post) {
     rating: post.rating,
     source: post.source,
     createdAt: post.createdAt,
-    tags: post.tags.slice(0, 5),
-  })
+    tags:
+      post.tags.length > 5
+        ? [...post.tags.slice(0, 5), `...${post.tags.length - 5} more`]
+        : post.tags,
+  }
 }
 
 // Search with promises
