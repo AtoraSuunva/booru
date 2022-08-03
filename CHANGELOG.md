@@ -1,5 +1,10 @@
 # booru Changelog
 
+## 2.6.2
+
+- Fixed tags being encoded twice (#94)
+- Fixed e621/e926 returning `score: NaN` on posts with 0 total score
+
 ## 2.6.1
 
 - Fixed tags being incorrectly joined with an encoded `+`/`,` (#93)
