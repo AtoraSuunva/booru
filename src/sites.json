@@ -39,7 +39,7 @@
       "postView": "/post/show/"
     },
     "paginate": "pid",
-    "random": true
+    "random": false
   },
   "danbooru.donmai.us": {
     "domain": "danbooru.donmai.us",

@@ -1,5 +1,11 @@
 # booru Changelog
 
+## 2.6.3
+
+- Export more types:
+  - BooruCredentials, Derpibooru, XmlBooru, Post, SearchParameters, SearchResults, Site
+- Correctly mark Hypnohub as not supporting `order:random` (or any random sorting)
+
 ## 2.6.2
 
 - Fixed tags being encoded twice (#94)
