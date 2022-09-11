@@ -5,6 +5,7 @@
 - Export more types:
   - BooruCredentials, Derpibooru, XmlBooru, Post, SearchParameters, SearchResults, Site
 - Correctly mark Hypnohub as not supporting `order:random` (or any random sorting)
+- Update dependencies
 
 ## 2.6.2
 
