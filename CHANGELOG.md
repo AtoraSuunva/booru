@@ -1,5 +1,9 @@
 # booru Changelog
 
+## 2.6.4
+
+- Update dependencies, notably fixing a fast-xml-parser security issue
+
 ## 2.6.3
 
 - Export more types:
