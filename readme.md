@@ -67,7 +67,7 @@ The basic structure of a `Post` object looks like:
 
 ```js
 Post {
-  _data: {/*...*/},                       // The raw data from the booru
+  data: {/*...*/},                       // The raw data from the booru
   fileUrl: 'https://aaaa.com/img.jpg',    // The direct link to the image, ready to post
   id: '124125',                           // The image ID, as a string
   tags: ['cat', 'cute'],                  // The tags, split into an Array
