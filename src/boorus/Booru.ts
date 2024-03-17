@@ -81,6 +81,14 @@ export class Booru {
     this.credentials = credentials
   }
 
+  protected normalizeTags(tags: string | string[]): string[] {
+    if (!Array.isArray(tags)) {
+      return [tags]
+    } else {
+      return tags.slice();
+    }
+  }
+
   /**
    * Search for images on this booru
    * @param {String|String[]} tags The tag(s) to search for
@@ -97,9 +105,10 @@ export class Booru {
     }: SearchParameters = {},
   ): Promise<SearchResults> {
     const fakeLimit: number = random && !this.site.random ? 100 : 0
+    const tagArray = this.normalizeTags(tags);
 
     try {
-      const searchResult = await this.doSearchRequest(tags, {
+      const searchResult = await this.doSearchRequest(tagArray, {
         limit,
         random,
         page,
@@ -107,7 +116,7 @@ export class Booru {
       })
       return this.parseSearchResult(searchResult, {
         fakeLimit,
-        tags,
+        tags: tagArray,
         limit,
         random,
         page,
@@ -147,7 +156,7 @@ export class Booru {
    * @return {Promise<Object>}
    */
   protected async doSearchRequest(
-    tags: string[] | string,
+    tags: string[],
     {
       uri = null,
       limit = 1,
@@ -155,8 +164,6 @@ export class Booru {
       page = 0,
     }: InternalSearchParameters = {},
   ): Promise<any> {
-    if (!Array.isArray(tags)) tags = [tags]
-
     // Used for random on sites without order:random
     let fakeLimit: number | undefined
 
@@ -290,10 +297,6 @@ export class Booru {
 
     if (tags === undefined) {
       tags = []
-    }
-
-    if (!Array.isArray(tags)) {
-      tags = [tags]
     }
 
     if (!showUnavailable) {
