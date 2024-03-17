@@ -31,27 +31,25 @@ export default class Derpibooru extends Booru {
     tags: string[] | string,
     { limit = 1, random = false, page = 0 }: SearchParameters = {},
   ): Promise<SearchResults> {
-    if (!Array.isArray(tags)) {
-      tags = [tags]
-    }
+    var tagArray = this.normalizeTags(tags);
 
     // For any image, you must supply *
-    if (tags[0] === undefined) {
-      tags[0] = '*'
+    if (tagArray[0] === undefined) {
+      tagArray[0] = '*'
     }
 
     // Derpibooru offsets the pages by 1
     page += 1
 
     const uri =
-      this.getSearchUrl({ tags, limit, page }) +
+      this.getSearchUrl({ tags: tagArray, limit, page }) +
       (random && this.site.random === 'string' ? `&${this.site.random}` : '') +
       (this.credentials ? `&key=${this.credentials.token}` : '')
 
     return super
-      .doSearchRequest(tags, { limit, random, page, uri })
+      .doSearchRequest(tagArray, { limit, random, page, uri })
       .then((r) =>
-        super.parseSearchResult(r, { fakeLimit: 0, tags, limit, random, page }),
+        super.parseSearchResult(r, { fakeLimit: 0, tags: tagArray, limit, random, page }),
       )
       .catch((e) => Promise.reject(new BooruError(e)))
   }
