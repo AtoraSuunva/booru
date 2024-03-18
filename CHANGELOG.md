@@ -1,5 +1,10 @@
 # booru Changelog
 
+## 2.6.5
+
+- [Copy tags argument so it's not modified](https://github.com/AtoraSuunva/booru/pull/103)
+- Update dependencies
+
 ## 2.6.4
 
 - Update dependencies, notably fixing a fast-xml-parser security issue

@@ -39,7 +39,7 @@ interface XMLPage {
 
 interface XMLPosts {
   post?: any[]
-  tag?: any | any[]
+  tag?: any
 }
 
 interface BooruXML {
