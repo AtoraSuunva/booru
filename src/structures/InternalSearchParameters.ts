@@ -15,5 +15,5 @@ export default interface InternalSearchParameters extends SearchParameters {
   /** If `order:random` should be faked */
   fakeLimit?: number
   /** The tags used in the search */
-  tags?: string[] | string
+  tags?: string[]
 }
