@@ -3,10 +3,10 @@
  * @module Boorus
  */
 
-import { fetch } from 'undici'
 import { BooruError, defaultOptions, searchURI } from '../Constants'
 import { jsonfy, resolveSite, shuffle, tryParseJSON } from '../Utils'
 
+import { fetch } from 'undici'
 import InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
 import SearchParameters from '../structures/SearchParameters'
@@ -73,7 +73,7 @@ export class Booru {
     const domain = resolveSite(site.domain)
 
     if (domain === null) {
-      throw new Error(`Invalid site passed: ${site}`)
+      throw new Error(`Invalid site passed: ${site.domain}`)
     }
 
     this.domain = domain
@@ -85,7 +85,7 @@ export class Booru {
     if (!Array.isArray(tags)) {
       return [tags]
     } else {
-      return tags.slice();
+      return tags.slice()
     }
   }
 
@@ -105,7 +105,7 @@ export class Booru {
     }: SearchParameters = {},
   ): Promise<SearchResults> {
     const fakeLimit: number = random && !this.site.random ? 100 : 0
-    const tagArray = this.normalizeTags(tags);
+    const tagArray = this.normalizeTags(tags)
 
     try {
       const searchResult = await this.doSearchRequest(tagArray, {

@@ -123,4 +123,8 @@ Why not?
 
 > [Add missing type information](https://github.com/AtoraSuunva/booru/pull/31)
 
+[iguessthislldo](https://github.com/iguessthislldo)
+
+> [Copy tags argument so it's not modified](https://github.com/AtoraSuunva/booru/pull/103)
+
 ---

@@ -31,7 +31,7 @@ export default class Derpibooru extends Booru {
     tags: string[] | string,
     { limit = 1, random = false, page = 0 }: SearchParameters = {},
   ): Promise<SearchResults> {
-    var tagArray = this.normalizeTags(tags);
+    const tagArray = this.normalizeTags(tags)
 
     // For any image, you must supply *
     if (tagArray[0] === undefined) {
@@ -49,7 +49,13 @@ export default class Derpibooru extends Booru {
     return super
       .doSearchRequest(tagArray, { limit, random, page, uri })
       .then((r) =>
-        super.parseSearchResult(r, { fakeLimit: 0, tags: tagArray, limit, random, page }),
+        super.parseSearchResult(r, {
+          fakeLimit: 0,
+          tags: tagArray,
+          limit,
+          random,
+          page,
+        }),
       )
       .catch((e) => Promise.reject(new BooruError(e)))
   }
