@@ -57,7 +57,6 @@ function booruForSite(site: string, credentials?: BooruCredentials): Booru {
 }
 
 export { booruForSite as forSite }
-export default booruForSite
 
 export interface BooruSearch extends SearchParameters {
   credentials?: BooruCredentials
