@@ -1,6 +1,6 @@
 {
   "name": "booru",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "description": "Search (and do other things) on a bunch of different boorus!",
   "author": "AtoraSuunva (https://github.com/AtoraSuunva/)",
   "license": "MIT",
@@ -17,7 +17,8 @@
   "scripts": {
     "file": "node --loader ts-node/esm",
     "test": "jest",
-    "lint": "eslint -c .eslintrc.js --ext .ts ./src",
+    "lint": "eslint --ext .ts src/ && prettier --check 'src/**/*.ts' && tsc --noEmit",
+    "lint:fix": "eslint --ext .ts src/ && prettier --write 'src/**/*.ts' && tsc --noEmit",
     "prebuild": "npm run lint",
     "build": "tsc",
     "postbuild": "node ./minify.js",
@@ -42,28 +43,28 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^4.3.6",
-    "undici": "^6.9.0"
+    "fast-xml-parser": "^4.4.0",
+    "undici": "^6.18.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
+    "@babel/core": "^7.24.7",
     "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.24.0",
-    "@babel/preset-typescript": "^7.23.3",
-    "@swc/core": "^1.4.8",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
+    "@swc/core": "^1.5.28",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.28",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
+    "@types/node": "^20.14.2",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsdoc": "^48.2.1",
+    "eslint-plugin-jsdoc": "^48.2.9",
     "jest": "^29.7.0",
-    "prettier": "^3.2.5",
-    "terser": "^5.29.2",
+    "prettier": "^3.3.2",
+    "terser": "^5.31.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.5"
   },
   "files": [
     "dist/"

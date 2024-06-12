@@ -113,8 +113,10 @@ export function search(
 }
 
 // eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
-const deprecatedCommonfy = deprecate(() => {},
-'Common is now deprecated, just access the properties directly')
+const deprecatedCommonfy = deprecate(
+  () => {},
+  'Common is now deprecated, just access the properties directly',
+)
 
 /**
  * Deprecated, now a noop
