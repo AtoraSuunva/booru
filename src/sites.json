@@ -179,7 +179,7 @@
     ],
     "nsfw": true,
     "api": {
-      "search": "/api/danbooru/find_posts/index.xml?",
+      "search": "/api/danbooru/find_posts?",
       "postView": "/post/view/"
     },
     "random": false

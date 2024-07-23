@@ -1,5 +1,10 @@
 # booru Changelog
 
+## 2.6.7
+
+- Update API URL for paheal.net (old one now returns an HTML page instead of posts)
+- Update dependencies
+
 ## 2.6.6
 
 - Update dependencies
