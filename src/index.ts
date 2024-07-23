@@ -108,8 +108,8 @@ export function search(
   }
 
   // This is ugly and a hack, I know this
-  booruCache[rSite]!.credentials = credentials
-  return booruCache[rSite]!.search(tags, { limit, random, page })
+  booruCache[rSite].credentials = credentials
+  return booruCache[rSite].search(tags, { limit, random, page })
 }
 
 // eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
@@ -133,8 +133,7 @@ export function commonfy(images: Post[]): Promise<Post[]> {
 }
 
 export { Booru as BooruClass } from './boorus/Booru'
-export { sites } from './Constants'
+export { BooruError, sites } from './Constants'
 export { resolveSite } from './Utils'
-export { BooruError } from './Constants'
-export { Derpibooru, XmlBooru, Post, SearchResults, Site }
+export { Derpibooru, Post, SearchResults, Site, XmlBooru }
 export type { BooruCredentials, SearchParameters }
