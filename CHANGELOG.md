@@ -1,5 +1,9 @@
 # booru Changelog
 
+## 2.6.8
+
+- Replace `api-cdn.rule34.xxx` with `xbooru.com` for xbooru.com searches, since the API returns the wrong URLs ([#107](https://github.com/AtoraSuunva/booru/issues/107))
+
 ## 2.6.7
 
 - Update API URL for paheal.net (old one now returns an HTML page instead of posts)
