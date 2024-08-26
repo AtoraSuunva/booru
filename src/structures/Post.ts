@@ -59,6 +59,13 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
     url = `https:${url}`
   }
 
+  if (
+    booru.domain === 'xbooru.com' &&
+    url.startsWith('https://api-cdn.rule34.xxx/')
+  ) {
+    url = url.replace('https://api-cdn.rule34.xxx/', 'https://xbooru.com/')
+  }
+
   return encodeURI(url)
 }
 
