@@ -1,5 +1,10 @@
 # booru Changelog
 
+## 2.6.9
+
+- Update dependencies
+- Update Node engine version to v18.17 because that's the actual minimum supported version, older versions crash
+
 ## 2.6.8
 
 - Replace `api-cdn.rule34.xxx` with `xbooru.com` for xbooru.com searches, since the API returns the wrong URLs ([#107](https://github.com/AtoraSuunva/booru/issues/107))

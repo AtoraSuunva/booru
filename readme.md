@@ -4,6 +4,8 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/AtoraSuunva/booru.svg)](https://circleci.com/gh/AtoraSuunva/booru) ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
 
+*Minimum supported Node.js version: >=18.17*
+
 ## Features
 
 - Search 15 different boorus (check [sites.json](./src/sites.json))
