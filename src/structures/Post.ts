@@ -42,6 +42,10 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
     url = `https:${data.image}`
   }
 
+  if (url.startsWith('/_thumbs')) {
+    url = `https://rule34.paheal.net${url}`
+  }
+
   // Why???
   if (!data.file_url && data.directory !== undefined) {
     // Danbooru-based boorus sometimes sort their files into directories
