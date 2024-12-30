@@ -108,12 +108,12 @@ export function search(
   }
 
   // This is ugly and a hack, I know this
-  booruCache[rSite].credentials = credentials
-  return booruCache[rSite].search(tags, { limit, random, page })
+  booruCache[rSite]!.credentials = credentials
+  return booruCache[rSite]!.search(tags, { limit, random, page })
 }
 
-// eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
 const deprecatedCommonfy = deprecate(
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
   'Common is now deprecated, just access the properties directly',
 )
