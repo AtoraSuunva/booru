@@ -6,8 +6,8 @@
 import { deprecate } from 'util'
 import Booru from '../boorus/Booru'
 
-// eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
 const common = deprecate(
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
   'Common is now deprecated, just access the properties directly',
 )
