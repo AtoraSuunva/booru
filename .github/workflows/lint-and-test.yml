@@ -5,14 +5,14 @@ on:
     branches:
       - 'main'
       - 'development'
+  pull_request:
+    types: ['opened', 'synchronize']
 
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name }}
-    permissions:
-      contents: read
 
     steps:
       - name: Checkout repository
