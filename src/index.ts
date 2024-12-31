@@ -3,17 +3,17 @@
  * @module Index
  */
 
-import { AnySite, BooruError, sites } from './Constants'
+import { type AnySite, BooruError, sites } from './Constants'
 
-import { deprecate } from 'util'
-import Booru, { BooruCredentials } from './boorus/Booru'
+import { deprecate } from 'node:util'
+import { resolveSite } from './Utils'
+import Booru, { type BooruCredentials } from './boorus/Booru'
 import Derpibooru from './boorus/Derpibooru'
 import XmlBooru from './boorus/XmlBooru'
 import Post from './structures/Post'
-import SearchParameters from './structures/SearchParameters'
+import type SearchParameters from './structures/SearchParameters'
 import SearchResults from './structures/SearchResults'
 import Site from './structures/Site'
-import { resolveSite } from './Utils'
 
 const BooruTypes: Record<string, typeof Booru> = {
   derpi: Derpibooru,
@@ -86,7 +86,7 @@ export function search(
   const rSite = resolveSite(site)
 
   if (typeof limit === 'string') {
-    limit = parseInt(limit, 10)
+    limit = Number.parseInt(limit, 10)
   }
 
   if (rSite === null) {
@@ -112,7 +112,6 @@ export function search(
   return booruCache[rSite].search(tags, { limit, random, page })
 }
 
-// eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function
 const deprecatedCommonfy = deprecate(
   () => {},
   'Common is now deprecated, just access the properties directly',

@@ -1,47 +1,36 @@
-import path from 'path'
+import assert from 'node:assert/strict'
+import path from 'node:path'
+import { describe, it } from 'node:test'
 import { BooruClass, BooruError, resolveSite, sites } from '../src'
-import Site from '../src/structures/Site'
-
-let site: string
-
-beforeEach(() => {
-  site = 'db'
-})
+import type Site from '../src/structures/Site'
 
 describe('Check resolveSite', () => {
   it('should resolve alias to host', () => {
-    expect(resolveSite(site)).toBe('danbooru.donmai.us')
+    assert.equal(resolveSite('sb'), 'safebooru.org')
   })
 })
 
 describe('check BooruError', () => {
   it('should resolve to a BooruError', () => {
-    const booruError = new BooruError()
-    expect(booruError.name).toBe('BooruError')
-    expect(booruError.stack).toContain(path.basename(__filename))
+    const booruError = new BooruError('test')
+    assert.equal(booruError.name, 'BooruError')
+    assert(booruError.stack?.includes(path.basename(__filename)))
   })
 })
 
 describe('check BooruClass', () => {
   it('should resolve to a BooruClass', () => {
-    const SiteData: Site = {
-      aliases: ['sb', 'safe', 'safebooru'],
-      api: {search: '/index.php?page=dapi&s=post&q=index&json=1&', postView: '/index.php?page=post&s=view&json=1&id='},
-      domain: 'safebooru.org',
-      nsfw: false,
-      random: false,
-      paginate: 'pid',
-    }
-    const booruClass = new BooruClass(SiteData)
+    const siteData: Site = sites[resolveSite('safebooru.org') ?? '']
 
-    expect(booruClass.domain).toBe('safebooru.org')
-    expect(booruClass.site).toMatchObject(SiteData)
+    const booruClass = new BooruClass(siteData)
+
+    assert.equal(booruClass.domain, 'safebooru.org')
+    assert.deepEqual(booruClass.site, siteData)
   })
 })
 
 describe('check sites', () => {
   it('should support 15 sites', () => {
-    const map = sites
-    expect(Object.keys(map)).toHaveLength(15)
+    assert.equal(Object.keys(sites).length, 15)
   })
 })

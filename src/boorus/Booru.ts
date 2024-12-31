@@ -7,11 +7,11 @@ import { BooruError, defaultOptions, searchURI } from '../Constants'
 import { jsonfy, resolveSite, shuffle, tryParseJSON } from '../Utils'
 
 import { fetch } from 'undici'
-import InternalSearchParameters from '../structures/InternalSearchParameters'
+import type InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
-import SearchParameters from '../structures/SearchParameters'
+import type SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
-import Site from '../structures/Site'
+import type Site from '../structures/Site'
 
 // Shut up the compiler
 // This attempts to find and use the native browser fetch, if possible
@@ -60,7 +60,7 @@ export class Booru {
   /** The site object representing this booru */
   public site: Site
   /** The credentials to use for this booru */
-  public credentials?: BooruCredentials
+  public credentials?: BooruCredentials | undefined
 
   /**
    * Create a new booru from a site
@@ -84,9 +84,9 @@ export class Booru {
   protected normalizeTags(tags: string | string[]): string[] {
     if (!Array.isArray(tags)) {
       return [tags]
-    } else {
-      return tags.slice()
     }
+
+    return tags.slice()
   }
 
   /**
@@ -125,9 +125,9 @@ export class Booru {
     } catch (err) {
       if (err instanceof Error) {
         throw new BooruError(err)
-      } else {
-        throw err
       }
+
+      throw err
     }
   }
 
@@ -138,7 +138,7 @@ export class Booru {
    * @return {String} The url to the post
    */
   public postView(id: string | number): string {
-    if (typeof id === 'string' && Number.isNaN(parseInt(id, 10))) {
+    if (typeof id === 'string' && Number.isNaN(Number.parseInt(id, 10))) {
       throw new BooruError(`Not a valid id for postView: ${id}`)
     }
 
@@ -166,21 +166,25 @@ export class Booru {
   ): Promise<any> {
     // Used for random on sites without order:random
     let fakeLimit: number | undefined
+    let searchTags = tags.slice()
 
     if (random) {
       if (this.site.random) {
-        tags.push('order:random')
+        searchTags.push('order:random')
       } else {
         fakeLimit = 100
       }
     }
 
     if (this.site.defaultTags) {
-      tags = tags.concat(this.site.defaultTags.filter((v) => !tags.includes(v)))
+      searchTags = searchTags.concat(
+        this.site.defaultTags.filter((v) => !searchTags.includes(v)),
+      )
     }
 
     const fetchuri =
-      uri || this.getSearchUrl({ tags, limit: fakeLimit || limit, page })
+      uri ??
+      this.getSearchUrl({ tags: searchTags, limit: fakeLimit ?? limit, page })
     const options = defaultOptions
     const xml = this.site.type === 'xml'
 
@@ -204,14 +208,14 @@ export class Booru {
         throw new BooruError(
           `Received HTTP ${response.status} ` +
             `from booru: '${
-              (posts as any).error ||
-              (posts as any).message ||
+              (posts as any).error ??
+              (posts as any).message ??
               JSON.stringify(posts)
             }'`,
         )
-      } else {
-        return posts
       }
+
+      return posts
     } catch (err) {
       if ((err as any).type === 'invalid-json') return ''
       throw err
@@ -253,44 +257,45 @@ export class Booru {
       showUnavailable,
     }: InternalSearchParameters,
   ): SearchResults {
-    if (result.success === false) {
-      throw new BooruError(result.message || result.reason)
+    let outResult = result
+
+    if (outResult.success === false) {
+      throw new BooruError(outResult.message ?? outResult.reason)
     }
 
     // Gelbooru
-    if (result['@attributes']) {
-      const attributes = result['@attributes']
+    if (outResult['@attributes']) {
+      const attributes = outResult['@attributes']
 
-      if (attributes.count === '0' || !result.post) {
-        result = []
-      } else if (Array.isArray(result.post)) {
-        result = result.post
+      if (attributes.count === '0' || !outResult.post) {
+        outResult = []
+      } else if (Array.isArray(outResult.post)) {
+        outResult = outResult.post
       } else {
-        result = [result.post]
+        outResult = [outResult.post]
       }
     }
 
-    if (result.posts) {
-      result = result.posts
+    if (outResult.posts) {
+      outResult = outResult.posts
     }
 
-    if (result.images) {
-      result = result.images
+    if (outResult.images) {
+      outResult = outResult.images
     }
 
     let r: string[] | undefined
     // If gelbooru/other booru decides to return *nothing* instead of an empty array
-    if (result === '') {
+    if (outResult === '') {
       r = []
     } else if (fakeLimit) {
-      r = shuffle(result)
-    } else if (result.constructor === Object) {
+      r = shuffle(outResult)
+    } else if (outResult.constructor === Object) {
       // For XML based sites
-      r = [result]
+      r = [outResult]
     }
 
-    const results = r || result
-    let posts: Post[] = results
+    let posts: Post[] = (r ?? outResult)
       .slice(0, limit)
       .map((v: any) => new Post(v, this))
     const options = { limit, random, page, showUnavailable }

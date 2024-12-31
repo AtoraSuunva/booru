@@ -4,10 +4,9 @@
  */
 
 import { BooruError } from '../Constants'
-import SearchParameters from '../structures/SearchParameters'
-import SearchResults from '../structures/SearchResults'
-import Site from '../structures/Site'
-import Booru, { BooruCredentials } from './Booru'
+import type SearchParameters from '../structures/SearchParameters'
+import type SearchResults from '../structures/SearchResults'
+import Booru from './Booru'
 
 /**
  * A class designed for Derpibooru
@@ -17,15 +16,6 @@ import Booru, { BooruCredentials } from './Booru'
  * @inheritDoc
  */
 export default class Derpibooru extends Booru {
-  /**
-   * Create a new booru for Derpibooru from a site
-   * @param site The site to use
-   * @param credentials Credentials for the API (Currently not used)
-   */
-  constructor(site: Site, credentials?: BooruCredentials) {
-    super(site, credentials)
-  }
-
   /** @inheritDoc */
   public override search(
     tags: string[] | string,

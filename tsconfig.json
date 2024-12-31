@@ -1,13 +1,10 @@
 {
-  "include": ["./src/**/*", "test/test.ts"],
-  "ts-node": {
-    "transpileOnly": true,
-    "transpiler": "ts-node/transpilers/swc-experimental",
-    "files": true
-  },
+  "include": ["src/**/*", "src/**/*.json"],
   "compilerOptions": {
     /* Projects */
-    "incremental": true,
+    "composite": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "tsBuildInfoFile": ".tsbuildinfo",
 
     /* Language and Environment */
@@ -17,15 +14,13 @@
 
     /* Modules */
     "module": "commonjs",
-    "rootDir": "./src",
     "moduleResolution": "node",
     "resolveJsonModule": true,
 
     /* Emit */
-    "declaration": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "newLine": "lf",
+    "declaration": true,
+    "declarationMap": true,
 
     /* Interop Constraints */
     "esModuleInterop": true,
@@ -33,15 +28,16 @@
 
     /* Type Checking */
     "strict": true,
-    "useUnknownInCatchVariables": true,
-    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     // "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
 
     /* Completeness */
-    "skipLibCheck": true
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "inlineSources": true
   }
 }
