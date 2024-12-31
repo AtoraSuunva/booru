@@ -14,7 +14,7 @@ const common = deprecate(
 /**
  * Tries to figure out what the image url should be
  *
- * @param {string} outUrl   why
+ * @param {string} url   why
  * @param {*}      data  boorus
  * @param {Booru}  booru so hard
  */
@@ -183,10 +183,10 @@ export default class Post {
     const deletedOrBanned = data.is_deleted || data.is_banned
 
     this.fileUrl = parseImageUrl(
-      data.file_url ||
-        data.image ||
-        (deletedOrBanned ? data.source : undefined) ||
-        data.file?.url ||
+      data.file_url ??
+        data.image ??
+        (deletedOrBanned ? data.source : undefined) ??
+        data.file?.url ??
         data.representations?.full,
       data,
       booru,
@@ -248,10 +248,10 @@ export default class Post {
       this.score = data.score ? Number.parseInt(data.score, 10) : data.score
     }
 
-    this.source = data.source || data.sources || data.source_url
+    this.source = data.source ?? data.sources ?? data.source_url
     this.rating =
-      data.rating ||
-      /(safe|suggestive|questionable|explicit)/i.exec(data.tags) ||
+      data.rating ??
+      /(safe|suggestive|questionable|explicit)/i.exec(data.tags) ??
       'u'
 
     if (Array.isArray(this.rating)) {
@@ -278,7 +278,7 @@ export default class Post {
     } else if (typeof data.change === 'number') {
       this.createdAt = new Date(data.change * 1000)
     } else {
-      this.createdAt = new Date(data.created_at || data.date)
+      this.createdAt = new Date(data.created_at ?? data.date)
     }
   }
 

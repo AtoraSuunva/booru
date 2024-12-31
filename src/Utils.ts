@@ -68,7 +68,7 @@ export function jsonfy(xml: string): object[] {
   if (data.html || data['!doctype']) {
     // Some boorus return HTML error pages instead of JSON responses on errors
     // So try scraping off what we can in that case
-    const page = data.html || data['!doctype']?.html
+    const page = data.html ?? data['!doctype']?.html
     const message = []
     if (page.body.h1) {
       message.push(page.body.h1)

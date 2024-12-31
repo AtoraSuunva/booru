@@ -89,7 +89,7 @@ export default class SearchResults extends Array<Post> {
   /**
    * Create a new SearchResults with just images with the matching tags
    *
-   * @param {String[]|String} searchTags The tags (or tag) to search for
+   * @param {String[]|String} tags The tags (or tag) to search for
    * @param {Object} options The extra options for the search
    * @param {Boolean} [options.invert=false] If the results should be inverted and
    *                                         return images *not* tagged
