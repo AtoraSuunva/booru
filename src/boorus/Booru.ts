@@ -183,8 +183,8 @@ export class Booru {
     }
 
     const fetchuri =
-      uri ||
-      this.getSearchUrl({ tags: searchTags, limit: fakeLimit || limit, page })
+      uri ??
+      this.getSearchUrl({ tags: searchTags, limit: fakeLimit ?? limit, page })
     const options = defaultOptions
     const xml = this.site.type === 'xml'
 
@@ -208,8 +208,8 @@ export class Booru {
         throw new BooruError(
           `Received HTTP ${response.status} ` +
             `from booru: '${
-              (posts as any).error ||
-              (posts as any).message ||
+              (posts as any).error ??
+              (posts as any).message ??
               JSON.stringify(posts)
             }'`,
         )
@@ -242,7 +242,7 @@ export class Booru {
    * Parse the response from the booru
    *
    * @protected
-   * @param {Object} outResult The response of the booru
+   * @param {Object} result The response of the booru
    * @param {InternalSearchParameters} searchArgs The arguments used for the search
    * @return {SearchResults} The results of this search
    */
@@ -260,7 +260,7 @@ export class Booru {
     let outResult = result
 
     if (outResult.success === false) {
-      throw new BooruError(outResult.message || outResult.reason)
+      throw new BooruError(outResult.message ?? outResult.reason)
     }
 
     // Gelbooru
