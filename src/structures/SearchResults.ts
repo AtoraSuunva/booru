@@ -3,10 +3,10 @@
  * @module Structures
  */
 
-import Booru from '../boorus/Booru'
-import Post from '../structures/Post'
 import * as Utils from '../Utils'
-import SearchParameters from './SearchParameters'
+import type Booru from '../boorus/Booru'
+import type Post from '../structures/Post'
+import type SearchParameters from './SearchParameters'
 
 /**
  * Represents a page of search results, works like an array of {@link Post}
@@ -55,7 +55,7 @@ export default class SearchResults extends Array<Post> {
     this.tags = tags
     this.options = options
     this.booru = booru
-    this.page = options ? options.page || 0 : 0
+    this.page = options ? (options.page ?? 0) : 0
   }
 
   /**
@@ -89,7 +89,7 @@ export default class SearchResults extends Array<Post> {
   /**
    * Create a new SearchResults with just images with the matching tags
    *
-   * @param {String[]|String} tags The tags (or tag) to search for
+   * @param {String[]|String} searchTags The tags (or tag) to search for
    * @param {Object} options The extra options for the search
    * @param {Boolean} [options.invert=false] If the results should be inverted and
    *                                         return images *not* tagged
@@ -99,14 +99,11 @@ export default class SearchResults extends Array<Post> {
     tags: string[] | string,
     { invert = false } = {},
   ): SearchResults {
-    if (!Array.isArray(tags)) {
-      tags = [tags]
-    }
-
+    const searchTags = Array.isArray(tags) ? tags : [tags]
     const posts: Post[] = []
 
     for (const p of this) {
-      const m: number = Utils.compareArrays(tags, p.tags).length
+      const m: number = Utils.compareArrays(searchTags, p.tags).length
       if ((!invert && m > 0) || (invert && m === 0)) {
         posts.push(p)
       }

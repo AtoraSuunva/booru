@@ -3,12 +3,14 @@
  * @module Constants
  */
 
-import { RequestInit } from 'undici'
-import { BooruCredentials } from './boorus/Booru'
-import siteJson from './sites.json'
-import Site from './structures/Site'
-import SiteInfo from './structures/SiteInfo'
+import type { RequestInit } from 'undici'
 import { querystring } from './Utils'
+import type { BooruCredentials } from './boorus/Booru'
+import siteJson from './sites.json'
+import type Site from './structures/Site'
+import type SiteInfo from './structures/SiteInfo'
+
+const packageJson = require('../package.json')
 
 export type AnySite =
   | 'e621.net'
@@ -56,7 +58,7 @@ export class BooruError extends Error {
     super(message instanceof Error ? message.message : message)
 
     if (message instanceof Error) {
-      this.stack = message.stack
+      this.stack = message.stack ?? '<No Stack>'
     } else {
       Error.captureStackTrace(this, BooruError)
     }
@@ -69,7 +71,7 @@ export class BooruError extends Error {
  * The user-agent to use for searches
  * @private
  */
-export const USER_AGENT = `booru (https://github.com/AtoraSuunva/booru)`
+export const USER_AGENT = `booru/${packageJson.version} (+https://github.com/AtoraSuunva/booru)`
 
 /**
  * Expands tags based on a simple map, used for gelbooru/safebooru/etc compat :(
@@ -111,11 +113,7 @@ export function searchURI(
     },
   )
 
-  return (
-    `http${site.insecure ? '' : 's'}://` +
-    `${site.domain}${site.api.search}` +
-    query
-  )
+  return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}${query}`
 }
 
 /**
