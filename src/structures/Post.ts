@@ -3,11 +3,10 @@
  * @module Structures
  */
 
-import { deprecate } from 'util'
-import Booru from '../boorus/Booru'
+import { deprecate } from 'node:util'
+import type Booru from '../boorus/Booru'
 
 const common = deprecate(
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
   'Common is now deprecated, just access the properties directly',
 )
@@ -15,35 +14,37 @@ const common = deprecate(
 /**
  * Tries to figure out what the image url should be
  *
- * @param {string} url   why
+ * @param {string} outUrl   why
  * @param {*}      data  boorus
  * @param {Booru}  booru so hard
  */
 function parseImageUrl(url: string, data: any, booru: Booru): string | null {
+  let outUrl = url
+
   // If the image's file_url is *still* undefined or the source is empty or it's deleted
   // Thanks danbooru *grumble grumble*
-  if (!url || url.trim() === '' || data.is_deleted) {
+  if (!outUrl || outUrl.trim() === '' || data.is_deleted) {
     return null
   }
 
-  if (url.startsWith('/data')) {
-    url = `https://danbooru.donmai.us${url}`
+  if (outUrl.startsWith('/data')) {
+    outUrl = `https://danbooru.donmai.us${outUrl}`
   }
 
-  if (url.startsWith('/cached')) {
-    url = `https://danbooru.donmai.us${url}`
+  if (outUrl.startsWith('/cached')) {
+    outUrl = `https://danbooru.donmai.us${outUrl}`
   }
 
-  if (url.startsWith('/_images')) {
-    url = `https://dollbooru.org${url}`
+  if (outUrl.startsWith('/_images')) {
+    outUrl = `https://dollbooru.org${outUrl}`
   }
 
-  if (url.startsWith('//derpicdn.net')) {
-    url = `https:${data.image}`
+  if (outUrl.startsWith('//derpicdn.net')) {
+    outUrl = `https:${data.image}`
   }
 
-  if (url.startsWith('/_thumbs')) {
-    url = `https://rule34.paheal.net${url}`
+  if (outUrl.startsWith('/_thumbs')) {
+    outUrl = `https://rule34.paheal.net${outUrl}`
   }
 
   // Why???
@@ -56,21 +57,24 @@ function parseImageUrl(url: string, data: any, booru: Booru): string | null {
     // I despise the danbooru api honestly
     const directory =
       data.directory ?? `${data.hash.substr(0, 2)}/${data.hash.substr(2, 2)}`
-    url = `//${booru.domain}/images/${directory}/${data.image}`
+    outUrl = `//${booru.domain}/images/${directory}/${data.image}`
   }
 
-  if (!url.startsWith('http')) {
-    url = `https:${url}`
+  if (!outUrl.startsWith('http')) {
+    outUrl = `https:${outUrl}`
   }
 
   if (
     booru.domain === 'xbooru.com' &&
-    url.startsWith('https://api-cdn.rule34.xxx/')
+    outUrl.startsWith('https://api-cdn.rule34.xxx/')
   ) {
-    url = url.replace('https://api-cdn.rule34.xxx/', 'https://xbooru.com/')
+    outUrl = outUrl.replace(
+      'https://api-cdn.rule34.xxx/',
+      'https://xbooru.com/',
+    )
   }
 
-  return encodeURI(url)
+  return encodeURI(outUrl)
 }
 
 /**
@@ -84,7 +88,7 @@ function getTags(data: any): string[] {
 
   if (Array.isArray(data.tags)) {
     tags = data.tags
-  } else if (data.tags && data.tags.general) {
+  } else if (data.tags?.general) {
     tags = Object.values<string>(data.tags).flat()
   } else if (typeof data.tags === 'string') {
     tags = fromTagString(data.tags)
@@ -171,7 +175,6 @@ export default class Post {
    * @param {Booru} booru The booru that created the image
    */
   constructor(data: any, booru: Booru) {
-    // eslint-disable-next-line complexity
     // Damn wild mix of boorus
     this.data = data
     this.booru = booru
@@ -183,56 +186,56 @@ export default class Post {
       data.file_url ||
         data.image ||
         (deletedOrBanned ? data.source : undefined) ||
-        (data.file && data.file.url) ||
-        (data.representations && data.representations.full),
+        data.file?.url ||
+        data.representations?.full,
       data,
       booru,
     )
 
     this.available = !deletedOrBanned && this.fileUrl !== null
 
-    this.height = parseInt(
-      data.height || data.image_height || (data.file && data.file.height),
+    this.height = Number.parseInt(
+      data.height ?? data.image_height ?? data.file?.height,
       10,
     )
-    this.width = parseInt(
-      data.width || data.image_width || (data.file && data.file.width),
+    this.width = Number.parseInt(
+      data.width ?? data.image_width ?? data.file?.width,
       10,
     )
 
     this.sampleUrl = parseImageUrl(
-      data.sample_url ||
-        data.large_file_url ||
-        (data.representations && data.representations.large) ||
-        (data.sample && data.sample.url),
+      data.sample_url ??
+        data.large_file_url ??
+        data.representations?.large ??
+        data.sample?.url,
       data,
       booru,
     )
 
-    this.sampleHeight = parseInt(
-      data.sample_height || (data.sample && data.sample.height),
+    this.sampleHeight = Number.parseInt(
+      data.sample_height ?? data.sample?.height,
       10,
     )
-    this.sampleWidth = parseInt(
-      data.sample_width || (data.sample && data.sample.width),
+    this.sampleWidth = Number.parseInt(
+      data.sample_width ?? data.sample?.width,
       10,
     )
 
     this.previewUrl = parseImageUrl(
-      data.preview_url ||
-        data.preview_file_url ||
-        (data.representations && data.representations.small) ||
-        (data.preview && data.preview.url),
+      data.preview_url ??
+        data.preview_file_url ??
+        data.representations?.small ??
+        data.preview?.url,
       data,
       booru,
     )
 
-    this.previewHeight = parseInt(
-      data.preview_height || (data.preview && data.preview.height),
+    this.previewHeight = Number.parseInt(
+      data.preview_height ?? data.preview?.height,
       10,
     )
-    this.previewWidth = parseInt(
-      data.preview_width || (data.preview && data.preview.width),
+    this.previewWidth = Number.parseInt(
+      data.preview_width ?? data.preview?.width,
       10,
     )
 
@@ -242,7 +245,7 @@ export default class Post {
     if (data.score && data.score.total !== undefined) {
       this.score = data.score.total
     } else {
-      this.score = data.score ? parseInt(data.score, 10) : data.score
+      this.score = data.score ? Number.parseInt(data.score, 10) : data.score
     }
 
     this.source = data.source || data.sources || data.source_url

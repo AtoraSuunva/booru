@@ -3,8 +3,8 @@
  * @module Structures
  */
 
-import SiteApi from './SiteApi'
-import SiteInfo from './SiteInfo'
+import type SiteApi from './SiteApi'
+import type SiteInfo from './SiteInfo'
 
 /**
  * Represents a site, mostly used for JSDoc
