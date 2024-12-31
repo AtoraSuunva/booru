@@ -3,7 +3,7 @@
  * @module Structures
  */
 
-import SearchParameters from './SearchParameters'
+import type SearchParameters from './SearchParameters'
 
 /**
  * Interface for {@link Booru}'s **private internal** search params pls no use

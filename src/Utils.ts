@@ -3,7 +3,7 @@
  * @module Utils
  */
 
-import { AnySite, BooruError, sites } from './Constants'
+import { type AnySite, BooruError, sites } from './Constants'
 
 import { XMLParser } from 'fast-xml-parser'
 
@@ -18,13 +18,13 @@ export function resolveSite(domain: string): AnySite | null {
     return null
   }
 
-  domain = domain.toLowerCase()
+  const lowerDomain = domain.toLowerCase()
 
   for (const [site, info] of Object.entries(sites)) {
     if (
-      site === domain ||
-      info.domain === domain ||
-      info.aliases.includes(domain)
+      site === lowerDomain ||
+      info.domain === lowerDomain ||
+      info.aliases.includes(lowerDomain)
     ) {
       return site as AnySite
     }
@@ -68,7 +68,7 @@ export function jsonfy(xml: string): object[] {
   if (data.html || data['!doctype']) {
     // Some boorus return HTML error pages instead of JSON responses on errors
     // So try scraping off what we can in that case
-    const page = data.html || data['!doctype']?.html
+    const page = data.html ?? data['!doctype']?.html
     const message = []
     if (page.body.h1) {
       message.push(page.body.h1)
@@ -143,9 +143,9 @@ export function shuffle<T>(array: T[]): T[] {
  * @param {Number} max The maximum (inclusive)
  */
 export function randInt(min: number, max: number): number {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  const nmin = Math.ceil(min)
+  const nmax = Math.floor(max)
+  return Math.floor(Math.random() * (nmax - nmin + 1)) + nmin
 }
 
 /**
@@ -161,9 +161,8 @@ export function validateSearchParams(
 ): { site: string; limit: number } {
   const resolvedSite = resolveSite(site)
 
-  if (typeof limit !== 'number') {
-    limit = parseInt(limit, 10)
-  }
+  const resolvedLimit =
+    typeof limit !== 'number' ? Number.parseInt(limit, 10) : limit
 
   if (resolvedSite === null) {
     throw new BooruError('Site not supported')
@@ -173,7 +172,7 @@ export function validateSearchParams(
     throw new BooruError('`limit` should be an int')
   }
 
-  return { site: resolvedSite, limit }
+  return { site: resolvedSite, limit: resolvedLimit }
 }
 
 /**
@@ -238,7 +237,7 @@ export function encodeURIQueryValue(
 ): string {
   if (Array.isArray(value)) {
     return value.map(encodeURIComponent).join(arrayJoin)
-  } else {
-    return encodeURIComponent(value)
   }
+
+  return encodeURIComponent(value)
 }

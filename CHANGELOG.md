@@ -1,5 +1,16 @@
 # booru Changelog
 
+## 2.7.0
+
+- Update undici
+- Fix `previewUrl` for paheal (https://github.com/AtoraSuunva/booru/pull/110) by [Rider21](https://github.com/Rider21)
+- Include booru version in default user agent
+- Allow explicitly passing undefined to credentials in Booru constructor & to SearchParameters under strict Typescript
+- `doSearchRequest` doesn't mutate tags parameter
+- Many, many internal changes that shouldn't impact end-user library use but makes dev work much easier for me:
+  - Use biome instead of eslint + prettier + tons of setup for typescript
+  - Use node:test + tsx instead of jest + babel + swc
+
 ## 2.6.9
 
 - Update dependencies

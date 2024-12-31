@@ -3,7 +3,7 @@
  * @module Structures
  */
 
-import SiteApi from './SiteApi'
+import type SiteApi from './SiteApi'
 
 /**
  * Represents the info needed to create a new {@link Site}
