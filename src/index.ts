@@ -14,6 +14,8 @@ import Post from './structures/Post'
 import type SearchParameters from './structures/SearchParameters'
 import SearchResults from './structures/SearchResults'
 import Site from './structures/Site'
+import type TagListParameters from './structures/TagListParameters'
+import type TagListResults from './structures/TagListResults'
 
 const BooruTypes: Record<string, typeof Booru> = {
   derpi: Derpibooru,
@@ -60,6 +62,10 @@ export { booruForSite as forSite }
 export default booruForSite
 
 export interface BooruSearch extends SearchParameters {
+  credentials?: BooruCredentials
+}
+
+export interface BooruTagList extends TagListParameters {
   credentials?: BooruCredentials
 }
 
@@ -110,6 +116,39 @@ export function search(
   // This is ugly and a hack, I know this
   booruCache[rSite].credentials = credentials
   return booruCache[rSite].search(tags, { limit, random, page })
+}
+
+/**
+ * Get a list of tags from a site
+ * @param {String} site The site to get the tags from
+ * @param {TagListParameters} [options={}] The options for the tag list
+ * @return {Promise<TagListResults>} A promise with the tags as an array of objects
+ *
+ * @example
+ * ```
+ * const Booru = require('booru')
+ * // Returns a promise with the first 100 tags from e926
+ * Booru.tagList('e926')
+ * ```
+ */
+export function tagList(
+  site: string,
+  { limit = 1, page = 0, credentials = {} }: BooruTagList = {},
+): Promise<TagListResults> {
+  const rSite = resolveSite(site)
+
+  if (rSite === null) {
+    throw new BooruError('Site not supported')
+  }
+
+  const booruSite = new Site(sites[rSite])
+
+  if (!booruCache[rSite]) {
+    booruCache[rSite] = booruFrom(booruSite, credentials)
+  }
+
+  booruCache[rSite].credentials = credentials
+  return booruCache[rSite].tagList({ limit, page })
 }
 
 const deprecatedCommonfy = deprecate(

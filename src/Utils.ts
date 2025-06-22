@@ -42,10 +42,21 @@ interface XMLPosts {
   tag?: any
 }
 
+interface XMLTags {
+  tag?: any[]
+}
+
 interface BooruXML {
   html?: XMLPage
   '!doctype'?: XMLPage
+}
+
+interface BooruXMLPosts extends BooruXML {
   posts: XMLPosts
+}
+
+interface BooruXMLTags extends BooruXML {
+  tags: XMLTags
 }
 
 const xmlParser = new XMLParser({
@@ -54,16 +65,16 @@ const xmlParser = new XMLParser({
 })
 
 /**
- * Parses xml to json, which can be used with js
+ * Parses posts xml to json, which can be used with js
  *
  * @private
  * @param  {String} xml The xml to convert to json
  * @return {Object[]} A Promise with an array of objects created from the xml
  */
-export function jsonfy(xml: string): object[] {
+export function jsonifyPosts(xml: string): object[] {
   if (typeof xml === 'object') return xml
 
-  const data = xmlParser.parse(xml) as BooruXML
+  const data = xmlParser.parse(xml) as BooruXMLPosts
 
   if (data.html || data['!doctype']) {
     // Some boorus return HTML error pages instead of JSON responses on errors
@@ -91,6 +102,46 @@ export function jsonfy(xml: string): object[] {
     return Array.isArray(data.posts.tag) ? data.posts.tag : [data.posts.tag]
   }
 
+  return []
+}
+
+/**
+ * Parses tags xml to json, which can be used with js
+ *
+ * @private
+ * @param  {String} xml The xml to convert to json
+ * @return {Object[]} A Promise with an array of objects created from the xml
+ */
+export function jsonifyTags(xml: string): object[] {
+  if (typeof xml === 'object') return xml
+
+  const data = xmlParser.parse(xml) as BooruXMLTags
+
+  if (data.html || data['!doctype']) {
+    // Some boorus return HTML error pages instead of JSON responses on errors
+    // So try scraping off what we can in that case
+    const page = data.html ?? data['!doctype']?.html
+    const message = []
+    if (page.body.h1) {
+      message.push(page.body.h1)
+    }
+
+    if (page.body.p) {
+      message.push(page.body.p['#text'])
+    }
+
+    throw new BooruError(
+      `The Booru sent back an error: '${message.join(': ')}'`,
+    )
+  }
+
+  if (data.tags.tag) {
+    return data.tags.tag
+      ? Array.isArray(data.tags.tag)
+        ? data.tags.tag
+        : [data.tags.tag]
+      : []
+  }
   return []
 }
 
