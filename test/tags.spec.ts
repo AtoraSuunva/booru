@@ -10,10 +10,11 @@ describe('Using tags', { concurrency: true }, () => {
     it(
       `${s.domain} should return a list of tags`,
       {
-        skip: s.domain === 'derpibooru.org'
-        || s.domain === 'rule34.paheal.net'
-        || s.domain === 'realbooru.com' // Derpibooru, Paheal and Realbooru do not support tag listing
-        || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
+        skip:
+          s.domain === 'derpibooru.org' ||
+          s.domain === 'rule34.paheal.net' ||
+          s.domain === 'realbooru.com' || // Derpibooru, Paheal and Realbooru do not support tag listing
+          s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
       },
       async () => {
         const tagResult = await tagList(s.domain, {

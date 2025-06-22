@@ -18,8 +18,8 @@ import Post from '../structures/Post'
 import type SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import type Site from '../structures/Site'
-import TagListResults from '../structures/TagListResults'
 import Tag from '../structures/Tag'
+import TagListResults from '../structures/TagListResults'
 
 // Shut up the compiler
 // This attempts to find and use the native browser fetch, if possible

@@ -15,8 +15,7 @@ describe('Using forSite', { concurrency: true }, () => {
     it(
       `${s.domain} should return an image`,
       {
-        skip: s.domain === 'realbooru.com'
-          || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
+        skip: s.domain === 'realbooru.com' || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
       },
       async () => {
         const booru = forSite(s.domain)
@@ -37,8 +36,7 @@ describe('Using search', { concurrency: true }, () => {
     it(
       `${s.domain} should return an image`,
       {
-        skip: s.domain === 'realbooru.com'
-          || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
+        skip: s.domain === 'realbooru.com' || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
       },
       async () => {
         const searchResult = await search(s.domain, tags)
