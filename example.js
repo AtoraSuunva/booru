@@ -50,11 +50,36 @@ Booru.search(site, tags, { limit: 1, random: false })
     }
   })
 
+// Tag list with promises
+Booru.tagList(site, { limit: 5 })
+  .then((tags) => {
+    console.log(`Found ${tags.length} tags.`)
+    for (let tag of tags) {
+      console.log(`- ${tag.name}`)
+    }
+  })
+  .catch((err) => {
+    if (err instanceof BooruError) {
+      // It's a custom error thrown by the package
+      console.error(err)
+    } else {
+      // This means something pretty bad happened
+      console.error(err)
+    }
+  })
+
 // Search with async/await
 async function booruSearch(site, tags, limit = 1, random = true) {
   const posts = await Booru.search(site, tags, { limit, random })
 
   return console.log(posts[0].fileUrl)
+}
+
+// Tag list with async/await
+async function booruTagList(site, limit = 5) {
+  const tags = await Booru.tagList(site, { limit })
+
+  return console.log(tags[0].name)
 }
 
 // Create an instance of a booru to use yourself

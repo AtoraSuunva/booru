@@ -12,4 +12,6 @@ export default interface SiteApi {
   search: string
   /** The path to view a post by ID */
   postView: string
+  /** The path to retrieve a list of tags */
+  tagList?: string
 }

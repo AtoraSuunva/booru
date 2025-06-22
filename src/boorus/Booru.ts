@@ -3,8 +3,14 @@
  * @module Boorus
  */
 
-import { BooruError, defaultOptions, searchURI } from '../Constants'
-import { jsonfy, resolveSite, shuffle, tryParseJSON } from '../Utils'
+import { BooruError, defaultOptions, searchURI, tagListURI } from '../Constants'
+import {
+  jsonifyPosts,
+  jsonifyTags,
+  resolveSite,
+  shuffle,
+  tryParseJSON,
+} from '../Utils'
 
 import { fetch } from 'undici'
 import type InternalSearchParameters from '../structures/InternalSearchParameters'
@@ -12,6 +18,8 @@ import Post from '../structures/Post'
 import type SearchParameters from '../structures/SearchParameters'
 import SearchResults from '../structures/SearchResults'
 import type Site from '../structures/Site'
+import TagListResults from '../structures/TagListResults'
+import Tag from '../structures/Tag'
 
 // Shut up the compiler
 // This attempts to find and use the native browser fetch, if possible
@@ -26,6 +34,11 @@ interface SearchUrlParams {
   tags: string[]
   limit: number
   page: number
+}
+
+interface TagsURLParams {
+  limit?: number | undefined
+  page?: number | undefined
 }
 
 /*
@@ -148,6 +161,61 @@ export class Booru {
   }
 
   /**
+   * Gets a list of tags from the booru
+   * @param {Partial<TagsURLParams>} [params] The parameters for the tags list
+   * @param {number} [params.limit=100] The limit of tags to return
+   * @param {number} [params.page=1] The page of tags to return
+   * @return {Promise<any[]>} A promise with the tags as an array
+   */
+  public async tagList({
+    limit = 100,
+    page = 1,
+  }: Partial<TagsURLParams> = {}): Promise<TagListResults> {
+    const url = this.getTagListUrl({ limit, page })
+    const options = defaultOptions
+    try {
+      const response = await resolvedFetch(url, options)
+
+      // Check for CloudFlare ratelimiting
+      if (response.status === 503) {
+        const body = await response.clone().text()
+        if (body.includes('cf-browser-verification')) {
+          throw new BooruError(
+            "Received a CloudFlare browser verification request. Can't proceed.",
+          )
+        }
+      }
+
+      if (!response.ok) {
+        throw new BooruError(
+          `Received HTTP ${response.status} from booru: '${await response.text()}'`,
+        )
+      }
+
+      const data = await response.text()
+      /**
+       * Many boorus don't support JSON parameter for tag listing
+       * So attempt JSON parsing, but if it fails default to XML parsing
+       **/
+      let tags = []
+      try {
+        tags = tryParseJSON(data)
+      } catch (e) {
+        tags = jsonifyTags(data)
+      }
+
+      return this.parseTagListResult(tags, { limit, page })
+    } catch (err) {
+      if ((err as any).type === 'invalid-json')
+        if (err instanceof Error) {
+          throw new BooruError(err)
+        }
+
+      throw err
+    }
+  }
+
+  /**
    * The internal & common searching logic, pls dont use this use .search instead
    *
    * @protected
@@ -202,7 +270,7 @@ export class Booru {
       }
 
       const data = await response.text()
-      const posts = xml ? jsonfy(data) : tryParseJSON(data)
+      const posts = xml ? jsonifyPosts(data) : tryParseJSON(data)
 
       if (!response.ok) {
         throw new BooruError(
@@ -236,6 +304,25 @@ export class Booru {
     page = 1,
   }: Partial<SearchUrlParams> = {}): string {
     return searchURI(this.site, tags, limit, page, this.credentials)
+  }
+
+  /**
+   * Generates a URL to get a list of tags from the booru
+   * @param opt
+   * @param {number} [opt.limit] The limit of tags to return
+   * @param {number} [opt.page] The page of tags to return
+   * @returns {string} A URL to get the tags list
+   */
+  getTagListUrl({
+    limit = 100,
+    page = 1,
+  }: Partial<TagsURLParams> = {}): string {
+    if (!this.site.api.tagList) {
+      throw new BooruError(
+        `This booru does not support tag listing: ${this.site.domain}`,
+      )
+    }
+    return tagListURI(this.site, limit, page, this.credentials)
   }
 
   /**
@@ -309,6 +396,34 @@ export class Booru {
     }
 
     return new SearchResults(posts, tags, options, this)
+  }
+
+  /**
+   * Parse the response from the booru for a tag list
+   *
+   * @param result
+   * @param param1
+   * @returns
+   */
+  protected parseTagListResult(
+    result: any,
+    { limit = 100, page = 1 }: Partial<TagsURLParams> = {},
+  ): TagListResults {
+    if (result.success === false) {
+      throw new BooruError(result.message ?? result.reason)
+    }
+
+    let tags: any[] = []
+
+    if (result) {
+      if (Array.isArray(result)) {
+        tags = result.map((v) => new Tag(v, this))
+      } else {
+        tags = [new Tag(result, this)]
+      }
+    }
+
+    return new TagListResults(tags, { limit, page }, this)
   }
 }
 
