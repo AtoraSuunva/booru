@@ -8,7 +8,8 @@
     "nsfw": true,
     "api": {
       "search": "/posts.json?",
-      "postView": "/post/show/"
+      "postView": "/post/show/",
+      "tagList": "/tags.json?"
     },
     "random": true
   },
@@ -21,7 +22,8 @@
     "nsfw": false,
     "api": {
       "search": "/posts.json?",
-      "postView": "/post/show/"
+      "postView": "/post/show/",
+      "tagList": "/tags.json?"
     },
     "random": true,
     "defaultTags": ["rating:safe"]
@@ -36,7 +38,8 @@
     "nsfw": true,
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/post/show/"
+      "postView": "/post/show/",
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
     },
     "paginate": "pid",
     "random": false
@@ -51,7 +54,8 @@
     "nsfw": true,
     "api": {
       "search": "/posts.json?",
-      "postView": "/posts/"
+      "postView": "/posts/",
+      "tagList": "/tags.json?"
     },
     "random": true
   },
@@ -65,7 +69,8 @@
     "nsfw": true,
     "api": {
       "search": "/post.json?",
-      "postView": "/post/show/"
+      "postView": "/post/show/",
+      "tagList": "/tag.json?"
     },
     "random": true
   },
@@ -79,7 +84,8 @@
     "nsfw": false,
     "api": {
       "search": "/post.json?",
-      "postView": "/post/show/"
+      "postView": "/post/show/",
+      "tagList": "/tag.json?"
     },
     "random": true
   },
@@ -93,7 +99,8 @@
     "nsfw": true,
     "api": {
       "search": "/post.json?",
-      "postView": "/post/show/"
+      "postView": "/post/show/",
+      "tagList": "/tag.json?"
     },
     "random": true
   },
@@ -107,7 +114,8 @@
     "nsfw": true,
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/index.php?page=post&s=view&json=1&id="
+      "postView": "/index.php?page=post&s=view&json=1&id=",
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
     },
     "paginate": "pid",
     "random": false
@@ -121,7 +129,8 @@
     "nsfw": true,
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/index.php?page=post&s=view&json=1&id="
+      "postView": "/index.php?page=post&s=view&json=1&id=",
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
     },
     "paginate": "pid",
     "random": false
@@ -136,7 +145,8 @@
     "nsfw": false,
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/index.php?page=post&s=view&json=1&id="
+      "postView": "/index.php?page=post&s=view&json=1&id=",
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
     },
     "paginate": "pid",
     "random": false
@@ -151,7 +161,8 @@
     "nsfw": false,
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/index.php?page=post&s=view&json=1&id="
+      "postView": "/index.php?page=post&s=view&json=1&id=",
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
     },
     "paginate": "pid",
     "random": false
@@ -165,7 +176,8 @@
     "nsfw": true,
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
-      "postView": "/index.php?page=post&s=view&json=1&id="
+      "postView": "/index.php?page=post&s=view&json=1&id=",
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
     },
     "paginate": "pid",
     "random": false
