@@ -2,13 +2,14 @@
 
 > _A node package to search boorus_
 
-![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
+[![Lint and Test](https://github.com/AtoraSuunva/booru/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/AtoraSuunva/booru/actions/workflows/lint-and-test.yml) ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
 
 Only [non-EoL](https://nodejs.org/en/about/previous-releases) versions of Node.js are tested and officially supported. EoL versions are unsupported. Other runtimes (like web, Deno, and Bun) aren't _officially_ supported but issues and PRs are accepted for them.
 
 ## Features
 
-- Search 15 different boorus (check [sites.json](./src/sites.json))
+- Search posts on 15 different boorus (check [sites.json](./src/sites.json))
+- Search tags on 12 different boorus
 - Normalizes all received data into `Post` objects that are consistent no matter which booru you use
 - Access to the raw data received from the booru as well (transformed from XML to JSON, if applicable)
 - Alias support for boorus (`sb` for `safebooru.org`)
@@ -16,18 +17,27 @@ Only [non-EoL](https://nodejs.org/en/about/previous-releases) versions of Node.j
 - Types (using Typescript)
 - Choose the amount of images to get
 - Random support for all sites, using `order:random` on sites that support it and using custom code on those that don't
-- Coming soon(-ish): Support for more than just searching
 
 ---
 
 ## Installation
 
+Booru is available on [npm](https://www.npmjs.com/package/booru):
+
 ```sh
+# Pick your favorite package manager
 npm add booru
-# or
 pnpm add booru
-# or
 yarn add booru
+```
+
+And available on [jsr](https://jsr.io/@atorasuunva/booru):
+
+```sh
+# Pick your favorite runtime
+pnpm i jsr:@atorasuunva/booru
+deno add jsr:@atorasuunva/booru
+bunx jsr add @atorasuunva/booru
 ```
 
 ---
@@ -67,7 +77,7 @@ See [example.js](./example.js) for more examples
 
 ## Docs
 
-Available here: [https://booru.js.org](https://booru.js.org)
+Available here: [https://jsr.io/@atorasuunva/booru/doc](https://jsr.io/@atorasuunva/booru/doc)
 
 ## Web support
 

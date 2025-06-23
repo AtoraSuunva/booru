@@ -2,7 +2,7 @@
 
 ## 2.8.0
 
-- Fix Tag list support (<https://github.com/AtoraSuunva/booru/pull/114>) by [ColonelBologna](https://github.com/ColonelBologna)
+- Add Tag list support (<https://github.com/AtoraSuunva/booru/pull/114>) by [ColonelBologna](https://github.com/ColonelBologna)
 - Run tests using every non-EOL Node.js version
 - Update biome to v2
 
