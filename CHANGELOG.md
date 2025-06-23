@@ -1,9 +1,15 @@
 # booru Changelog
 
+## 2.8.0
+
+- Fix Tag list support (<https://github.com/AtoraSuunva/booru/pull/114>) by [ColonelBologna](https://github.com/ColonelBologna)
+- Run tests using every non-EOL Node.js version
+- Update biome to v2
+
 ## 2.7.0
 
 - Update undici
-- Fix `previewUrl` for paheal (https://github.com/AtoraSuunva/booru/pull/110) by [Rider21](https://github.com/Rider21)
+- Fix `previewUrl` for paheal (<https://github.com/AtoraSuunva/booru/pull/110>) by [Rider21](https://github.com/Rider21)
 - Include booru version in default user agent
 - Allow explicitly passing undefined to credentials in Booru constructor & to SearchParameters under strict Typescript
 - `doSearchRequest` doesn't mutate tags parameter
@@ -122,7 +128,7 @@ booru.search('gb', [], {
 
 ## 2.5.0
 
-- Update API endpoint for r34.xxx, see https://github.com/AtoraSuunva/booru/pull/75
+- Update API endpoint for r34.xxx, see <https://github.com/AtoraSuunva/booru/pull/75>
 - Add `Booru#getSearchUrl`, meant for aiding in debugging
   - You can use this to get the URL that booru would use to search, to inspect the response yourself
 - Minor changes to allow VS code's Run & Debug to work, kinda

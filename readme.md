@@ -2,9 +2,9 @@
 
 > _A node package to search boorus_
 
-[![CircleCI](https://img.shields.io/circleci/project/github/AtoraSuunva/booru.svg)](https://circleci.com/gh/AtoraSuunva/booru) ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
+![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
 
-*Minimum supported Node.js version: >=18.17*
+_Minimum (officially) supported Node.js version: >=20_
 
 ## Features
 
@@ -33,6 +33,18 @@ yarn add booru
 ## Usage
 
 ```js
+import { search, forSite } from 'booru'
+
+const posts = await search('safebooru', ['glaceon'], {
+  limit: 3,
+})
+
+for (const post of posts) {
+  console.log(post.fileUrl, post.postView)
+}
+
+// Or, using alias support and creating 
+
 const Booru = require('booru')
 
 Booru.search('safebooru', ['glaceon'], { limit: 3, random: true }).then(
@@ -42,9 +54,9 @@ Booru.search('safebooru', ['glaceon'], { limit: 3, random: true }).then(
 )
 
 // or (using alias support and creating boorus)
-const sb = Booru.forSite('sb')
+const sb = forSite('sb')
 
-sb.search(['cat', 'dog'], { limit: 2 })
+const petPosts = await sb.search(['cat', 'dog'], { limit: 2 })
 ```
 
 See [example.js](./example.js) for more examples
@@ -129,4 +141,7 @@ Why not?
 
 > [Copy tags argument so it's not modified](https://github.com/AtoraSuunva/booru/pull/103)
 
+[ColonelBologna](https://github.com/ColonelBologna)
+
+> [Tag list](https://github.com/AtoraSuunva/booru/pull/114)
 ---
