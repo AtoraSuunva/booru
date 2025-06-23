@@ -4,7 +4,7 @@
 
 ![npm](https://img.shields.io/npm/v/booru.svg) ![GitHub](https://img.shields.io/github/license/AtoraSuunva/booru.svg) ![Typescript typings](https://img.shields.io/badge/Typings-Typescript-informational.svg)
 
-_Minimum (officially) supported Node.js version: >=20_
+Only [non-EoL](https://nodejs.org/en/about/previous-releases) versions of Node.js are tested and officially supported. EoL versions are unsupported. Other runtimes (like web, Deno, and Bun) aren't _officially_ supported but issues and PRs are accepted for them.
 
 ## Features
 
@@ -24,6 +24,8 @@ _Minimum (officially) supported Node.js version: >=20_
 
 ```sh
 npm add booru
+# or
+pnpm add booru
 # or
 yarn add booru
 ```
@@ -104,7 +106,7 @@ Derpibooru has `Safe, Suggestive, Questionable, Explicit`, although `Suggestive`
 
 Sure! Just fork this repo, push your changes, and then make a PR.
 
-I'll accept PR based on what they do and code style (Not super strict about it, but it's best if it roughly follows the rest of the code)
+I'll accept PR based on what they do. Make sure your changes pass the lint (`pnpm run lint:fix`) and tests (`pnpm run test`).
 
 ### Why?
 
