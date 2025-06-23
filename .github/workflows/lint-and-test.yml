@@ -7,21 +7,47 @@ on:
       - 'development'
 
 jobs:
-  lint-and-test:
+  lint:
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Node
+      - name: Setup Node.js (latest)
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version: 'node'
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: 'package.json'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run lint
+        run: pnpm run lint
 
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test
+  test:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name }}
+    strategy:
+      matrix:
+        node-version: [20, 22, 24]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: 'package.json'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run tests
+        run: pnpm run test

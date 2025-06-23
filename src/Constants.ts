@@ -4,12 +4,12 @@
  */
 
 import type { RequestInit } from 'undici'
-import { querystring } from './Utils'
 import type { BooruCredentials } from './boorus/Booru'
-import siteJson from './sites.json'
 import type Site from './structures/Site'
 import type SiteInfo from './structures/SiteInfo'
+import { querystring } from './Utils'
 
+const siteJson = require('./sites.json')
 const packageJson = require('../package.json')
 
 export type AnySite =

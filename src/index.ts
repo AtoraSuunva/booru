@@ -3,19 +3,18 @@
  * @module Index
  */
 
-import { type AnySite, BooruError, sites } from './Constants'
-
 import { deprecate } from 'node:util'
-import { resolveSite } from './Utils'
 import Booru, { type BooruCredentials } from './boorus/Booru'
 import Derpibooru from './boorus/Derpibooru'
 import XmlBooru from './boorus/XmlBooru'
+import { type AnySite, BooruError, sites } from './Constants'
 import Post from './structures/Post'
 import type SearchParameters from './structures/SearchParameters'
 import SearchResults from './structures/SearchResults'
 import Site from './structures/Site'
 import type TagListParameters from './structures/TagListParameters'
 import type TagListResults from './structures/TagListResults'
+import { resolveSite } from './Utils'
 
 const BooruTypes: Record<string, typeof Booru> = {
   derpi: Derpibooru,

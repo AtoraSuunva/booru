@@ -3,16 +3,8 @@
  * @module Boorus
  */
 
-import { BooruError, defaultOptions, searchURI, tagListURI } from '../Constants'
-import {
-  jsonifyPosts,
-  jsonifyTags,
-  resolveSite,
-  shuffle,
-  tryParseJSON,
-} from '../Utils'
-
 import { fetch } from 'undici'
+import { BooruError, defaultOptions, searchURI, tagListURI } from '../Constants'
 import type InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
 import type SearchParameters from '../structures/SearchParameters'
@@ -20,6 +12,13 @@ import SearchResults from '../structures/SearchResults'
 import type Site from '../structures/Site'
 import Tag from '../structures/Tag'
 import TagListResults from '../structures/TagListResults'
+import {
+  jsonifyPosts,
+  jsonifyTags,
+  resolveSite,
+  shuffle,
+  tryParseJSON,
+} from '../Utils'
 
 // Shut up the compiler
 // This attempts to find and use the native browser fetch, if possible
@@ -200,7 +199,7 @@ export class Booru {
       let tags = []
       try {
         tags = tryParseJSON(data)
-      } catch (e) {
+      } catch (_e) {
         tags = jsonifyTags(data)
       }
 

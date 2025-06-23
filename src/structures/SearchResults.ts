@@ -3,9 +3,9 @@
  * @module Structures
  */
 
-import * as Utils from '../Utils'
 import type Booru from '../boorus/Booru'
 import type Post from '../structures/Post'
+import * as Utils from '../Utils'
 import type SearchParameters from './SearchParameters'
 
 /**

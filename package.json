@@ -14,13 +14,14 @@
   "bugs": {
     "url": "https://github.com/AtoraSuunva/booru/issues"
   },
+  "packageManager": "pnpm@10.12.2",
   "scripts": {
     "test": "tsx --test",
     "lint": "biome check && tsc --noEmit",
     "lint:fix": "biome check --write && tsc --noEmit",
-    "prebuild": "npm run lint",
+    "prebuild": "pnpm run lint",
     "build": "tsc --build",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "keywords": [
     "booru",
@@ -38,15 +39,15 @@
     "derpibooru"
   ],
   "engines": {
-    "node": ">=18.17"
+    "node": ">=20"
   },
   "dependencies": {
-    "fast-xml-parser": "^4.5.1",
+    "fast-xml-parser": "^5.2.5",
     "undici": "^7.2.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22.10.2",
+    "@biomejs/biome": "^2.0.5",
+    "@types/node": "^24.0.3",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },

@@ -3,9 +3,8 @@
  * @module Utils
  */
 
-import { type AnySite, BooruError, sites } from './Constants'
-
 import { XMLParser } from 'fast-xml-parser'
+import { type AnySite, BooruError, sites } from './Constants'
 
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
