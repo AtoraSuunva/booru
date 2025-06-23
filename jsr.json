@@ -1,0 +1,16 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@atorasuunva/booru",
+  "version": "2.8.0",
+  "license": "MIT",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.json",
+      "README.md",
+      "LICENSE.md",
+      "package.json"
+    ]
+  }
+}
