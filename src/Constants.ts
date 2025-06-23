@@ -116,6 +116,21 @@ export function searchURI(
   return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}${query}`
 }
 
+export function tagListURI(
+  site: Site,
+  limit = 100,
+  page = 0,
+  credentials: BooruCredentials = {},
+): string {
+  const query = querystring({
+    limit,
+    [site.paginate]: page,
+    ...credentials,
+  })
+
+  return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.tagList}${query}`
+}
+
 /**
  * The default options to use for requests
  * <p>I could document this better but meh
