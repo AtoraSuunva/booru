@@ -1,22 +1,26 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 import { sites, tagList } from '../src/index'
+import type SiteInfo from '../src/structures/SiteInfo'
 import type Tag from '../src/structures/Tag'
+import { shouldSkipSite } from './search.spec'
 
 const sitesToTest = Object.values(sites)
+
+function shouldSkipTagList(site: SiteInfo): boolean {
+  return (
+    shouldSkipSite(site) ||
+    site.domain === 'derpibooru.org' || // no tag list support
+    site.domain === 'rule34.paheal.net' // no tag list support
+  )
+}
 
 describe('Using tags', { concurrency: true }, () => {
   for (const s of sitesToTest) {
     it(
       `${s.domain} should return a list of tags`,
       {
-        skip:
-          s.domain === 'derpibooru.org' ||
-          s.domain === 'rule34.paheal.net' ||
-          s.domain === 'realbooru.com' || // Derpibooru, Paheal and Realbooru do not support tag listing
-          s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
-          s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
-          s.domain === 'e926.net', // e926.net shows a captcha
+        skip: shouldSkipTagList(s),
       },
       async () => {
         const tagResult = await tagList(s.domain, {

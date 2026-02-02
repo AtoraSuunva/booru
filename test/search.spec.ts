@@ -3,9 +3,21 @@ import { describe, it } from 'node:test'
 import { forSite, search, sites } from '../src/index'
 import type Post from '../src/structures/Post'
 import type SearchResults from '../src/structures/SearchResults'
+import type SiteInfo from '../src/structures/SiteInfo'
 
 const sitesToTest = Object.values(sites)
 const tags = ['cat']
+
+export function shouldSkipSite(s: SiteInfo): boolean {
+  return (
+    s.domain === 'realbooru.com' || // api is broken: "Search error: API offline because apparently it is broken and no one is able to articulate what is broken, so it will be shut off indefinitely. Feel free to browse the site the old fashioned way for now."
+    s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
+    s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
+    s.domain === 'e926.net' || // e926.net shows a captcha
+    s.domain === 'konachan.com' || // konachan.com shows a captcha
+    s.domain === 'konachan.net' // konachan.net shows a captcha
+  )
+}
 
 describe('Using forSite', { concurrency: true }, () => {
   for (const s of sitesToTest) {
@@ -15,11 +27,7 @@ describe('Using forSite', { concurrency: true }, () => {
     it(
       `${s.domain} should return an image`,
       {
-        skip:
-          s.domain === 'realbooru.com' || // api is broken: "Search error: API offline because apparently it is broken and no one is able to articulate what is broken, so it will be shut off indefinitely. Feel free to browse the site the old fashioned way for now."
-          s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
-          s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
-          s.domain === 'e926.net', // e926.net shows a captcha
+        skip: shouldSkipSite(s),
       },
       async () => {
         const booru = forSite(s.domain)
@@ -40,11 +48,7 @@ describe('Using search', { concurrency: true }, () => {
     it(
       `${s.domain} should return an image`,
       {
-        skip:
-          s.domain === 'realbooru.com' || // api is broken
-          s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
-          s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
-          s.domain === 'e926.net', // e926.net shows a captcha
+        skip: shouldSkipSite(s),
       },
       async () => {
         const searchResult = await search(s.domain, tags)
