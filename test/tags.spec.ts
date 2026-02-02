@@ -14,7 +14,9 @@ describe('Using tags', { concurrency: true }, () => {
           s.domain === 'derpibooru.org' ||
           s.domain === 'rule34.paheal.net' ||
           s.domain === 'realbooru.com' || // Derpibooru, Paheal and Realbooru do not support tag listing
-          s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
+          s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
+          s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
+          s.domain === 'e926.net', // e926.net shows a captcha
       },
       async () => {
         const tagResult = await tagList(s.domain, {

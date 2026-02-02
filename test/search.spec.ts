@@ -15,7 +15,11 @@ describe('Using forSite', { concurrency: true }, () => {
     it(
       `${s.domain} should return an image`,
       {
-        skip: s.domain === 'realbooru.com' || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
+        skip:
+          s.domain === 'realbooru.com' || // api is broken: "Search error: API offline because apparently it is broken and no one is able to articulate what is broken, so it will be shut off indefinitely. Feel free to browse the site the old fashioned way for now."
+          s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
+          s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
+          s.domain === 'e926.net', // e926.net shows a captcha
       },
       async () => {
         const booru = forSite(s.domain)
@@ -36,7 +40,11 @@ describe('Using search', { concurrency: true }, () => {
     it(
       `${s.domain} should return an image`,
       {
-        skip: s.domain === 'realbooru.com' || s.domain === 'gelbooru.com', // gelbooru no longer supports anonymous API calls
+        skip:
+          s.domain === 'realbooru.com' || // api is broken
+          s.domain === 'gelbooru.com' || // gelbooru no longer supports anonymous API calls
+          s.domain === 'api.rule34.xxx' || // rule34.xxx no longer supports anonymous API calls
+          s.domain === 'e926.net', // e926.net shows a captcha
       },
       async () => {
         const searchResult = await search(s.domain, tags)
