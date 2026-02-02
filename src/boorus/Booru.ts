@@ -79,7 +79,7 @@ export class Booru {
    *
    * @private
    * @param site The site to use
-   * @param credentials Credentials for the API (Currently not used)
+   * @param credentials Credentials for the API
    */
   constructor(site: Site, credentials?: BooruCredentials) {
     const domain = resolveSite(site.domain)

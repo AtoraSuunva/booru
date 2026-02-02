@@ -3,6 +3,7 @@
  * @module Structures
  */
 
+import { BooruCredentials } from '../boorus/Booru'
 import type SearchParameters from './SearchParameters'
 
 /**
@@ -16,4 +17,6 @@ export default interface InternalSearchParameters extends SearchParameters {
   fakeLimit?: number
   /** The tags used in the search */
   tags?: string[]
+  /** Credentials to use for the request */
+  credentials?: BooruCredentials
 }
