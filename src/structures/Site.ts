@@ -41,7 +41,7 @@ export default class Site {
   constructor(data: SiteInfo) {
     this.domain = data.domain
     this.type = data.type ?? 'json'
-    this.postCountType = data.postCountType ?? "xml";
+    this.postCountType = data.postCountType ?? 'xml'
     this.aliases = data.aliases ?? []
     this.nsfw = data.nsfw
     this.api = data.api ?? {}

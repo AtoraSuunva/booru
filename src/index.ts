@@ -136,9 +136,9 @@ export function search(
  * ```
  */
 export function postCount(
-    site: string,
-    tags: string[] | string = [],
-    { credentials = {} }: BooruPostCountOptions = {},
+  site: string,
+  tags: string[] | string = [],
+  { credentials = {} }: BooruPostCountOptions = {},
 ): Promise<number> {
   const rSite = resolveSite(site)
 
@@ -156,9 +156,9 @@ export function postCount(
     booruCache[rSite] = booruFrom(booruSite, credentials)
   }
 
-  booruCache[rSite]!.credentials = credentials
+  booruCache[rSite].credentials = credentials
 
-  return booruCache[rSite]!.getPostCount(tags)
+  return booruCache[rSite]?.getPostCount(tags)
 }
 
 /**

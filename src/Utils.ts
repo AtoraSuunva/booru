@@ -6,11 +6,10 @@
 import { XMLParser } from 'fast-xml-parser'
 import { type AnySite, BooruError, sites } from './Constants'
 
-
 export interface ParseBooruResult {
-    posts: object[]
-    count: number
-    offset: number
+  posts: object[]
+  count: number
+  offset: number
 }
 
 /**
@@ -46,8 +45,8 @@ interface XMLPage {
 interface XMLPosts {
   post?: any[]
   tag?: any
-  count?: number,
-  offset?: number,
+  count?: number
+  offset?: number
 }
 
 interface XMLTags {
@@ -110,20 +109,22 @@ export function jsonifyPosts(xml: string): ParseBooruResult {
   let extractedPosts: object[] = []
 
   if (data.posts.post) {
-    extractedPosts = data.posts.post;
+    extractedPosts = data.posts.post
   }
 
   if (data.posts.tag) {
-    extractedPosts = Array.isArray(data.posts.tag) ? data.posts.tag : [data.posts.tag]
+    extractedPosts = Array.isArray(data.posts.tag)
+      ? data.posts.tag
+      : [data.posts.tag]
   }
 
   const count = Number(data.posts.count) || 0
-    const offset = Number(data.posts.offset) || 0
+  const offset = Number(data.posts.offset) || 0
 
-  return  {
+  return {
     posts: extractedPosts,
     count,
-    offset
+    offset,
   }
 }
 

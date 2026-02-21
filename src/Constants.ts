@@ -128,20 +128,20 @@ export function searchURI(
  * @param {BooryCredentials} [credentials] The credentials to use for the search, appended to the querystring
  */
 export function postCountURI(
-    site: Site,
-    tags: string[] = [],
-    limit = 1,
-    credentials: BooruCredentials = {},
+  site: Site,
+  tags: string[] = [],
+  limit = 1,
+  credentials: BooruCredentials = {},
 ): string {
   const query = querystring(
-      {
-        [site.tagQuery]: expandTags(tags),
-        limit,
-        ...credentials,
-      },
-      {
-        arrayJoin: site.tagJoin,
-      },
+    {
+      [site.tagQuery]: expandTags(tags),
+      limit,
+      ...credentials,
+    },
+    {
+      arrayJoin: site.tagJoin,
+    },
   )
 
   return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.postCount}${query}`
