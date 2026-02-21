@@ -387,7 +387,6 @@ export class Booru {
       return (tryParseJSON(data) as any).total
     }
     if (postCountType === 'xml') {
-      console.log(this.site.domain)
       const jsonData = jsonifyPosts(data)
       if (jsonData.count !== undefined) {
         return jsonData.count
