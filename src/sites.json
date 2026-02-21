@@ -41,7 +41,8 @@
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/post/show/",
-      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&",
+      "postCount": "/index.php?page=dapi&s=post&q=index&"
     },
     "paginate": "pid",
     "random": false
@@ -57,9 +58,11 @@
     "api": {
       "search": "/posts.json?",
       "postView": "/posts/",
-      "tagList": "/tags.json?"
+      "tagList": "/tags.json?",
+      "postCount": "/counts/posts.json?"
     },
-    "random": true
+    "random": true,
+    "postCountType": "json"
   },
   "konachan.com": {
     "domain": "konachan.com",
@@ -72,7 +75,8 @@
     "api": {
       "search": "/post.json?",
       "postView": "/post/show/",
-      "tagList": "/tag.json?"
+      "tagList": "/tag.json?",
+      "postCount": "/post.xml/?"
     },
     "random": true
   },
@@ -87,7 +91,8 @@
     "api": {
       "search": "/post.json?",
       "postView": "/post/show/",
-      "tagList": "/tag.json?"
+      "tagList": "/tag.json?",
+      "postCount": "/post.xml/?"
     },
     "random": true
   },
@@ -102,7 +107,8 @@
     "api": {
       "search": "/post.json?",
       "postView": "/post/show/",
-      "tagList": "/tag.json?"
+      "tagList": "/tag.json?",
+      "postCount": "/post.xml/?"
     },
     "random": true
   },
@@ -117,7 +123,8 @@
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id=",
-      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&",
+      "postCount": "/index.php?page=dapi&s=post&q=index&"
     },
     "paginate": "pid",
     "random": false
@@ -132,7 +139,8 @@
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id=",
-      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&",
+      "postCount": "/index.php?page=dapi&s=post&q=index&"
     },
     "paginate": "pid",
     "random": false
@@ -148,7 +156,8 @@
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id=",
-      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&",
+      "postCount": "/index.php?page=dapi&s=post&q=index&"
     },
     "paginate": "pid",
     "random": false
@@ -179,7 +188,8 @@
     "api": {
       "search": "/index.php?page=dapi&s=post&q=index&json=1&",
       "postView": "/index.php?page=post&s=view&json=1&id=",
-      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&"
+      "tagList": "/index.php?page=dapi&s=tag&q=index&json=1&",
+      "postCount": "/index.php?page=dapi&s=post&q=index&"
     },
     "paginate": "pid",
     "random": false
@@ -194,7 +204,8 @@
     "nsfw": true,
     "api": {
       "search": "/api/danbooru/find_posts?",
-      "postView": "/post/view/"
+      "postView": "/post/view/",
+      "postCount": "/api/danbooru/find_posts?"
     },
     "random": false
   },
@@ -210,11 +221,13 @@
     "nsfw": true,
     "api": {
       "search": "/api/v1/json/search/images?",
-      "postView": "/images/"
+      "postView": "/images/",
+      "postCount": "/api/v1/json/search/images?&per_page=1&"
     },
     "tagQuery": "q",
     "tagJoin": ",",
-    "random": "sf=random"
+    "random": "sf=random",
+    "postCountType": "derpi"
   },
   "realbooru.com": {
     "domain": "realbooru.com",

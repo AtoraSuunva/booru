@@ -4,7 +4,7 @@
  */
 
 import { fetch } from 'undici'
-import { BooruError, defaultOptions, searchURI, tagListURI } from '../Constants'
+import {BooruError, defaultOptions, postCountURI, searchURI, tagListURI} from '../Constants'
 import type InternalSearchParameters from '../structures/InternalSearchParameters'
 import Post from '../structures/Post'
 import type SearchParameters from '../structures/SearchParameters'
@@ -143,6 +143,30 @@ export class Booru {
     }
   }
 
+    /**
+     * Gets the total number of posts for a specific tag or tag combination
+     * @param {String|String[]} tags The tag(s) to search for
+     * @return {Promise<number>} The total number of posts
+     */
+    public async getPostCount(tags: string | string[]): Promise<number> {
+        const tagArray = this.normalizeTags(tags)
+
+        try {
+          const postCountResult = await this.doPostCountRequest(tagArray, {
+            limit: 1,
+          })
+
+          return postCountResult
+        } catch (err) {
+          if (err instanceof Error) {
+            throw new BooruError(err)
+          }
+
+          throw err
+        }
+
+    }
+
   /**
    * Gets the url you'd see in your browser from a post id for this booru
    *
@@ -252,6 +276,7 @@ export class Booru {
     const fetchuri =
       uri ??
       this.getSearchUrl({ tags: searchTags, limit: fakeLimit ?? limit, page })
+
     const options = defaultOptions
     const xml = this.site.type === 'xml'
 
@@ -269,14 +294,14 @@ export class Booru {
       }
 
       const data = await response.text()
-      const posts = xml ? jsonifyPosts(data) : tryParseJSON(data)
+      const posts = xml ? jsonifyPosts(data).posts : tryParseJSON(data)
 
       if (!response.ok) {
         throw new BooruError(
           `Received HTTP ${response.status} ` +
-            `from booru: '${
-              (posts as any).error ??
+            `from booru ${this.site.domain}: '${
               (posts as any).message ??
+              (posts as any).error ??
               JSON.stringify(posts)
             }'`,
         )
@@ -287,6 +312,85 @@ export class Booru {
       if ((err as any).type === 'invalid-json') return ''
       throw err
     }
+  }
+
+  /**
+   * The internal & common postCount logic, pls dont use this use .postCount instead
+   *
+   * @protected
+   * @param {String[]|String} tags The tags to search with
+   * @param {InternalSearchParameters} searchArgs The arguments for the search
+   * @return {Promise<Object>}
+   */
+  protected async doPostCountRequest(
+      tags: string[],
+      {
+        uri = null,
+        limit = 1,
+      }: InternalSearchParameters = {},
+  ): Promise<number> {
+    let searchTags = tags.slice()
+
+    if (this.site.defaultTags) {
+      searchTags = searchTags.concat(
+          this.site.defaultTags.filter((v) => !searchTags.includes(v)),
+      )
+    }
+
+    const fetchuri =
+        uri ??
+        this.getPostCountUrl({ tags: searchTags, limit })
+
+    try {
+      const response = await resolvedFetch(fetchuri, defaultOptions)
+
+      // Check for CloudFlare ratelimiting
+      if (response.status === 503) {
+        const body = await response.clone().text()
+        if (body.includes('cf-browser-verification')) {
+          throw new BooruError(
+              "Received a CloudFlare browser verification request. Can't proceed.",
+          )
+        }
+      }
+
+      const data = await response.text()
+
+      if (!response.ok) {
+        throw new BooruError(
+            `Received HTTP ${response.status} ` +
+            `from booru: '${
+                (data as any).error ??
+                (data as any).message ??
+                JSON.stringify(data)
+            }'`,
+        )
+      }
+
+      const postCountType = this.site.postCountType;
+
+      return this.getPostCountNumber(postCountType, data);
+    } catch (err) {
+      if ((err as any).type === 'invalid-json') return 0
+      throw err
+    }
+  }
+
+  private getPostCountNumber(postCountType: "json" | "xml" | "derpi", data: string) {
+    if (postCountType === 'json') {
+      return (tryParseJSON(data) as any).counts.posts;
+    }
+    if (postCountType === 'derpi') {
+      return (tryParseJSON(data) as any).total;
+    }
+    if (postCountType === 'xml') {
+      console.log(this.site.domain);
+      const jsonData = jsonifyPosts(data)
+      if (jsonData.count !== undefined) {
+        return jsonData.count
+      }
+    }
+    return -1;
   }
 
   /**
@@ -304,6 +408,22 @@ export class Booru {
   }: Partial<SearchUrlParams> = {}): string {
     return searchURI(this.site, tags, limit, page, this.credentials)
   }
+
+  /**
+   * Generates a URL to search the booru with, mostly for debugging purposes
+   * @param opt
+   * @param {string[]} [opt.tags] The tags to search for
+   * @param {number} [opt.limit] The limit of results to return
+   * @param {number} [opt.page] The page of results to return
+   * @returns A URL to search the booru
+   */
+  getPostCountUrl({
+                 tags = [],
+                 limit = 1,
+               }: Partial<SearchUrlParams> = {}): string {
+    return postCountURI(this.site, tags, limit, this.credentials)
+  }
+
 
   /**
    * Generates a URL to get a list of tags from the booru
@@ -424,6 +544,7 @@ export class Booru {
 
     return new TagListResults(tags, { limit, page }, this)
   }
+
 }
 
 export default Booru

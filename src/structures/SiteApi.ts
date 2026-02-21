@@ -14,4 +14,7 @@ export default interface SiteApi {
   postView: string
   /** The path to retrieve a list of tags */
   tagList?: string
+  /** The path to retrieve the count of posts with tags */
+  postCount?: string
+
 }

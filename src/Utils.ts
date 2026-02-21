@@ -6,6 +6,13 @@
 import { XMLParser } from 'fast-xml-parser'
 import { type AnySite, BooruError, sites } from './Constants'
 
+
+export interface ParseBooruResult {
+    posts: object[]
+    count: number
+    offset: number
+}
+
 /**
  * Check if `site` is a supported site (and check if it's an alias and return the sites's true name)
  *
@@ -39,6 +46,8 @@ interface XMLPage {
 interface XMLPosts {
   post?: any[]
   tag?: any
+  count?: number,
+  offset?: number,
 }
 
 interface XMLTags {
@@ -52,6 +61,7 @@ interface BooruXML {
 
 interface BooruXMLPosts extends BooruXML {
   posts: XMLPosts
+  error?: string
 }
 
 interface BooruXMLTags extends BooruXML {
@@ -70,7 +80,7 @@ const xmlParser = new XMLParser({
  * @param  {String} xml The xml to convert to json
  * @return {Object[]} A Promise with an array of objects created from the xml
  */
-export function jsonifyPosts(xml: string): object[] {
+export function jsonifyPosts(xml: string): ParseBooruResult {
   if (typeof xml === 'object') return xml
 
   const data = xmlParser.parse(xml) as BooruXMLPosts
@@ -93,15 +103,28 @@ export function jsonifyPosts(xml: string): object[] {
     )
   }
 
+  if (data.error) {
+    throw new BooruError(`The Booru sent back an error: '${data.error}'`)
+  }
+
+  let extractedPosts: object[] = []
+
   if (data.posts.post) {
-    return data.posts.post
+    extractedPosts = data.posts.post;
   }
 
   if (data.posts.tag) {
-    return Array.isArray(data.posts.tag) ? data.posts.tag : [data.posts.tag]
+    extractedPosts = Array.isArray(data.posts.tag) ? data.posts.tag : [data.posts.tag]
   }
 
-  return []
+  const count = Number(data.posts.count) || 0
+    const offset = Number(data.posts.offset) || 0
+
+  return  {
+    posts: extractedPosts,
+    count,
+    offset
+  }
 }
 
 /**

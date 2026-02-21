@@ -14,7 +14,9 @@ export default interface SiteInfo {
   /** The domain of the Site (the "google.com" part of "https://google.com/foo") */
   domain: string
   /** The type of this site (json/xml/derpi) */
-  type: string
+  type: 'json' | 'xml' | 'derpi'
+  /** The type of post count this site uses, if any */
+  postCountType: 'json' | 'xml' | 'derpi'
   /** The aliases of this site */
   aliases: string[]
   /** If this site serves NSFW posts or not */

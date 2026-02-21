@@ -64,6 +64,10 @@ export interface BooruSearch extends SearchParameters {
   credentials?: BooruCredentials
 }
 
+export interface BooruPostCountOptions {
+  credentials?: BooruCredentials
+}
+
 export interface BooruTagList extends TagListParameters {
   credentials?: BooruCredentials
 }
@@ -115,6 +119,46 @@ export function search(
   // This is ugly and a hack, I know this
   booruCache[rSite].credentials = credentials
   return booruCache[rSite].search(tags, { limit, random, page })
+}
+
+/**
+ * Gets the total number of posts for specific tags
+ * @param {String} site The site to search
+ * @param {String[]|String} [tags=[]] Tags to check the count for
+ * @param {BooruPostCountOptions} [options={}] The options (credentials)
+ * @return {Promise<number>} A promise with the total number of posts
+ *
+ * @example
+ * ```
+ * const Booru = require('booru')
+ * // Returns the total amount of posts for 'cat' on e926
+ * const count = await Booru.postCount('e926', ['cat'])
+ * ```
+ */
+export function postCount(
+    site: string,
+    tags: string[] | string = [],
+    { credentials = {} }: BooruPostCountOptions = {},
+): Promise<number> {
+  const rSite = resolveSite(site)
+
+  if (rSite === null) {
+    throw new BooruError('Site not supported')
+  }
+
+  if (!Array.isArray(tags) && typeof tags !== 'string') {
+    throw new BooruError('`tags` should be an array or string')
+  }
+
+  const booruSite = new Site(sites[rSite])
+
+  if (!booruCache[rSite]) {
+    booruCache[rSite] = booruFrom(booruSite, credentials)
+  }
+
+  booruCache[rSite]!.credentials = credentials
+
+  return booruCache[rSite]!.getPostCount(tags)
 }
 
 /**

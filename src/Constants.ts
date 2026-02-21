@@ -116,6 +116,37 @@ export function searchURI(
   return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.search}${query}`
 }
 
+/**
+ * Create a full uri to search with
+ *
+ * @private
+ * @param {string} domain The domain to search
+ * @param {Site} site The site to search
+ * @param {string[]} [tags=[]] The tags to search for
+ * @param {number} [limit=100] The limit for images to return
+ * @param {number} [page=0] The page to get
+ * @param {BooryCredentials} [credentials] The credentials to use for the search, appended to the querystring
+ */
+export function postCountURI(
+    site: Site,
+    tags: string[] = [],
+    limit = 1,
+    credentials: BooruCredentials = {},
+): string {
+  const query = querystring(
+      {
+        [site.tagQuery]: expandTags(tags),
+        limit,
+        ...credentials,
+      },
+      {
+        arrayJoin: site.tagJoin,
+      },
+  )
+
+  return `http${site.insecure ? '' : 's'}://${site.domain}${site.api.postCount}${query}`
+}
+
 export function tagListURI(
   site: Site,
   limit = 100,
