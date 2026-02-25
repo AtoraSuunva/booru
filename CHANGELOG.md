@@ -1,5 +1,9 @@
 # booru Changelog
 
+## 2.9.0
+
+- Add getPostCount (<https://github.com/AtoraSuunva/booru/pull/119>) by [Ragooon](https://github.com/Ragooon)
+
 ## 2.8.0
 
 - Add Tag list support (<https://github.com/AtoraSuunva/booru/pull/114>) by [ColonelBologna](https://github.com/ColonelBologna)
