@@ -13,7 +13,9 @@ export default class Site {
   /** The domain of the Site (the "google.com" part of "https://google.com/foo") */
   public domain: string
   /** The type of this site (json/xml/derpi) */
-  public type: string
+  type: 'json' | 'xml' | 'derpi'
+  /** The type of post count this site uses, if any */
+  postCountType: 'json' | 'xml' | 'derpi'
   /** The aliases of this site */
   public aliases: string[]
   /** If this site serves NSFW posts or not */
@@ -39,6 +41,7 @@ export default class Site {
   constructor(data: SiteInfo) {
     this.domain = data.domain
     this.type = data.type ?? 'json'
+    this.postCountType = data.postCountType ?? 'xml'
     this.aliases = data.aliases ?? []
     this.nsfw = data.nsfw
     this.api = data.api ?? {}

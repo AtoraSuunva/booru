@@ -3,7 +3,7 @@
  * @module Structures
  */
 
-import { BooruCredentials } from '../boorus/Booru'
+import type { BooruCredentials } from '../boorus/Booru'
 import type SearchParameters from './SearchParameters'
 
 /**
